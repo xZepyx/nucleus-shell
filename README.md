@@ -11,7 +11,7 @@ A compact, performance-oriented dotfiles collection implemented with QuickShell 
   &nbsp;
   <img src="https://img.shields.io/github/repo-size/xZepyx/aelyx-shell?color=86dbce&label=SIZE&logo=protondrive&style=for-the-badge&logoColor=D9E0EE&labelColor=1E202B" alt="Repo Size" />
   &nbsp;
-  <img src="https://img.shields.io/badge/Maintenance-Actively%20Maintained-6BCB77?style=for-the-badge&logo=vercel&logoColor=D9E0EE&labelColor=1E202B" alt="Maintenance" />
+  <img src="https://img.shields.io/badge/Maintenance-Active%20-6BCB77?style=for-the-badge&logo=vercel&logoColor=D9E0EE&labelColor=1E202B" alt="Maintenance" />
 </p>
 
 </div>
