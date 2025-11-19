@@ -1,6 +1,7 @@
 import qs.config
 import qs.widgets
 import qs.services
+import qs.functions
 import qs.modules.controlCenter.widgets
 import QtQuick
 import Quickshell
@@ -154,7 +155,7 @@ PanelWindow {
                             }
 
                             StyledText {
-                                text: SystemDetails.uptime
+                                text: Stringify.shortText(SystemDetails.uptime, 17)
                                 font.pixelSize: Appearance.font.size.normal
                             }
                         }
