@@ -171,8 +171,9 @@ See `license/CONTRIBUTING.md` for full contribution guidelines.
 
 </div>
 
-- Maintainer: xZepyx (Aditya Yadav)  
+- Maintainer: xZepyx (Aditya Yadav) 
 - Contact: [zepyxunderscore@gmail.com](mailto:zepyxunderscore@gmail.com)
+- Side Note: Again I'm low on time and only the bugs I find or someone using the dots finds will be fixed. I might add more widgets if needed. Otherwise the shell is completely usable.
 
 ---
 
