@@ -17,6 +17,8 @@ Control {
     property bool checkable: false
     property bool checked: true
     property bool secondary: false
+    property bool beingHovered: mouse_area.containsMouse
+    
     signal clicked
     signal toggled(bool checked)
 
@@ -109,28 +111,28 @@ Control {
         }
         Behavior on topLeftRadius {
             NumberAnimation {
-                duration: Appearance.animation.durations.normal
+                duration: Appearance.animation.durations.large
                 easing.type: Easing.BezierSpline
                 easing.bezierCurve: Appearance.animation.curves.expressiveEffects
             }
         }
         Behavior on topRightRadius {
             NumberAnimation {
-                duration: Appearance.animation.durations.normal
+                duration: Appearance.animation.durations.large
                 easing.type: Easing.BezierSpline
                 easing.bezierCurve: Appearance.animation.curves.expressiveEffects
             }
         }
         Behavior on bottomLeftRadius {
             NumberAnimation {
-                duration: Appearance.animation.durations.normal
+                duration: Appearance.animation.durations.large
                 easing.type: Easing.BezierSpline
                 easing.bezierCurve: Appearance.animation.curves.expressiveEffects
             }
         }
         Behavior on bottomRightRadius {
             NumberAnimation {
-                duration: Appearance.animation.durations.normal
+                duration: Appearance.animation.durations.large
                 easing.type: Easing.BezierSpline
                 easing.bezierCurve: Appearance.animation.curves.expressiveEffects
             }

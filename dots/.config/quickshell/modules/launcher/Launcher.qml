@@ -18,7 +18,6 @@ PanelWindow {
     focusable: true
     exclusiveZone: 0
 
-    // --- Directly use Hyprland's focused monitor ---
     property var monitor: Hyprland.focusedMonitor
     property real screenW: monitor ? monitor.width : 0
     property real screenH: monitor ? monitor.height : 0

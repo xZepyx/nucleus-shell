@@ -151,6 +151,26 @@ Item {
         }
     }
 
+    LauncherToggle {
+        id: mLauncherToggle
+        visible: Shell.flags.bar.modules.launcherToggle.enabled
+        Binding {
+            target: mLauncherToggle
+            property: "parent"
+            value: rowFor(Shell.flags.bar.modules.launcherToggle.position)
+        }
+    }
+
+    PowerMenuToggle {
+        id: mPowerMenuToggle
+        visible: Shell.flags.bar.modules.powerMenuToggle.enabled
+        Binding {
+            target: mPowerMenuToggle
+            property: "parent"
+            value: rowFor(Shell.flags.bar.modules.powerMenuToggle.position)
+        }
+    }
+
     Volume {}
     Brightness {}
 }

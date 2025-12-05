@@ -735,6 +735,156 @@ ContentMenu {
 
             }
 
+            // --- Launcher Toggle ---
+            ColumnLayout {
+                StyledText {
+                    text: "Launcher Toggle"
+                    font.pixelSize: 16
+                    font.bold: true
+                }
+
+                StyledSwitchOption {
+                    title: "Enabled"
+                    description: "Enable Launcher Toggle Module"
+                    prefField: "bar.modules.launcherToggle.enabled"
+
+                    RowLayout {
+                        Rectangle {
+                            width: 1
+                            Layout.fillHeight: true
+                            color: Appearance.m3colors.m3outline
+                        }
+
+                        Repeater {
+                            model: ['Left', 'Center', 'Right']
+
+                            delegate: StyledButton {
+                                property string posValue: modelData.toLowerCase()
+
+                                text: modelData
+                                implicitWidth: 80
+                                checked: Shell.flags.bar.modules.launcherToggle.position === posValue
+                                topLeftRadius: (modelData === "Left" || checked) ? Appearance.rounding.normal : Appearance.rounding.small
+                                bottomLeftRadius: (modelData === "Left" || checked) ? Appearance.rounding.normal : Appearance.rounding.small
+                                topRightRadius: (modelData === "Right" || checked) ? Appearance.rounding.normal : Appearance.rounding.small
+                                bottomRightRadius: (modelData === "Right" || checked) ? Appearance.rounding.normal : Appearance.rounding.small
+                                onClicked: Shell.setNestedValue("bar.modules.launcherToggle.position", posValue)
+                            }
+
+                        }
+
+                        /*Rectangle {
+                            width: 1
+                            Layout.fillHeight: true
+                            color: Appearance.m3colors.m3outline
+                        }
+
+                        StyledButton {
+                            icon: "timer_1"
+                            font.family: "Material Symbols Rounded"
+                            implicitWidth: 50
+                            checked: Shell.flags.bar.modules.launcherToggle.style === 1
+                            topLeftRadius: Appearance.rounding.normal
+                            bottomLeftRadius: Appearance.rounding.normal
+                            topRightRadius: Appearance.rounding.small
+                            bottomRightRadius: Appearance.rounding.small
+                            onClicked: Shell.setNestedValue("bar.modules.launcherToggle.style", 1)
+                        }
+
+                        StyledButton {
+                            icon: "timer_2"
+                            font.family: "Material Symbols Rounded"
+                            implicitWidth: 50
+                            checked: Shell.flags.bar.modules.launcherToggle.style === 2
+                            topLeftRadius: Appearance.rounding.small
+                            bottomLeftRadius: Appearance.rounding.small
+                            topRightRadius: Appearance.rounding.normal
+                            bottomRightRadius: Appearance.rounding.normal
+                            onClicked: Shell.setNestedValue("bar.modules.launcherToggle.style", 2)
+                        }
+                        */
+
+                    }
+
+                }
+
+            }
+
+            // --- Power Menu Toggle ---
+            ColumnLayout {
+                StyledText {
+                    text: "PowerMenu Toggle"
+                    font.pixelSize: 16
+                    font.bold: true
+                }
+
+                StyledSwitchOption {
+                    title: "Enabled"
+                    description: "Enable PowerMenu Toggle Module"
+                    prefField: "bar.modules.powerMenuToggle.enabled"
+
+                    RowLayout {
+                        Rectangle {
+                            width: 1
+                            Layout.fillHeight: true
+                            color: Appearance.m3colors.m3outline
+                        }
+
+                        Repeater {
+                            model: ['Left', 'Center', 'Right']
+
+                            delegate: StyledButton {
+                                property string posValue: modelData.toLowerCase()
+
+                                text: modelData
+                                implicitWidth: 80
+                                checked: Shell.flags.bar.modules.powerMenuToggle.position === posValue
+                                topLeftRadius: (modelData === "Left" || checked) ? Appearance.rounding.normal : Appearance.rounding.small
+                                bottomLeftRadius: (modelData === "Left" || checked) ? Appearance.rounding.normal : Appearance.rounding.small
+                                topRightRadius: (modelData === "Right" || checked) ? Appearance.rounding.normal : Appearance.rounding.small
+                                bottomRightRadius: (modelData === "Right" || checked) ? Appearance.rounding.normal : Appearance.rounding.small
+                                onClicked: Shell.setNestedValue("bar.modules.powerMenuToggle.position", posValue)
+                            }
+
+                        }
+
+                        /*Rectangle {
+                            width: 1
+                            Layout.fillHeight: true
+                            color: Appearance.m3colors.m3outline
+                        }
+
+                        StyledButton {
+                            icon: "timer_1"
+                            font.family: "Material Symbols Rounded"
+                            implicitWidth: 50
+                            checked: Shell.flags.bar.modules.powerMenuToggle.style === 1
+                            topLeftRadius: Appearance.rounding.normal
+                            bottomLeftRadius: Appearance.rounding.normal
+                            topRightRadius: Appearance.rounding.small
+                            bottomRightRadius: Appearance.rounding.small
+                            onClicked: Shell.setNestedValue("bar.modules.powerMenuToggle.style", 1)
+                        }
+
+                        StyledButton {
+                            icon: "timer_2"
+                            font.family: "Material Symbols Rounded"
+                            implicitWidth: 50
+                            checked: Shell.flags.bar.modules.powerMenuToggle.style === 2
+                            topLeftRadius: Appearance.rounding.small
+                            bottomLeftRadius: Appearance.rounding.small
+                            topRightRadius: Appearance.rounding.normal
+                            bottomRightRadius: Appearance.rounding.normal
+                            onClicked: Shell.setNestedValue("bar.modules.powerMenuToggle.style", 2)
+                        }
+                        */
+
+                    }
+
+                }
+
+            }
+
         }
 
     }

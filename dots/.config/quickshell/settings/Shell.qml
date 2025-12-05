@@ -124,7 +124,7 @@ Singleton {
                 property int moduleRadius: Appearance.rounding.normal
                 property int islandRadius: Appearance.rounding.large
                 property int height: 50
-                property int width: Quickshell.screens.width
+                property int width: 1080
                 property string _comment_: "Style values are not in use rn."
                 property JsonObject modules: JsonObject {
                     property JsonObject systemTray: JsonObject {
@@ -161,6 +161,16 @@ Singleton {
                         property bool enabled: true 
                         property string position: "right"
                         property int style: 1
+                    }
+                    property JsonObject launcherToggle: JsonObject {
+                        property bool enabled: true 
+                        property string position: "right"
+                        property int style: 1                        
+                    }
+                    property JsonObject powerMenuToggle: JsonObject {
+                        property bool enabled: true 
+                        property string position: "right"
+                        property int style: 1                        
                     }
                     property JsonObject workspaces: JsonObject {
                         property bool enabled: true 
