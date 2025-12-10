@@ -11,7 +11,7 @@ StyledRect {
     id: root
     width: 200
     height: 80
-    radius: Appearance.rounding.verylarge
+    radius: Appearance.rounding.verylarge + 5
 
     // Enabled = BT adapter on
     property bool btEnabled: Bluetooth.defaultAdapter ? Bluetooth.defaultAdapter.enabled : false
@@ -41,8 +41,7 @@ StyledRect {
     property string btstatusicon: btEnabled ? "bluetooth" : "bluetooth_disabled"
 
     // Match Network & Theme tile colors
-    color: !btEnabled ? Appearance.m3colors.m3surfaceContainer
-                     : Appearance.m3colors.m3paddingContainer
+    color: Appearance.m3colors.m3surfaceContainerHigh
 
     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
     Layout.margins: 0
@@ -72,7 +71,7 @@ StyledRect {
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
         anchors.leftMargin: Appearance.margin.small
-        color: root.color  
+        color: !btEnabled ? Appearance.m3colors.m3surfaceContainerHigh : Appearance.m3colors.m3primaryContainer
 
         MaterialSymbol {
             anchors.centerIn: parent

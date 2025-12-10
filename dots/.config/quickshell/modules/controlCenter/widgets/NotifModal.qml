@@ -14,9 +14,15 @@ StyledRect {
     id: root
 
     Layout.fillWidth: true
-    Layout.preferredHeight: 410
     radius: Appearance.rounding.normal
     color: Appearance.m3colors.m3surfaceContainerHigh
+
+    property bool dndActive: Shell.flags.misc.dndEnabled
+    property string themestatusicon: dndActive ? "do_not_disturb_on" : "do_not_disturb_off"
+
+    function toggleDnd() {
+        Shell.setNestedValue("misc.dndEnabled", !dndActive);
+    }
 
     StyledButton {
         id: clearButton
@@ -34,6 +40,24 @@ StyledRect {
                 let n = NotifServer.history[i];
                 if (n?.notification) n.notification.dismiss();
             }
+        }
+    }
+
+    StyledButton {
+        id: silentButton
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        anchors.bottomMargin: 10
+        anchors.rightMargin: clearButton.implicitWidth + 15
+        text: "Silent"
+        implicitHeight: 40
+        implicitWidth: 80
+        secondary: true
+        checkable: true 
+        checked: Shell.flags.misc.dndEnabled
+
+        onClicked: {
+            toggleDnd()
         }
     }
 

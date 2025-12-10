@@ -16,28 +16,19 @@ StyledRect {
 
     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
-    readonly property bool wifiConnected: Network.connectedSsid !== "No Internet"
-    readonly property string networkstatustext: wifiConnected ? Network.connectedSsid : "Disabled"
-
-    property string networkstatusicon: {
-        if (!wifiConnected)
-            return "signal_wifi_off";
-        if (Network.signalStrength > 60)
-            return "network_wifi";
-        if (Network.signalStrength > 30)
-            return "network_wifi_2_bar";
-        return "network_wifi_1_bar";
-    }
+    property bool flightMode
+    property string flightModeText: flightMode ? "Enabled" : "Disabled"
 
     Process {
-        id: toggleWifiProc
+        id: toggleflightModeProc
         running: false
         command: []
 
         function toggle() {
-            const cmd = wifiConnected ? "off" : "on";
-            toggleWifiProc.command = ["bash", "-c", `nmcli radio wifi ${cmd}`];
-            toggleWifiProc.running = true;
+            flightMode = !flightMode;
+            const cmd = flightMode ? "off" : "on";
+            toggleflightModeProc.command = ["bash", "-c", `nmcli radio all ${cmd}`];
+            toggleflightModeProc.running = true;
         }
     }
 
@@ -50,12 +41,12 @@ StyledRect {
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
         anchors.leftMargin: 10
-        color: !wifiConnected ? Appearance.m3colors.m3surfaceContainerHigh : Appearance.m3colors.m3primaryContainer
+        color: !flightMode ? Appearance.m3colors.m3surfaceContainerHigh : Appearance.m3colors.m3primaryContainer
 
         MaterialSymbol {
             anchors.centerIn: parent
             iconSize: 35
-            icon: networkstatusicon
+            icon: "flight"
         }
     }
 
@@ -65,20 +56,20 @@ StyledRect {
         anchors.leftMargin: 10
 
         StyledText {
-            text: "Network"
+            text: "Flight Mode"
             font.pixelSize: 20
         }
 
         StyledText {
-            text: networkstatustext
+            text: flightModeText
             font.pixelSize: Appearance.font.size.small
         }
     }
 
-    // Whole card toggles WiFi radio
+    // Whole card toggles flightMode radio
     MouseArea {
         anchors.fill: parent
         propagateComposedEvents: true
-        onClicked: toggleWifiProc.toggle()
+        onClicked: toggleflightModeProc.toggle()
     }
 }

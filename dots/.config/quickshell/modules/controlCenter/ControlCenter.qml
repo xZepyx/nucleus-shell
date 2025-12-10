@@ -78,6 +78,7 @@ PanelWindow {
 
                 // --- Top Section ---
                 RowLayout {
+                    id: topSection
                     Layout.fillWidth: true
 
                     ColumnLayout {
@@ -97,7 +98,8 @@ PanelWindow {
                             StyledText {
                                 text: SystemDetails.uptime
                                 font.pixelSize: Appearance.font.size.large
-                                Layout.alignment: Qt.AlignHCenter
+                                Layout.alignment: Qt.AlignBottom 
+                                Layout.bottomMargin: 5
                             }
                         }
                     }
@@ -205,31 +207,21 @@ PanelWindow {
                     radius: 1
                 }
 
-                GridLayout {
-                    id: middleGrid
+                ColumnLayout {
+                    id: sliderColumn
                     Layout.fillWidth: true
-                    columns: 2
-                    columnSpacing: 8
-                    rowSpacing: 8
 
-                    // Make all items stretch equally
-                    Layout.preferredWidth: parent.width
+                    Volume {
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: 50
+                        icon: "volume_up"
+                        iconSize: Appearance.font.size.large + 3
+                    }
 
-                    Network {
+                    Brightness {
                         Layout.fillWidth: true
-                        Layout.preferredHeight: 80
-                    }
-                    Bluetooth {
-                        Layout.fillWidth: true
-                        Layout.preferredHeight: 80
-                    }
-                    NotifToggle {
-                        Layout.fillWidth: true
-                        Layout.preferredHeight: 80                    
-                    }
-                    Interface {
-                        Layout.fillWidth: true
-                        Layout.preferredHeight: 80                         
+                        Layout.preferredHeight: 50
+                        icon: "brightness_high"
                     }
                 }
 
@@ -240,58 +232,50 @@ PanelWindow {
                     radius: 1
                 }
 
+                GridLayout {
+                    id: middleGrid
+                    Layout.fillWidth: true
+                    columns: 1
+                    columnSpacing: 8
+                    rowSpacing: 8
+
+                    // Make all items stretch equally
+                    Layout.preferredWidth: parent.width
+
+                    RowLayout {
+                        Network {
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: 80
+                        }
+                        FlightMode {
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: 80
+                        }
+
+                    }
+
+                    RowLayout {
+                        Bluetooth {
+                            Layout.preferredWidth: 220
+                            Layout.preferredHeight: 80                      
+                        }
+                        Interface {
+                            Layout.preferredHeight: 80
+                            Layout.fillWidth: true
+                        }
+                        NightTime {
+                            Layout.preferredHeight: 80
+                            Layout.fillWidth: true
+                        }
+
+                    }
+                }
+
                 ColumnLayout {
                     spacing: Appearance.margin.small
                     
                     Layout.fillWidth: true
 
-
-                    RowLayout {
-                        StyledText {
-                            Layout.alignment: Qt.AlignLeft
-                            text: "Volume"
-                        }
-
-                        Item { Layout.fillWidth: true }
-
-                        StyledText {
-                            animate: false
-                            text: Math.round(sink ? sink.volume * 100 : 0) + "%"
-                            Layout.alignment: Qt.AlignRight
-                        }
-                    }
-
-                    ColumnLayout {
-                        id: bottomColumn
-                        Layout.fillWidth: true
-
-                        Volume {
-                            Layout.fillWidth: true
-                            Layout.preferredHeight: 50
-                        }
-
-                        RowLayout {
-
-                            StyledText {
-                                Layout.alignment: Qt.AlignLeft
-                                text: "Brightness"
-                            }
-
-                            Item { Layout.fillWidth: true }
-
-                            StyledText {
-                                animate: false
-                                property var monitor: Brightness.monitors.length > 0 ? Brightness.monitors[0] : null
-                                text: Math.round(monitor.brightness * 100) + "%"
-                                Layout.alignment: Qt.AlignRight
-                            }
-                        }
-
-                        Brightness {
-                            Layout.fillWidth: true
-                            Layout.preferredHeight: 50
-                        }
-                    }
 
                     Rectangle {
                         Layout.fillWidth: true
@@ -299,9 +283,12 @@ PanelWindow {
                         color: Appearance.m3colors.m3outlineVariant
                         radius: 1
                         Layout.topMargin: 10
+                        Layout.bottomMargin: 20
                     }
 
-                    NotifModal{}
+                    NotifModal{
+                        Layout.preferredHeight: 430
+                    }
 
                 }
             }

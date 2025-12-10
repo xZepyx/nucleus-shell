@@ -12,6 +12,8 @@ Slider {
     property real trackDotSize: 4
     property real trackNearHandleRadius: 2
     property bool useAnim: true
+    property int iconSize: Appearance.font.size.large 
+    property string icon: ""
 
     Layout.fillWidth: true
 
@@ -28,6 +30,15 @@ Slider {
         anchors.fill: parent
         onPressed: (mouse) => mouse.accepted = false
         cursorShape: root.pressed ? Qt.ClosedHandCursor : Qt.PointingHandCursor
+    }
+
+    MaterialSymbol {
+        id: icon 
+        icon: root.icon
+        iconSize: root.iconSize 
+        anchors.right: parent.right 
+        anchors.verticalCenter: parent.verticalCenter 
+        anchors.rightMargin: 15
     }
 
     // ========= TRACK =========
