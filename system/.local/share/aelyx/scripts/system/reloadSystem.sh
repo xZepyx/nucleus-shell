@@ -1,5 +1,5 @@
 #!/bin/sh
 
 killall quickshell
-quickshell
+quickshell -c ae-qs
 hyprctl reload

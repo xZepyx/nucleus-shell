@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=?Reload System
 Comment=Reload Quickshell and Hyprland
-Exec=pkill -9 quickshell; hyprctl dispatch exec quickshell;hyprctl reload
+Exec=pkill -9 quickshell; hyprctl dispatch exec quickshell -c ae-qs;hyprctl reload
 Icon=/usr/share/icons/Papirus/48x48/apps/system-restart.svg
 Terminal=false
 Type=Application

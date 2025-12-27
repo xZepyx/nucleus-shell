@@ -27,7 +27,7 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         onClicked: {
-            Quickshell.execDetached(["qs", "ipc", "call", "global", "toggleTheme"]);
+            Quickshell.execDetached(["qs", "-c", "ae-qs", "ipc", "call", "global", "toggleTheme"]);
         }
     }
 

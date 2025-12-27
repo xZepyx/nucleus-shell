@@ -79,7 +79,7 @@ Item {
                     anchors.fill: parent
                     onClicked: {
                         Shell.setNestedValue("background.wallpaperPath", fileUrl);
-                        Quickshell.execDetached(["qs", "ipc", "call", "global", "regenColors"]);
+                        Quickshell.execDetached(["qs", "-c", "ae-qs", "ipc", "call", "global", "regenColors"]);
                     }
                     cursorShape: Qt.PointingHandCursor
                 }

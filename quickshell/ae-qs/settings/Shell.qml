@@ -100,8 +100,7 @@ Singleton {
 
             property JsonObject shellInfo: JsonObject {
                 property string supposedQsVersion: "0.2.1"
-                property string version: "2.0.0"
-                property string _comment: "Do not modify the versions yourself"
+                property string version: "1.0.0"
             }
 
             property JsonObject misc: JsonObject {

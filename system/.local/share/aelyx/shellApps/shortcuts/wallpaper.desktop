@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=?Wallpaper
 Comment=Change your wallpaper
-Exec=qs ipc call background change
+Exec=qs -c ae-qs ipc call background change
 Icon=/usr/share/icons/Papirus/48x48/apps/livewallpaper.svg
 Terminal=false
 Type=Application

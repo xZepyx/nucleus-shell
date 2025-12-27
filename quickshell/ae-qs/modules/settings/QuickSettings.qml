@@ -38,7 +38,7 @@ ContentMenu {
                 checked: Shell.flags.appearance.theme === "dark"
                 onToggled: {
                     Quickshell.execDetached({
-                        "command": ['qs', 'ipc', 'call', 'global', "toggleTheme"]
+                        "command": ['qs', '-c', 'ae-qs', 'ipc', 'call', 'global', "toggleTheme"]
                     });
                 }
             }
@@ -72,7 +72,7 @@ ContentMenu {
                         bottomRightRadius: index === (model.count - 1) ? Appearance.rounding.normal : Appearance.rounding.small
                         onClicked: {
                             Shell.setNestedValue("appearance.colorScheme", modelData);
-                            Quickshell.execDetached(["qs", "ipc", "call", "global", "regenColors"]);
+                            Quickshell.execDetached(["qs", "-c", "ae-qs", "ipc", "call", "global", "regenColors"]);
                         }
                     }
 
