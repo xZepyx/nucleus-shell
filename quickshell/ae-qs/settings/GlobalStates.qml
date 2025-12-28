@@ -14,5 +14,5 @@ Item {
     property bool windowOverviewOpen: false
     property bool osdNeeded: false
     property bool visible_settingsMenu: false 
-    property bool visible_firstTimeMenu: Shell.flags.misc.showFirstTimeMenuOnStartup ? true : false    
+    property bool visible_firstTimeMenu: !Shell.flags.misc.showFirstTimeMenuOnStartup ? true : false
 }
