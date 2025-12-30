@@ -48,6 +48,8 @@ Scope {
                 { icon: "toolbar", label: "Bar", page: 1},
                 { icon: "wallpaper", label: "Wallpapers", page: 2},
                 { icon: "build", label: "Misc", page: 3},
+                { header: true, label: "About"},
+                { icon: "info", label: "About", page: 4 },
 
             ]
 
@@ -198,6 +200,7 @@ Scope {
                     BarConfig { }
                     Wallpaper { }
                     MiscConfig { }
+                    About{ }
                 }
             }
         }

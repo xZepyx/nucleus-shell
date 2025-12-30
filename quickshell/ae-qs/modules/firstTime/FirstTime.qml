@@ -8,7 +8,6 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Io
-import qs.modules.settings
 import qs.settings
 import qs.widgets
 

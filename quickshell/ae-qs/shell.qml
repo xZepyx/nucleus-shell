@@ -6,7 +6,7 @@ import qs.modules.overlays
 import qs.modules.notifications
 import qs.modules.sidebarRight
 import qs.modules.sidebarLeft
-import qs.modules.settings
+import qs.modules.settingsApp
 import qs.modules.powerMenu
 import qs.modules.firstTime
 
