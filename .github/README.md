@@ -1,6 +1,6 @@
 <div align="center">
 
-# ✦ Aelyx Shell ✦
+# ✦ aelyx-shell ✦
 
 <p>
   <img src="https://img.shields.io/github/last-commit/xZepyx/aelyx-shell?style=for-the-badge&color=8ad7eb&logo=git&logoColor=D9E0EE&labelColor=1E202B" alt="Last Commit" />
@@ -22,7 +22,7 @@
 
 </div>
 
-aelyx-shell a quickshell configuration built for clarity, speed, and a smooth, cohesive hyprland experience.
+#### A shell built to get things done.
 
 Key goals:
 - Minimal, script-centric configuration
@@ -77,19 +77,21 @@ Follow these steps to install the collection. The automated setup is conservativ
     ```
 
 2. Inspect configuration and optional modules:
-    - Review files in `dots/` and `dots-extra/` before applying anything to your profile.
+    - Review files in `system/` if needed.
 
 3. Run the installer:
     ```bash
-    cd setup && bash install.sh
+    cd intall && bash unified.sh
     ```
     - The installer will guide you through dependency checks and optional modules.
+    - The script will either let to install the complete dotfiles or only the shell itself.
 
 4. Open a fresh shell session or source your shell profile to apply changes.
 
 Notes:
 - Manual installation (symlinking files yourself) is supported and recommended for cautious users.
-- Back up your existing dotfiles (e.g. ~/.bashrc, ~/.zshrc, ~/.profile) before running the bootstrap.
+- Back up your existing dotfiles (e.g. ~/.config/ ~/.bashrc, ~/.zshrc, ~/.profile) before running the bootstrap.
+- Other files under the install directory: `pkg.sh`, `update.sh` and `files.sh` read `install/README.md`.
 
 ---
 
@@ -99,11 +101,11 @@ Notes:
 
 </div>
 
-- Primary config: `~/.config/aelyxshell/config.json`
+- Primary config: `~/.local/share/aelyx/user/config.json`
 - Modular settings: prompt, completion, and widget modules are separated for easy replacement.
 - To customize:
-  - Edit `~/.config/aelyxshell/config.json` or use the provided settings app (if installed).
-  - Enable/disable modules by editing the module list in the appropriate config file.
+  - Edit the primary config or use the provided settings app (if installed).
+  - Enable/disable modules by editing the module list in the `~/.config/quickshell/ae-qs/shell.qml` file.
 
 ---
 
@@ -113,11 +115,9 @@ Notes:
 
 </div>
 
-- Shell: QuickShell-compatible environment (see QuickShell docs)
-- Compositor: Hyprland is recommended but not required
-- Terminal: Kitty or another modern terminal emulator
-- Fonts: A patched monospace font with ligatures for best prompt rendering
-- Git: recommended for keeping dotfiles updated and synced
+- Compositor: Hyprland
+- Terminal: Kitty
+- Fonts: JetBrainsMono
 
 ---
 
@@ -127,14 +127,20 @@ Notes:
 
 </div>
 
-- Missing alias or function:
+- Missing/Unloaded Modules:
   - Ensure the module file is loaded in the correct order. Check `~/.config/quickshell/shell.qml`.
+- Broken visuals:
+  - Check `~/.local/share/aelyx/user/config.json`
 - Slow startup:
   - Disable unused modules or lazy-load heavy features (e.g., prompt segments that query network/state).
 - Conflicting user configs:
-  - Inspect existing profile files (`~/.bashrc`, `~.zshrc`, `~/.profile`) before applying changes.
+  - Inspect existing profile files (`~/.bashrc`, `~.zshrc`, `~/.profile`, `~/.config`) before applying changes.
 - Installer failures:
-  - Re-run the installer with verbose output or check `setup/` scripts for dependency checks.
+  - Re-run the installer with verbose output or check `install/` scripts for dependency checks.
+- Create issues if nothing works make sure when you create a issue including this checklist:
+  - [ ] The install script completed without errors, and I did not skip or ignore any failed commands
+  - [ ] My system is up to date (including aelyx-shell).  
+  - [ ] I am using the latest **stable** release of aelyx-shell (not beta/alpha/rc build)
 
 ---
 
@@ -144,9 +150,10 @@ Notes:
 
 </div>
 
-- Redesign config layout and widget system for improved modularity and discoverability
+- Redesign config layout and widget system for improved modularity and discoverability | Done
 - Add more curated optional modules and theme variants
-- Improve installer prompts and backup behavior
+- Improve installer prompts and backup behavior | Done
+- Improve shell performance (currently a big laggy on my machine)
 
 ---
 
@@ -173,7 +180,6 @@ See `license/CONTRIBUTING.md` for full contribution guidelines.
 
 - Maintainer: xZepyx (Aditya Yadav) 
 - Contact: [zepyxunderscore@gmail.com](mailto:zepyxunderscore@gmail.com)
-- Side Note: Again I'm low on time and only the bugs I find or someone using the dots finds will be fixed. I might add more widgets if needed. Otherwise the shell is completely usable.
 
 ---
 
