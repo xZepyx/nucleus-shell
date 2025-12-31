@@ -12,9 +12,6 @@ Singleton {
     property string osName: ""
     property string kernelVersion: ""
     property string architecture: ""
-    property bool hasBattery: false
-    property int batteryPercent: 0
-    property bool onAC: false
     property string uptime: ""
     property string qsVersion: ""
     property string swapUsage: "—"
@@ -200,17 +197,6 @@ Singleton {
     }
 
     Timer {
-        id: procUpdater
-
-        repeat: true
-        interval: 40000
-        onTriggered: {
-            batteryPercentProc.running = true;
-            acProc.running = true;
-        }
-    }
-
-    Timer {
         interval: 5000
         running: true
         repeat: true
@@ -322,53 +308,7 @@ Singleton {
 
     }
 
-    Process {
-        id: batteryCheckProc
 
-        running: true
-        command: ["sh", "-c", "ls /sys/class/power_supply | grep BAT || true"]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                root.hasBattery = text.trim().length > 0;
-                if (root.hasBattery)
-                    batteryPercentProc.running = true;
-
-            }
-        }
-
-    }
-
-    Process {
-        id: batteryPercentProc
-
-        running: false
-        command: ["sh", "-c", "cat /sys/class/power_supply/BAT*/capacity 2>/dev/null"]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                const v = parseInt(text.trim());
-                if (!isNaN(v))
-                    root.batteryPercent = v;
-
-            }
-        }
-
-    }
-
-    Process {
-        id: acProc
-
-        running: false
-        command: ["sh", "-c", "cat /sys/class/power_supply/AC*/online 2>/dev/null"]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                root.onAC = text.trim() === "1";
-            }
-        }
-
-    }
 
     Process {
         id: swapProc

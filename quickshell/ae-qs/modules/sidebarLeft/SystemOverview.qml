@@ -367,7 +367,7 @@ Item {
             implicitHeight: 72
             radius: Appearance.rounding.normal
             color: Appearance.colors.colLayer2
-            visible: SystemDetails.hasBattery
+            visible: UPower.batteryPresent
 
             RowLayout {
                 anchors.fill: parent
@@ -384,7 +384,7 @@ Item {
                     }
 
                     StyledText {
-                        text: `${Math.round(SystemDetails.batteryPercent)}%`
+                        text: `${Math.round(UPower.percentage)}%`
                         font.pixelSize: Appearance.font.size.small
                         color: Appearance.m3colors.m3onSurface
                     }
@@ -407,7 +407,7 @@ Item {
                     }
 
                     StyledText {
-                        text: SystemDetails.onAC ? "online" : "battery"
+                        text: UPower.acOnline ? "online" : "battery"
                         font.pixelSize: Appearance.font.size.small
                         color: Appearance.m3colors.m3onSurface
                         horizontalAlignment: Text.AlignRight

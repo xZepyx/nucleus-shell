@@ -5,9 +5,10 @@ pragma Singleton
 
 Item {
     id: root
-    property string albumArtist: ""
-    property string artUrl: ""
+
+    property string albumArtist: "No Artist"
     property string albumTitle: "No Media"
+    property string artUrl: ""
 
     property int positionSec: 0
     property int lengthSec: 0
@@ -22,95 +23,47 @@ Item {
         interval: 1000
         running: true
         repeat: true
-        onTriggered: artProc.running = true
-    }
-
-    Timer {
-        interval: 1000
-        running: true
-        repeat: true
-
-        onTriggered: {
-            posProcess.running = true
-            lenProcess.running = true
-        }
-    }
-
-    Timer {
-        interval: 1000
-        running: true
-        repeat: true
-        onTriggered: artistProc.running = true
-    }
-
-    Timer {
-        interval: 1000
-        running: true
-        repeat: true
-        onTriggered: titleProc.running = true
+        onTriggered: mprisProc.running = true
     }
 
     Process {
-        id: artProc
-        command: ["playerctl", "metadata", "mpris:artUrl"]
+        id: mprisProc
+        command: [
+            "playerctl",
+            "metadata",
+            "--format",
+            "{{xesam:artist}}|{{xesam:title}}|{{mpris:artUrl}}|{{position}}|{{mpris:length}}"
+        ]
+
         stdout: StdioCollector {
             onStreamFinished: {
-                // sanitize output (remove newlines/spaces)
-                var cleanUrl = text.trim()
-                if (cleanUrl !== root.artUrl)
-                    root.artUrl = cleanUrl
-            }
-        }
-    }
+                const parts = text.trim().split("|")
+                if (parts.length < 5)
+                    return
 
-    Process {
-        id: artistProc
-        command: ["playerctl", "metadata", "xesam:artist"]
-        stdout: StdioCollector {
-            onStreamFinished: {
-                var cleanedArtist = text.trim()
-                if (cleanedArtist !== "")
-                root.albumArtist = cleanedArtist
-                else root.albumArtist = "No Artist"
-            }
-        }
-    }
+                /* Artist */
+                root.albumArtist = parts[0] !== ""
+                    ? parts[0]
+                    : "No Artist"
 
-    Process {
-        id: titleProc
-        command: ["playerctl", "metadata", "xesam:title"]
-        stdout: StdioCollector {
-            onStreamFinished: {
-                var cleanedtitle = text.trim()
-                if (cleanedtitle !== "")
-                root.albumTitle = cleanedtitle
-                else root.albumTitle = "No Media"
+                /* Title */
+                root.albumTitle = parts[1] !== ""
+                    ? parts[1]
+                    : "No Media"
 
+                /* Artwork */
+                if (parts[2] !== root.artUrl)
+                    root.artUrl = parts[2]
 
-            }
-        }
-    }
+                /* Position (seconds) */
+                let pos = parseFloat(parts[3])
+                if (!isNaN(pos))
+                    root.positionSec = Math.floor(pos)
 
-    Process {
-        id: posProcess
-        command: ["playerctl", "position"]
-        stdout: StdioCollector {
-            onStreamFinished: {
-                let val = parseFloat(text.trim())
-                if (!isNaN(val))
-                    root.positionSec = val
-            }
-        }
-    }
-
-    Process {
-        id: lenProcess
-        command: ["playerctl", "metadata", "mpris:length"]
-        stdout: StdioCollector {
-            onStreamFinished: {
-                let val = parseFloat(text.trim())
-                if (!isNaN(val))
-                    root.lengthSec = val / 1000000
+                /* Length (microseconds → seconds) */
+                let len = parseFloat(parts[4])
+                if (!isNaN(len))
+                    root.lengthSec = Math.floor(len / 1_000_000)
             }
         }
     }

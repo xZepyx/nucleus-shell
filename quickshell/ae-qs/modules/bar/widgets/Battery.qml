@@ -8,7 +8,7 @@ import qs.widgets
 BarModule {
     id: clockContainer
 
-    visible: SystemDetails.hasBattery
+    visible: UPower.batterPresent
     Layout.alignment: Qt.AlignVCenter
     // Let the layout compute size automatically
     implicitWidth: bgRect.implicitWidth
@@ -32,13 +32,13 @@ BarModule {
 
         StyledText {
             animate: false
-            text: SystemDetails.batteryPercent + "%"
+            text: UPower.percentage + "%"
         }
 
         CircularProgressBar {
-            value: SystemDetails.batteryPercent / 100
+            value: UPower.percentage / 100
             icon: {
-                const b = SystemDetails.batteryPercent;
+                const b = UPower.percentage;
                 if (b > 80)
                     return "battery_6_bar";
 
