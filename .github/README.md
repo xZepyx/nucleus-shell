@@ -39,9 +39,11 @@ Key goals:
 
 <div align="center">
 
-| Desktop                                          | Launcher                                           |
+| Top Bar                                         | Bottom Bar                                           |
 |--------------------------------------------------|----------------------------------------------------|
-| ![Widgets](/previews/1.png)                       | ![Launcher](/previews/2.png)                        |
+| ![TopBar](/previews/1.png)                       | ![BottomBar](/previews/2.png)                        |
+| **Left Bar**                                         | **Right Bar**                                           |
+| ![LeftBar](/previews/3.png)                       | ![RightBar](/previews/4.png)                        |
 
 </div>
 
@@ -156,8 +158,23 @@ Notes:
 - Improve shell performance (currently a big laggy on my machine)
 
 ---
+<div align="center">
+  
+## ✦ Weird Tentacles ✦
+<a href="https://www.star-history.com/#xzepyx/aelyx-shell&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=xzepyx/aelyx-shell&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=xzepyx/aelyx-shell&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=xzepyx/aelyx-shell&type=date&legend=top-left" />
+ </picture>
+</a>
+</div>
+
+
+---
 
 <div align="center">
+
   
 ## ✦ Contributing ✦
 
@@ -191,6 +208,21 @@ See `license/CONTRIBUTING.md` for full contribution guidelines.
 
 - QuickShell and its contributors
 - Hyprland and its developers/contributors
+
+---
+
+<div align="center">
+  
+## ✦ Inspiration/Copying ✦
+
+</div>
+
+#### I did copy some code from other repositories and took design inspirations which are listed here:
+* [end-4/dots-hyprland](https://github.com/end-4/dots-hyprland) (Copied some services, took some design inspirations)
+* [etherealboi/twinshell](https://github.com/etherealboi/twinshell) (Some widgets)
+* [bgibson72/yahr-quickshell](https://github.com/bgibson72/yahr-quickshell) (A script that lists installed apps)
+* [caelestia-dots/shell](https://github.com/caelestia-dots/shell) (No code but almost copied the vertical bar design)
+* [corecathx/whisker](https://github.com/corecathx/whisker) (Almost copied the settings app from his shell)
 
 ---
 
