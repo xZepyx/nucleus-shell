@@ -1,0 +1,104 @@
+{
+  "_comment": "Material Colors generated with Matugen"
+
+  , "background": "#141312"
+
+  , "error": "#ffb4ab"
+
+  , "error_container": "#93000a"
+
+  , "inverse_on_surface": "#31302f"
+
+  , "inverse_primary": "#635e50"
+
+  , "inverse_surface": "#e6e2df"
+
+  , "on_background": "#e6e2df"
+
+  , "on_error": "#690005"
+
+  , "on_error_container": "#ffdad6"
+
+  , "on_primary": "#343024"
+
+  , "on_primary_container": "#2f2b1f"
+
+  , "on_primary_fixed": "#1f1b10"
+
+  , "on_primary_fixed_variant": "#4b4739"
+
+  , "on_secondary": "#33302a"
+
+  , "on_secondary_container": "#e9e3da"
+
+  , "on_secondary_fixed": "#1d1b16"
+
+  , "on_secondary_fixed_variant": "#494640"
+
+  , "on_surface": "#e6e2df"
+
+  , "on_surface_variant": "#ccc6bb"
+
+  , "on_tertiary": "#2d3229"
+
+  , "on_tertiary_container": "#272c24"
+
+  , "on_tertiary_fixed": "#181d15"
+
+  , "on_tertiary_fixed_variant": "#43483f"
+
+  , "outline": "#959086"
+
+  , "outline_variant": "#4a463e"
+
+  , "primary": "#dad3c1"
+
+  , "primary_container": "#beb7a6"
+
+  , "primary_fixed": "#eae2d0"
+
+  , "primary_fixed_dim": "#cdc6b5"
+
+  , "scrim": "#000000"
+
+  , "secondary": "#cbc6bd"
+
+  , "secondary_container": "#4c4942"
+
+  , "secondary_fixed": "#e7e2d9"
+
+  , "secondary_fixed_dim": "#cbc6bd"
+
+  , "shadow": "#000000"
+
+  , "source_color": "#beb7a6"
+
+  , "surface": "#141312"
+
+  , "surface_bright": "#3a3937"
+
+  , "surface_container": "#201f1e"
+
+  , "surface_container_high": "#2b2a28"
+
+  , "surface_container_highest": "#363433"
+
+  , "surface_container_low": "#1c1b1a"
+
+  , "surface_container_lowest": "#0f0e0d"
+
+  , "surface_dim": "#141312"
+
+  , "surface_tint": "#cdc6b5"
+
+  , "surface_variant": "#4a463e"
+
+  , "tertiary": "#d0d5c8"
+
+  , "tertiary_container": "#b4b9ad"
+
+  , "tertiary_fixed": "#dfe4d7"
+
+  , "tertiary_fixed_dim": "#c3c8bc"
+
+}

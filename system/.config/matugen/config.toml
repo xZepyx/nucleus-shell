@@ -5,12 +5,12 @@ set = false
 
 [templates.aelyxshell]
 input_path = '~/.config/matugen/templates/colors.json'
-output_path = '~/.local/share/aelyx/generated/colors.json'
+output_path = '~/.config/quickshell/aelyx-shell/config/runtime/colors.json'
 post_hook = 'qs ipc call clock changePosition'
 
 [templates.hyprland]
 input_path = '~/.config/matugen/templates/hyprland-colors.conf'
-output_path = '~/.config/hypr/conf/colors.conf'
+output_path = '~/.config/hypr/cfg/colors.conf'
 post_hook = 'hyprctl reload'
 
 [templates.cava]
@@ -28,8 +28,7 @@ input_path = '~/.config/matugen/templates/kitty-colors.conf'
 output_path = '~/.config/kitty/colors.conf'
 post_hook = "kill -SIGUSR1 $(pidof kitty)"
 
-[templates.hyprlock]
-input_path = './templates/hyprlock.conf'
-output_path = '~/.config/hypr/hyprlock.conf'
-post_hook = 'notify-send "Dynamic Colors Applied"'
+[templates.vesktop]
+input_path = '~/.config/matugen/templates/midnight-discord.css'
+output_path = '~/.config/vesktop/midnight-discord.conf'
 

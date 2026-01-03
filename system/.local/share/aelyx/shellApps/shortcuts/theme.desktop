@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=?Theme
-Comment=Toggle between light or dark theme
-Exec=qs -c ae-qs ipc call global toggleTheme
-Icon=/usr/share/icons/Papirus/48x48/apps/gnome-settings-theme.svg
-Terminal=false
-Type=Application
-Categories=Utility;
-StartupNotify=false

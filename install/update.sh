@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 
 CONFIG="$HOME/.local/share/aelyx/user/config.json"
-QS_DIR="$HOME/.config/quickshell/ae-qs"
+QS_DIR="$HOME/.config/quickshell/aelyx-shell"
 REPO="xZepyx/aelyx-shell"
 API="https://api.github.com/repos/$REPO/releases"
 
@@ -80,10 +80,10 @@ if [[ ! -d "$root_dir" ]]; then
     exit 1
 fi
 
-SRC_DIR="$root_dir/quickshell/ae-qs"
+SRC_DIR="$root_dir/quickshell/aelyx-shell"
 
 if [[ ! -d "$SRC_DIR" ]]; then
-    echo "ae-qs folder not found in source archive"
+    echo "aelyx-shell folder not found in source archive"
     exit 1
 fi
 
@@ -98,6 +98,6 @@ jq --arg v "$latest" '.shellInfo.version = $v' "$CONFIG" > "$tmp_cfg"
 mv "$tmp_cfg" "$CONFIG"
 
 # Reload system
-nohup bash ~/.local/share/aelyx/scripts/system/reloadSystem.sh > /dev/null 2>&1 & disown
+nohup bash ~/.config/quickshell/scripts/system/reloadSystem.sh > /dev/null 2>&1 & disown
 
 echo "Updated $current -> $latest"

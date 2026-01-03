@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=Google Docs
-Comment=View, Edit and Share Documents
-Exec=xdg-open "https://docs.google.com"
-Icon=/usr/share/icons/Papirus/48x48/apps/google-docs.svg
-Terminal=false
-Type=Application
-Categories=Utility;
-StartupNotify=false

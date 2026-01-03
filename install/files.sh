@@ -39,33 +39,21 @@ echo "select what to copy"
 
 copy_all=false
 copy_shell=false
-copy_themes=false
-copy_local=false
 
 confirm "copy all dotfiles?" && copy_all=true
 
 if ! $copy_all; then
     confirm "copy shell configs (quickshell, matugen)?" && copy_shell=true
     confirm "copy themes/icons/fonts configs?" && copy_themes=true
-    confirm "copy ~/.local/share/aelyx data?" && copy_local=true
 fi
 
 if $copy_all; then
     run_cmd "cp -r \"$SYSTEM_DIR/.config/\"* ~/.config/"
-    run_cmd "cp -r \"$SYSTEM_DIR/.local/share/aelyx/\"* ~/.local/share/aelyx/"
+    run_cmd "cp -r \"$ROOT_DIR/quickshell\" ~/.config/"
 else
     if $copy_shell; then
-        run_cmd "cp -r \"$SYSTEM_DIR/.config/quickshell\" ~/.config/"
+        run_cmd "cp -r \"$ROOT_DIR/quickshell\" ~/.config/"
         run_cmd "cp -r \"$SYSTEM_DIR/.config/matugen\" ~/.config/"
-    fi
-
-    if $copy_themes; then
-        run_cmd "cp -r \"$SYSTEM_DIR/.config/hypr\" ~/.config/ || true"
-        run_cmd "cp -r \"$SYSTEM_DIR/.config/kitty\" ~/.config/ || true"
-    fi
-
-    if $copy_local; then
-        run_cmd "cp -r \"$SYSTEM_DIR/.local/share/aelyx/\"* ~/.local/share/aelyx/"
     fi
 fi
 
