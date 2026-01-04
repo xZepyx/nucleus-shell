@@ -96,7 +96,7 @@ Item {
                 for (let i = 0; i < lines.length; ++i) {
                     // keep for logic
                     // show this in UI
-                    // Why did I started to get custom prefixes :(
+                    // why did I decided to get custom prefixes?, idek. (I don't even know)
 
                     const line = lines[i].trim();
                     if (!line)

@@ -1,6 +1,7 @@
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import qs.config
 pragma Singleton
 
 Singleton {
@@ -163,6 +164,7 @@ Singleton {
         stdout: StdioCollector {
             onStreamFinished: {
                 root.qsVersion = text.trim().split(',')[0].trim().replace("quickshell ", "");
+                Shell.setNestedValue("shellInfo.qsVersion", text.trim().split(',')[0].trim().replace("quickshell ", ""));
             }
         }
 

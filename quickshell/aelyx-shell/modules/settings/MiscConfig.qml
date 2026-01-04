@@ -14,14 +14,41 @@ ContentMenu {
     ContentCard {
         StyledSwitchOption {
             title: "Notification Daemon";
-            description: "Enabled or disable builtin Aelyx notification daemon."
+            description: "Enabled or disable builtin notification daemon."
             prefField: "misc.notificationDaemonEnabled"
         }
+    }
 
-        StyledSwitchOption {
-            title: "Focus Mode";
-            description: "Enabled or disable focus mode."
-            prefField: "misc.dndEnabled"
+    ContentCard {
+        RowLayout {
+            id: releaseChannelSelector
+            property string title: "Release Channel"
+            property string description: "Choose the release channel for updates."
+            property string prefField: ''
+
+            ColumnLayout {
+                StyledText { text: releaseChannelSelector.title; font.pixelSize: 16;  }
+                StyledText { text: releaseChannelSelector.description; font.pixelSize: 12; }
+            }
+            Item { Layout.fillWidth: true }
+
+            StyledDropDown {
+                label: "Type"
+                model: ["Stable", "Edge (indev)"]
+
+                currentIndex: Shell.flags.shellInfo.channel === "edge" ? 1 : 0
+
+                onSelectedIndexChanged: (index) => {
+                    Shell.setNestedValue(
+                        "shellInfo.channel",
+                        index === 1 ? "edge" : "stable"
+                    )
+                    UpdateNotifier.notified = false
+                }
+            }
+
+
         }
+
     }
 }

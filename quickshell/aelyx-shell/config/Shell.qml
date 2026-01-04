@@ -99,7 +99,7 @@ Singleton {
             }
 
             property JsonObject shellInfo: JsonObject {
-                property string supposedQsVersion: "0.2.1"
+                property string qsVersion: "0.2.1"
                 property string version: "4.0.0-alpha.1"
                 property string channel: "edge"
             }
@@ -107,14 +107,14 @@ Singleton {
             property JsonObject misc: JsonObject {
                 property bool notificationDaemonEnabled: true
                 property bool dndEnabled: false
-                property url pfp: "file:///"
+                property url pfp: ""
                 property bool openSidebarsOnHovered: true
                 property bool showFirstTimeMenuOnStartup: true
             }
 
             property JsonObject background: JsonObject {
                 property bool wallpaperEnabled: true
-                property url wallpaperPath: "file:///" // Wrong path so, if imaage loads without this path being configured it fails.
+                property url wallpaperPath: ""
                 property bool borderEnabled: false
                 property string clockTimeFormat: "hh:mm"
                 property string clockPosition: "bottom-left"

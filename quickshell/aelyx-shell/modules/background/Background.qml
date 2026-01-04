@@ -1,6 +1,5 @@
 import QtQuick
 import QtQuick.Layouts
-import QtMultimedia
 import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
@@ -20,14 +19,13 @@ Scope {
 
             required property var modelData
             property string selectedWallpaper: ""
-            property bool isVideo: Utils.isVideo(Shell.flags.background.wallpaperPath)
 
             function applyWallpaper() {
                 Shell.setNestedValue("background.wallpaperPath", selectedWallpaper);
                 GlobalProcesses.genThemeColors.running = true;
             }
 
-            color: (!isVideo && backgroundImage.status === Image.Error) ? Appearance.colors.colLayer2 : "transparent"
+            color: (backgroundImage.status === Image.Error) ? Appearance.colors.colLayer2 : "transparent"
             namespace: "aelyx:background"
             exclusionMode: ExclusionMode.Ignore
             WlrLayershell.layer: WlrLayer.Background
@@ -62,26 +60,14 @@ Scope {
                 id: backgroundImage
 
                 anchors.fill: parent
-                visible: !backgroundContainer.isVideo
                 fillMode: Image.PreserveAspectCrop
                 source: Shell.flags.background.wallpaperPath
             }
 
-            Video {
-                id: backgroundVideo
-
-                anchors.fill: parent
-                visible: backgroundContainer.isVideo
-                source: Shell.flags.background.wallpaperPath
-                autoPlay: true
-                loops: MediaPlayer.Infinite
-                muted: true
-                fillMode: VideoOutput.PreserveAspectCrop
-            }
 
             Item {
                 anchors.centerIn: parent
-                visible: !isVideo && backgroundImage.status === Image.Error
+                visible: backgroundImage.status === Image.Error || Shell.flags.background.wallpaperPath === ""
 
                 Rectangle {
                     width: 550
@@ -115,7 +101,7 @@ Scope {
 
                         // Description
                         StyledText {
-                            text: "It looks like you haven't selected a wallpaper yet."
+                            text: "Wallpaper Missing."
                             font.pixelSize: Appearance.font.size.small
                             color: Appearance.colors.colSubtext
                             horizontalAlignment: Text.AlignHCenter
