@@ -1,34 +1,46 @@
+import QtQuick
 import Quickshell
 import Quickshell.Wayland
-import QtQuick 
-import qs.modules.widgets
 import qs.config
+import qs.modules.widgets
 
 Scope {
     id: root
 
     GothCorners {
-        opacity: Config.runtime.bar.gothCorners && !Config.runtime.bar.floating && Config.runtime.bar.enabled ? 1 : 0
+        opacity: Config.runtime.bar.gothCorners && !Config.runtime.bar.floating && Config.runtime.bar.enabled && !Config.runtime.bar.merged ? 1 : 0
     }
 
     Variants {
         model: Quickshell.screens
 
         PanelWindow {
-            id: bar
-            required property var modelData
-            screen: modelData // Show bar on all screens
-            visible: Config.runtime.bar.enabled 
-            WlrLayershell.namespace: "nucleus:bar"
-            exclusiveZone: Config.runtime.bar.floating ? Config.runtime.bar.density + Appearance.margin.tiny : Config.runtime.bar.density
             // some exclusiveSpacing so it won't look like its sticking into the window when floating
 
+            id: bar
+
+            required property var modelData
+            property int rd: Config.runtime.bar.radius
+            property bool floating: Config.runtime.bar.floating
+            property bool merged: Config.runtime.bar.merged
+            property string pos: Config.runtime.bar.position
+            property bool vertical: pos === "left" || pos === "right"
+            // Simple position properties
+            property bool attachedTop: pos === "top"
+            property bool attachedBottom: pos === "bottom"
+            property bool attachedLeft: pos === "left"
+            property bool attachedRight: pos === "right"
+
+            screen: modelData // Show bar on all screens
+            visible: Config.runtime.bar.enabled
+            WlrLayershell.namespace: "nucleus:bar"
+            exclusiveZone: Config.runtime.bar.floating ? Config.runtime.bar.density + Appearance.margin.tiny : Config.runtime.bar.density
             implicitHeight: Config.runtime.bar.density // density === height. (horizontal orientation)
             implicitWidth: Config.runtime.bar.density // density === width. (vertical orientation)
-
             color: "transparent" // Keep panel window's color transparent, so that it can be modified by background rect
 
-            anchors { // This is probably a little weird way to set anchors but I think it's the best way. (and it works)
+            // This is probably a little weird way to set anchors but I think it's the best way. (and it works)
+            anchors {
                 top: Config.runtime.bar.position === "top" || Config.runtime.bar.position === "left" || Config.runtime.bar.position === "right"
                 bottom: Config.runtime.bar.position === "bottom" || Config.runtime.bar.position === "left" || Config.runtime.bar.position === "right"
                 left: Config.runtime.bar.position === "left" || Config.runtime.bar.position === "top" || Config.runtime.bar.position === "bottom"
@@ -36,23 +48,62 @@ Scope {
             }
 
             margins {
-                top: (Config.initialized && Config.runtime.bar.floating) ? 10 : 0
-                bottom: (Config.initialized && Config.runtime.bar.floating) ? 10 : 0
-                left: (Config.initialized && Config.runtime.bar.floating) ? 10 : 0
-                right: (Config.initialized && Config.runtime.bar.floating) ? 10 : 0
+                top: (floating) ? rd : (vertical) ? rd : (merged && attachedBottom) ? rd : 0
+                bottom: (floating) ? rd : (vertical) ? rd : (merged && attachedTop) ? rd : 0
+                left: (floating) ? rd : (vertical) ? 0 : (merged && attachedRight) ? rd : 10
+                right: (floating) ? rd : (vertical) ? 0 : (merged && attachedLeft) ? rd : 10
             }
 
             StyledRect {
                 id: background
+
                 color: Appearance.m3colors.m3background
-                radius: Config.runtime.bar.floating ? Config.runtime.bar.radius : 0
                 anchors.fill: parent
+                topLeftRadius: {
+                    if (floating)
+                        return rd;
+
+                    if (!merged)
+                        return 0;
+
+                    return attachedBottom || attachedRight ? rd : 0;
+                }
+                topRightRadius: {
+                    if (floating)
+                        return rd;
+
+                    if (!merged)
+                        return 0;
+
+                    return attachedBottom || attachedLeft ? rd : 0;
+                }
+                bottomLeftRadius: {
+                    if (floating)
+                        return rd;
+
+                    if (!merged)
+                        return 0;
+
+                    return attachedTop || attachedRight ? rd : 0;
+                }
+                bottomRightRadius: {
+                    if (floating)
+                        return rd;
+
+                    if (!merged)
+                        return 0;
+
+                    return attachedTop || attachedLeft ? rd : 0;
+                }
 
                 BarContent {
-                    id: barContent
-                    anchors.fill: parent 
+                    anchors.fill: parent
                 }
+
             }
+
         }
+
     }
+
 }

@@ -46,7 +46,7 @@ Singleton {
 
         // --- Background & Surfaces ---
         readonly property color m3background: MaterialColors.colors.background
-        readonly property color m3paddingContainer: m3surfaceContainerHighest
+        readonly property color m3paddingContainer: m3surfaceContainer
         readonly property color m3surface: MaterialColors.colors.surface
         readonly property color m3surfaceDim: MaterialColors.colors.surface_dim
         readonly property color m3surfaceBright: MaterialColors.colors.surface_bright

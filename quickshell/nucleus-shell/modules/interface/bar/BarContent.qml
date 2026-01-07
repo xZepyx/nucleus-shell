@@ -59,6 +59,10 @@ Item {
         spacing: 4
         anchors.rightMargin: Config.runtime.bar.density * 0.3
 
+        BongoCat {
+            Layout.rightMargin: 20
+        }
+
         StatusIconsModule {
         }
 
@@ -98,7 +102,13 @@ Item {
                 onToggled: Globals.visiblility.launcher = value
             }
 
-            WorkspaceModule {
+            SystemUsageModule {
+            }
+
+            MediaPlayerModule {
+            }
+
+            BongoCat {
             }
 
         }
@@ -117,7 +127,7 @@ Item {
 
             anchors.centerIn: parent
 
-            ActiveWindowModule {
+            WorkspaceModule {
                 rotation: 90
             }
 
@@ -145,6 +155,9 @@ Item {
             }
 
             StatusIconsModule {
+            }
+
+            BatteryIndicatorModule {
             }
 
             ToggleModule {

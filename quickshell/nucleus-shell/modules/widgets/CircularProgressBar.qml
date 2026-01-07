@@ -11,6 +11,7 @@ Item {
     property color fgColor: Appearance.m3colors.m3primary
     property string icon: "battery_full"
     property int iconSize: 20
+    property bool fillIcon: false
 
     width: 20
     height: 26
@@ -48,6 +49,9 @@ Item {
         anchors.centerIn: parent
         icon: root.icon
         iconSize: root.iconSize
+        font.variableAxes: {
+            "FILL": root.fillIcon ? 1 : 0
+        }
     }
 
 }

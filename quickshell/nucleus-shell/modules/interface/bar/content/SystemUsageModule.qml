@@ -6,7 +6,7 @@ import qs.services
 
 Item {
     id: systemUsageContainer
-
+    property bool isHorizontal: (Config.runtime.bar.position === "top" || Config.runtime.bar.position === "bottom")
     visible: Config.runtime.bar.modules.systemUsage.enabled
     Layout.alignment: Qt.AlignVCenter
     // Let the layout compute size automatically
@@ -20,7 +20,7 @@ Item {
         radius: Config.runtime.bar.modules.radius
         // Padding around the text
         implicitWidth: child.implicitWidth + Appearance.margin.large
-        implicitHeight: child.implicitHeight + Appearance.margin.verysmall - 2
+        implicitHeight: Config.runtime.bar.modules.height
     }
 
     RowLayout {
@@ -30,45 +30,48 @@ Item {
         spacing: 4
 
         CircularProgressBar {
+            rotation: !isHorizontal ? 270 : 0
             icon: "memory"
             visible: Config.runtime.bar.modules.systemUsage.cpuStatsEnabled
-            iconSize: 13
+            iconSize: 14
             value: SystemDetails.cpuPercent
             Layout.bottomMargin: 2
         }
 
         StyledText {
-            visible: Config.runtime.bar.modules.systemUsage.cpuStatsEnabled
+            visible: Config.runtime.bar.modules.systemUsage.cpuStatsEnabled && isHorizontal
             animate: false
             text: Math.round(SystemDetails.cpuPercent * 100) + "%"
         }
 
         CircularProgressBar {
+            rotation: !isHorizontal ? 270 : 0
             Layout.leftMargin: 4
             icon: "memory_alt"
             visible: Config.runtime.bar.modules.systemUsage.memeoryStatsEnabled
-            iconSize: 13
+            iconSize: 14
             value: SystemDetails.ramPercent
             Layout.bottomMargin: 2
         }
 
         StyledText {
-            visible: Config.runtime.bar.modules.systemUsage.memeoryStatsEnabled
+            visible: Config.runtime.bar.modules.systemUsage.memeoryStatsEnabled && isHorizontal
             animate: false
             text: Math.round(SystemDetails.ramPercent * 100) + "%"
         }
 
         CircularProgressBar {
+            rotation: !isHorizontal ? 270 : 0
             visible: Config.runtime.bar.modules.systemUsage.tempStatsEnabled
             Layout.leftMargin: 4
             icon: "device_thermostat"
-            iconSize: 13
+            iconSize: 14
             value: SystemDetails.cpuTempPercent
             Layout.bottomMargin: 2
         }
 
         StyledText {
-            visible: Config.runtime.bar.modules.systemUsage.tempStatsEnabled
+            visible: Config.runtime.bar.modules.systemUsage.tempStatsEnabled && isHorizontal
             animate: false
             text: Math.round(SystemDetails.cpuTempPercent * 100) + "%"
         }

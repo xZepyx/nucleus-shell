@@ -9,6 +9,7 @@ Item {
     property string albumArtist: "No Artist"
     property string albumTitle: "No Media"
     property string artUrl: ""
+    property real percentage: (lengthSec > 0 ? (positionSec / lengthSec) * 100 : 0)
 
     property int positionSec: 0
     property int lengthSec: 0

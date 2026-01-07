@@ -15,6 +15,23 @@ Item {
     property var workspaceOccupied: []
     property var occupiedRanges: []
 
+    function japaneseNumber(num) {
+        var kanjiMap = {
+            "0": "零",
+            "1": "一",
+            "2": "二",
+            "3": "三",
+            "4": "四",
+            "5": "五",
+            "6": "六",
+            "7": "七",
+            "8": "八",
+            "9": "九",
+            "10": "十"
+        };
+        return kanjiMap[num] !== undefined ? kanjiMap[num] : "Number out of range";
+    }
+
     function updateWorkspaceOccupied() {
         workspaceOccupied = Array.from({
             "length": numWorkspaces
@@ -161,6 +178,8 @@ Item {
 
                         IconImage {
                             id: appIcon
+
+                            visible: Config.runtime.bar.modules.workspaces.showAppIcons
                             anchors.fill: parent
                             rotation: (Config.runtime.bar.position === "left" || Config.runtime.bar.position === "right") ? 270 : 0
                             source: {
@@ -172,7 +191,7 @@ Item {
                         layer.effect: OpacityMask {
 
                             maskSource: Rectangle {
-                                width: iconContainer.width 
+                                width: iconContainer.width
                                 height: iconContainer.height
                                 radius: iconContainer.width / 2
                             }
@@ -189,15 +208,25 @@ Item {
                     MaterialSymbol {
                         id: symbol
 
-                        visible: true
-                        animate: false
-                        anchors.centerIn: parent
-                        text: Config.runtime.bar.modules.workspaces.showAppIcons ? (!occupied ? "fiber_manual_record" : "") : (occupied || focused ? "󰮯" : "fiber_manual_record")
-                        font.variableAxes: {
-                            "FILL": (symbol.text === "fiber_manual_record") ? 1 : 0
+                        // Compute text based on priority
+                        property string displayText: {
+                            if (Config.runtime.bar.modules.workspaces.showAppIcons)
+                                return occupied ? "" : "fiber_manual_record";
+                            else if (Config.runtime.bar.modules.workspaces.showJapaneseNumbers)
+                                return (occupied || focused) ? japaneseNumber(index + 1) : "fiber_manual_record";
+                            else
+                                return (occupied || focused) ? "󰮯" : "fiber_manual_record";
                         }
+
+                        anchors.centerIn: parent
+                        animate: false
+                        visible: true
                         rotation: (Config.runtime.bar.position === "left" || Config.runtime.bar.position === "right") ? 270 : 0
-                        font.pixelSize: (symbol.text === "fiber_manual_record") ? 10 : Appearance.font.size.large
+                        text: displayText
+                        font.pixelSize: (displayText === "fiber_manual_record") ? 10 : (Config.runtime.bar.modules.workspaces.showJapaneseNumbers ? Appearance.font.size.large - 2 : Appearance.font.size.large)
+                        font.variableAxes: {
+                            "FILL": displayText === "fiber_manual_record" ? 1 : 0
+                        }
                         color: focused ? Appearance.m3colors.m3shadow : Appearance.m3colors.m3secondary
                     }
 

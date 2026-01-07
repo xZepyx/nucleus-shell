@@ -126,9 +126,11 @@ Singleton {
             property JsonObject bar: JsonObject {
                 property string position: "top" // left, right, top and bottom
                 property bool enabled: true
+                property bool merged: false
                 property bool floating: false
                 property bool gothCorners: true
                 property int radius: Appearance.rounding.large
+                property int sideMargins: Appearance.margins.normal
                 property int density: 50
                 property JsonObject modules: JsonObject {
                     property int radius: Appearance.rounding.normal
@@ -137,13 +139,14 @@ Singleton {
                         property bool enabled: true
                         property int workspaceIndicators: 8
                         property bool showAppIcons: true 
+                        property bool showJapaneseNumbers: false
                     }
                     property JsonObject statusIcons: JsonObject {
                         property bool enabled: true
                         property bool networkStatusEnabled: true 
                         property bool bluetoothStatusEnabled: true 
-                        property bool batteryStatusEnabled: true
                         property bool keyboardLayoutStatusEnabled: false
+                        property bool themeStatusEnabled: true
                     }
                     property JsonObject systemUsage: JsonObject {
                         property bool enabled: true
