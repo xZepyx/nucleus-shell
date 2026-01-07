@@ -1,13 +1,13 @@
 <div align="center">
 
-# ✦ aelyx-shell ✦
+# ✦ nucleus-shell ✦
 
 <p>
-  <img src="https://img.shields.io/github/last-commit/xZepyx/aelyx-shell?style=for-the-badge&color=8ad7eb&logo=git&logoColor=D9E0EE&labelColor=1E202B" alt="Last Commit" />
+  <img src="https://img.shields.io/github/last-commit/xZepyx/nucleus-shell?style=for-the-badge&color=8ad7eb&logo=git&logoColor=D9E0EE&labelColor=1E202B" alt="Last Commit" />
   &nbsp;
-  <img src="https://img.shields.io/github/stars/xZepyx/aelyx-shell?style=for-the-badge&logo=andela&color=86dbd7&logoColor=D9E0EE&labelColor=1E202B" alt="Stars" />
+  <img src="https://img.shields.io/github/stars/xZepyx/nucleus-shell?style=for-the-badge&logo=andela&color=86dbd7&logoColor=D9E0EE&labelColor=1E202B" alt="Stars" />
   &nbsp;
-  <img src="https://img.shields.io/github/repo-size/xZepyx/aelyx-shell?color=86dbce&label=SIZE&logo=protondrive&style=for-the-badge&logoColor=D9E0EE&labelColor=1E202B" alt="Repo Size" />
+  <img src="https://img.shields.io/github/repo-size/xZepyx/nucleus-shell?color=86dbce&label=SIZE&logo=protondrive&style=for-the-badge&logoColor=D9E0EE&labelColor=1E202B" alt="Repo Size" />
   &nbsp;
   <img src="https://img.shields.io/badge/Maintenance-Active%20-6BCB77?style=for-the-badge&logo=vercel&logoColor=D9E0EE&labelColor=1E202B" alt="Maintenance" />
 </p>
@@ -74,8 +74,8 @@ Follow these steps to install the collection. The automated setup is conservativ
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/xZepyx/aelyx-shell.git ~/.aelyx-shell
-    cd ~/.aelyx-shell
+    git clone https://github.com/xZepyx/nucleus-shell.git ~/.nucleus-shell
+    cd ~/.nucleus-shell
     ```
 
 2. Inspect configuration and optional modules:
@@ -103,7 +103,7 @@ Notes:
 
 </div>
 
-- Primary config: `~/.local/share/aelyx/user/config.json`
+- Primary config: `~/.local/share/nucleus/user/config.json`
 - Modular settings: prompt, completion, and widget modules are separated for easy replacement.
 - To customize:
   - Edit the primary config or use the provided settings app (if installed).
@@ -132,7 +132,7 @@ Notes:
 - Missing/Unloaded Modules:
   - Ensure the module file is loaded in the correct order. Check `~/.config/quickshell/shell.qml`.
 - Broken visuals:
-  - Check `~/.local/share/aelyx/user/config.json`
+  - Check `~/.local/share/nucleus/user/config.json`
 - Slow startup:
   - Disable unused modules or lazy-load heavy features (e.g., prompt segments that query network/state).
 - Conflicting user configs:
@@ -157,11 +157,11 @@ Notes:
 <div align="center">
   
 ## ✦ Weird Tentacles ✦
-<a href="https://www.star-history.com/#xzepyx/aelyx-shell&type=date&legend=top-left">
+<a href="https://www.star-history.com/#xzepyx/nucleus-shell&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=xzepyx/aelyx-shell&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=xzepyx/aelyx-shell&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=xzepyx/aelyx-shell&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=xzepyx/nucleus-shell&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=xzepyx/nucleus-shell&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=xzepyx/nucleus-shell&type=date&legend=top-left" />
  </picture>
 </a>
 </div>
