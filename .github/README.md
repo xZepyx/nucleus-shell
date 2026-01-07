@@ -32,7 +32,7 @@ Key goals:
 > * The name of the repo has been changed from "aelyx-shell" to "nucleus-shell" due to copy right reasons.
 > * If you want to access the older releases refer to the [archive branch](https://github.com/xZepyx/nucleus-shell/tree/archive)
 
-> [!NOTICE]
+> [!IMPORTANT]
 > * The shell is being redesigned and a lot of widgets (sidebarRight,sidebarLeft,settings,firstTime) have been removed. 
 > * These widgets will get added soon with enchancements.
 ---
