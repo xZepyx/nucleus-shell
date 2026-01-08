@@ -28,13 +28,9 @@ Key goals:
 - Easy to review and selectively apply
 - Composable modules for prompts, completions, and UI widgets
 
-> [!CAUTION]
+> [!IMPORTANT]
 > * The name of the repo has been changed from "aelyx-shell" to "nucleus-shell" due to copyright reasons.
 > * If you want to access the older releases refer to the [archive branch](https://github.com/xZepyx/nucleus-shell/tree/archive)
-
-> [!IMPORTANT]
-> * The shell is being redesigned and a lot of widgets (sidebarRight,sidebarLeft,settings,firstTime) have been removed. 
-> * These widgets will get added soon with enchancements.
 > * `install/update.sh` script will not function, including several others. (create a issue if needed.)
 ---
 
