@@ -184,7 +184,8 @@ Contributions are welcome. When contributing:
 - Submit focused PRs with clear descriptions and tests where applicable.
 - Follow code structure and naming conventions used in `dots/`.
 
-See `license/CONTRIBUTING.md` for full contribution guidelines.
+- See `license/CONTRIBUTING.md` for full contribution guidelines.
+- If you are a collaborator make sure to read `license/COLLABORATORS.md`
 
 ---
 
