@@ -32,6 +32,7 @@ Key goals:
 > * The name of the repo has been changed from "aelyx-shell" to "nucleus-shell" due to copyright reasons.
 > * If you want to access the older releases refer to the [archive branch](https://github.com/xZepyx/nucleus-shell/tree/archive)
 > * `install/update.sh` script will not function, including several others. (create a issue if needed.)
+> * You can also join the [discord server](https://discord.gg/eRDPxNqnPZ) for help.
 ---
 
 <div align="center">
