@@ -111,7 +111,7 @@ Singleton {
             }
 
             property JsonObject misc: JsonObject {
-                property url pfp: Quickshell.env("HOME") + "/.face"
+                property url pfp: Quickshell.env("HOME") + "/.face.icon"
             }
 
             property JsonObject notifications: JsonObject {
