@@ -54,6 +54,7 @@ Scope {
                             selectedWallpaper = out;
                             applyWallpaper();
                         }
+                        Quickshell.execDetached(["qs", "-c", "nucleus-shell", "ipc", "call", "global", "regenColors"])
                     }
                 }
 

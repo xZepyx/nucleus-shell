@@ -64,7 +64,9 @@ ContentMenu {
             icon: "wallpaper"
             text: "Change Wallpaper"
             Layout.fillWidth: true 
-            onClicked: Quickshell.execDetached(["qs", "-c", "nucleus-shell", "ipc", "call", "background", "change"])
+            onClicked: {
+                Quickshell.execDetached(["qs", "-c", "nucleus-shell", "ipc", "call", "background", "change"])
+            }
         }
 
         StyledSwitchOption {
