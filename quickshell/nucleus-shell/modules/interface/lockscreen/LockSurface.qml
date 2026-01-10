@@ -61,6 +61,7 @@ Rectangle {
             visible: Config.runtime.bar.modules.statusIcons.keyboardLayoutStatusEnabled
             text: SystemDetails.keyboardLayout
             font.pixelSize: Appearance.font.size.huge - 4
+            Layout.leftMargin: isVertical ? 0 : -3
         }
 
     }
