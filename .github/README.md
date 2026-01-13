@@ -49,11 +49,10 @@ Key goals:
 <h2 align="center">✦ Repository layout ✦</h2>
 
 
-- /dots/           — Primary shell dotfiles (core modules)
-- /dots-extra/     — Optional dotfiles, themes, and wallpapers
+- /quickshell/     — Primary shell
 - /license/        — License and contributing docs
 - /previews/       — Example screenshots used in this README
-- /setup/          — Installer scripts and bootstrap utilities
+- /install/          — Installer scripts and bootstrap utilities
 - /.github/        — README and other stuff
 
 ---
