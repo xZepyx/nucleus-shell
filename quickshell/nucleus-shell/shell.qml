@@ -22,19 +22,19 @@ ShellRoot {
     LazyLoader {
         id: barLoader
         source: Contracts.bar
-        active: true
+        active: Config.runtime.bar.enabled
     }
 
     LazyLoader {
         id: backgroundLoader
         source: Contracts.background
-        active: true
+        active: Config.runtime.appearance.background.enabled
     }
 
     LazyLoader {
         id: powerMenuLoader
         source: Contracts.powerMenu
-        active: true
+        active: Globals.visiblility.powermenu
     }
 
     LazyLoader {
@@ -46,19 +46,19 @@ ShellRoot {
     LazyLoader {
         id: notificationsLoader
         source: Contracts.notifications
-        active: true
+        active: Config.runtime.notifications.enabled
     }
 
     LazyLoader {
         id: overlaysLoader
         source: Contracts.overlays
-        active: true
+        active: Config.runtime.overlays.enabled
     }
 
     LazyLoader {
         id: sidebarRightLoader
         source: Contracts.sidebarRight
-        active: true
+        active: Globals.visiblility.sidebarRight
     }
 
     LazyLoader {
