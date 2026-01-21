@@ -24,20 +24,53 @@ Scope {
 
             required property var modelData
             property int padding: Config.runtime.appearance.background.clock.edgeSpacing
+            property int clockHeight: Config.runtime.appearance.background.clock.isAnalog ? 250 : 160
+            property int clockWidth: Config.runtime.appearance.background.clock.isAnalog ? 250 : 360
+
+            function setRandomPosition() {
+                const x = Math.floor(Math.random() * (width - clockWidth));
+                const y = Math.floor(Math.random() * (height - clockHeight));
+                animX.to = x;
+                animY.to = y;
+                moveAnim.start();
+                Config.updateKey("appearance.background.clock.xPos", x);
+                Config.updateKey("appearance.background.clock.yPos", y);
+            }
 
             color: "transparent"
             visible: (Config.runtime.appearance.background.clock.enabled && Config.initialized && !imageFailed)
             exclusiveZone: 0
             WlrLayershell.layer: WlrLayer.Bottom
             screen: modelData
-            implicitWidth: Config.runtime.appearance.background.clock.isAnalog ? 250 : 360
-            implicitHeight: Config.runtime.appearance.background.clock.isAnalog ? 250 : 160
+
+            ParallelAnimation {
+                id: moveAnim
+
+                NumberAnimation {
+                    id: animX
+
+                    target: rootContentContainer
+                    property: "x"
+                    duration: 400
+                    easing.type: Easing.InOutCubic
+                }
+
+                NumberAnimation {
+                    id: animY
+
+                    target: rootContentContainer
+                    property: "y"
+                    duration: 400
+                    easing.type: Easing.InOutCubic
+                }
+
+            }
 
             anchors {
-                top: Config.runtime.appearance.background.clock.position.startsWith("top") // Simple way to get anchors
-                bottom: Config.runtime.appearance.background.clock.position.startsWith("bottom")
-                left: Config.runtime.appearance.background.clock.position.endsWith("left")
-                right: Config.runtime.appearance.background.clock.position.endsWith("right")
+                top: true
+                bottom: true
+                left: true
+                right: true
             }
 
             margins {
@@ -50,10 +83,33 @@ Scope {
             Item {
                 id: rootContentContainer
 
+                property real releasedX: 0
+                property real releasedY: 0
+
+                height: clockHeight
+                width: clockWidth
+                Component.onCompleted: {
+                    Qt.callLater(() => {
+                        x = Config.runtime.appearance.background.clock.xPos;
+                        y = Config.runtime.appearance.background.clock.yPos;
+                    });
+                }
+
+                MouseArea {
+                    id: ma
+
+                    anchors.fill: parent
+                    drag.target: rootContentContainer
+                    drag.axis: Drag.XAndYAxis
+                    onReleased: {
+                        Config.updateKey("appearance.background.clock.xPos", rootContentContainer.x);
+                        Config.updateKey("appearance.background.clock.yPos", rootContentContainer.y);
+                    }
+                }
+
                 Item {
                     id: digitalClockContainer
 
-                    anchors.fill: parent
                     visible: !Config.runtime.appearance.background.clock.isAnalog
 
                     Column {
@@ -89,12 +145,12 @@ Scope {
                     property int seconds: parseInt(Time.format("ss"))
                     readonly property real cx: width / 2
                     readonly property real cy: height / 2
+                    property var shapes: [MaterialShapes.getCookie7Sided, MaterialShapes.getCookie9Sided, MaterialShapes.getCookie12Sided, MaterialShapes.getPixelCircle, MaterialShapes.getCircle, MaterialShapes.getGhostish]
 
+                    anchors.fill: parent
                     visible: Config.runtime.appearance.background.clock.isAnalog
                     width: clock.width / 1.1
                     height: clock.height / 1.1
-
-                    property var shapes: [MaterialShapes.getCookie7Sided, MaterialShapes.getCookie9Sided, MaterialShapes.getCookie12Sided, MaterialShapes.getPixelCircle, MaterialShapes.getCircle, MaterialShapes.getGhostish]
 
                     // Polygon
                     MorphedPolygon {
@@ -149,6 +205,14 @@ Scope {
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: parent.height / 4 - 30
                         font.bold: true
+                    }
+
+                    IpcHandler {
+                        function changePosition() {
+                            clock.setRandomPosition();
+                        }
+
+                        target: "clock"
                     }
 
                 }

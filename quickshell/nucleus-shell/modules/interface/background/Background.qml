@@ -56,7 +56,8 @@ Scope {
                             applyWallpaper();
                         }
                         // Only run regenColors if auto-generated colors are enabled
-                        Quickshell.execDetached(["qs", "-c", "nucleus-shell", "ipc", "call", "global", "regenColors"]);
+                         Quickshell.execDetached(["qs", "-c", "nucleus-shell", "ipc", "call", "global", "regenColors"]);
+                        Quickshell.execDetached(["qs", "-c", "nucleus-shell", "ipc", "call", "clock", "changePosition"]);
                     }
                 }
 
@@ -190,6 +191,8 @@ Scope {
             }
 
             Clock {
+                id: clock
+
                 imageFailed: currentImage.status === Image.Error
             }
 

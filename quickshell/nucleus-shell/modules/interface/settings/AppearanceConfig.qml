@@ -245,46 +245,6 @@ ContentMenu {
         }
 
         RowLayout {
-            id: clockPositionSelector
-
-            ColumnLayout {
-                StyledText {
-                    text: "Clock Position"
-                    font.pixelSize: 16
-                }
-
-                StyledText {
-                    text: "Choose where the clock appears on the background."
-                    font.pixelSize: 12
-                }
-            }
-
-            Item { Layout.fillWidth: true }
-
-            StyledDropDown {
-                label: "Position"
-                model: ["Top Left", "Top Right", "Bottom Left", "Bottom Right"]
-
-                currentIndex: {
-                    switch (Config.runtime.appearance.background.clock.position.toLowerCase()) {
-                        case "top-left": return 0
-                        case "top-right": return 1
-                        case "bottom-left": return 2
-                        case "bottom-right": return 3
-                        default: return 0
-                    }
-                }
-
-                onSelectedIndexChanged: (index) => {
-                    Config.updateKey(
-                        "appearance.background.clock.position",
-                        model[index].toLowerCase().replace(" ", "-")
-                    )
-                }
-            }
-        }
-
-        RowLayout {
             id: shapeSelector
 
             ColumnLayout {

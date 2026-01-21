@@ -131,7 +131,8 @@ Singleton {
                         property bool isAnalog: true
                         property int edgeSpacing: 50
                         property int shape: 1
-                        property string position: "bottom-left"
+                        property int xPos: 0
+                        property int yPos: 0
                     }
                     property JsonObject slideshow: JsonObject {
                         property bool enabled: false
