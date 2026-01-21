@@ -39,6 +39,7 @@ ContentMenu {
 
                             Image {
                                 anchors.fill: parent
+                                fillMode: Image.PreserveAspectCrop
                                 source: img !== "none" ? img : "image://icon/plugin"
                             }
 
