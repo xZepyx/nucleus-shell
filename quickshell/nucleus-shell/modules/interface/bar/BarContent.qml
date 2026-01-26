@@ -26,6 +26,9 @@ Item {
         ClockModule {
         }
 
+        BatteryIndicatorModule {
+        }
+
     }
 
     RowLayout {
@@ -38,11 +41,15 @@ Item {
         anchors.leftMargin: Config.runtime.bar.density * 0.3 // Dynamic Margins
 
         ToggleModule {
-            icon: "rocket"
+            icon: "menu"
             iconSize: 23
             iconColor: Appearance.m3colors.m3error
-            toggle: Globals.visiblility.launcher
-            onToggled: Globals.visiblility.launcher = value
+            toggle: Globals.visiblility.sidebarLeft
+            onToggled: {
+                if (Globals.visiblility.sidebarRight)
+                    return
+                Globals.visiblility.sidebarLeft = value
+            }
         }
 
         WorkspaceModule {
@@ -94,12 +101,16 @@ Item {
             rotation: 90
 
             ToggleModule {
-                icon: "rocket_launch" // Better on vertical Bar
+                icon: "menu" // Better on vertical Bar
                 iconSize: 22
                 iconColor: Appearance.m3colors.m3error
                 rotation: 270
-                toggle: Globals.visiblility.launcher
-                onToggled: Globals.visiblility.launcher = value
+                toggle: Globals.visiblility.sidebarLeft
+                onToggled: {
+                    if (Globals.visiblility.sidebarRight)
+                        return
+                    Globals.visiblility.sidebarLeft = value
+                }
             }
 
             SystemUsageModule {

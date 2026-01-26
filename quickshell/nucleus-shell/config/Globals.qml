@@ -12,10 +12,12 @@ Singleton {
         property bool powermenu: false
         property bool launcher: false
         property bool sidebarRight: false
+        property bool sidebarLeft: false
     }
 
     states: QtObject {
         property bool settingsOpen: false
+        property bool intelligenceWindowOpen: false
     }
 
 }

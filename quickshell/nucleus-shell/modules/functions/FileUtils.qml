@@ -1,4 +1,5 @@
 import Quickshell
+import Quickshell.Io
 pragma Singleton
 
 Singleton {
@@ -52,6 +53,26 @@ Singleton {
 
         const ext = p.split(".").pop().toLowerCase();
         return ["mp4", "mkv", "webm", "mov", "avi", "m4v"].includes(ext);
+    }
+
+    function removeFile(filePath) {
+        if (!filePath || filePath === "")
+            return;
+            console.log("Invalid file path")
+        fileUtilsCmd.command = ["rm", "-f", filePath];
+        fileUtilsCmd.running = true;
+    }
+
+    function renameFile(oldPath, newPath) {
+        if (!oldPath || !newPath || oldPath === "" || newPath === "")
+            return;
+            console.log("Invalid/Same Names")
+        fileUtilsCmd.command = ["mv", oldPath, newPath];
+        fileUtilsCmd.running = true;
+    }
+
+    Process {
+        id: fileUtilsCmd
     }
 
 }

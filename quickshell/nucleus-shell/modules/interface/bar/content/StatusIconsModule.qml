@@ -71,7 +71,11 @@ Item {
 
         MouseArea {
             anchors.fill: parent
-            onClicked: Globals.visiblility.sidebarRight = !Globals.visiblility.sidebarRight
+            onClicked: {
+                if (Globals.visiblility.sidebarLeft)
+                    return
+                Globals.visiblility.sidebarRight = !Globals.visiblility.sidebarRight
+            }
         }
 
     }

@@ -52,7 +52,39 @@ Singleton {
 
     function loadPluginConfigs(plugins) {
         console.log("Loading plugins:", plugins)
-        
+
+        if (!root.runtime)
+            return
+
+        if (!root.runtime.plugins)
+            root.runtime.plugins = new JsonObject()
+
+        function mergeDefaults(target, defaults) {
+            let changed = false
+
+            for (let key in defaults) {
+                const defVal = defaults[key]
+                const tgtVal = target[key]
+
+                if (tgtVal === undefined) {
+                    target[key] = defVal
+                    changed = true
+                } else if (
+                    typeof tgtVal === "object" &&
+                    typeof defVal === "object" &&
+                    tgtVal !== null &&
+                    defVal !== null
+                ) {
+                    if (mergeDefaults(tgtVal, defVal))
+                        changed = true
+                }
+            }
+
+            return changed
+        }
+
+        let anyChange = false
+
         for (let i = 0; i < plugins.length; i++) {
             const name = plugins[i]
             const path = Directories.shellConfig + "/plugins/" + name + "/PluginConfigData.qml"
@@ -63,23 +95,39 @@ Singleton {
                 continue
             }
 
-            if (component.status === Component.Ready) {
-                const pluginObj = component.createObject(root)
-                if (!pluginObj) {
-                    console.warn("Failed to create plugin object:", name)
-                    continue
-                }
+            if (component.status !== Component.Ready)
+                continue
 
-                if (!pluginObj.defaults) pluginObj.defaults = { enabled: false }
-                
-                root.updateKey("plugins." + name, pluginObj.defaults)
-                console.log("Loaded plugin:", name, pluginObj.defaults)
-                
-                pluginObj.destroy()
+            const pluginObj = component.createObject(root)
+            if (!pluginObj) {
+                console.warn("Failed to create plugin object:", name)
                 component.destroy()
+                continue
             }
+
+            if (!pluginObj.defaults)
+                pluginObj.defaults = { enabled: false }
+
+            if (!root.runtime.plugins[name]) {
+                root.runtime.plugins[name] = new JsonObject()
+                anyChange = true
+            }
+
+            if (mergeDefaults(root.runtime.plugins[name], pluginObj.defaults))
+                anyChange = true
+
+            console.log("Plugin config injected:", name)
+
+            pluginObj.destroy()
+            component.destroy()
         }
-        console.log("Plugins loaded into runtime")
+
+        if (anyChange) {
+            console.log("Plugin defaults merged, writing config")
+            configFileView.adapterUpdated()
+        } else {
+            console.log("Plugin configs already up to date")
+        }
     }
 
     Timer { id: fileReloadTimer; interval: root.readWriteDelay; repeat: false; onTriggered: configFileView.reload() }
@@ -90,7 +138,7 @@ Singleton {
         running: true
         repeat: false
         onTriggered: {
-            console.log("Plugin timer triggered")
+            console.log("Injecting plugin configs")
             root.loadPluginConfigs(PluginLoader.plugins)
         }
     }
@@ -143,15 +191,19 @@ Singleton {
                 }
             }
 
-            property JsonObject misc: JsonObject { property url pfp: Quickshell.env("HOME") + "/.face.icon" }
+            property JsonObject misc: JsonObject { 
+                property url pfp: Quickshell.env("HOME") + "/.face.icon" 
+            }
+            
             property JsonObject notifications: JsonObject {
                 property bool enabled: true 
                 property bool doNotDisturb: false
                 property string position: "center"
             }
             property JsonObject shell: JsonObject {
-                property string version: "0.4.1"
+                property string version: "0.5.0"
                 property string releaseChannel: "stable"
+                property string qsVersion: "0.0.0"
             }
             property JsonObject overlays: JsonObject {
                 property bool enabled: true 

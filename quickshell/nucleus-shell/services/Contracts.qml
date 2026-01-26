@@ -53,10 +53,17 @@ QtObject {
         overriddenOverlays = true
     }
 
-    // Right sidebar / tray extensions
+    // Right sidebar
     property url sidebarRight: Qt.resolvedUrl("../modules/interface/sidebarRight/SidebarRight.qml")
     property bool overriddenSidebarRight: false
     function overrideSidebarRight() {
         overriddenSidebarRight = true
+    }
+
+    // Left sidebar
+    property url sidebarLeft: Qt.resolvedUrl("../modules/interface/sidebarLeft/SidebarLeft.qml")
+    property bool overriddenSidebarLeft: false
+    function overrideSidebarLeft() {
+        overriddenSidebarLeft = true
     }
 }

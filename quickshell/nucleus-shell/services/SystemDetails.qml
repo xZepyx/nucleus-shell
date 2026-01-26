@@ -165,7 +165,7 @@ Singleton {
         stdout: StdioCollector {
             onStreamFinished: {
                 root.qsVersion = text.trim().split(',')[0].trim().replace("quickshell ", "");
-                //Config.updateKey("shellInfo.qsVersion", text.trim().split(',')[0].trim().replace("quickshell ", ""));
+                Config.updateKey("shell.qsVersion", text.trim().split(',')[0].trim().replace("quickshell ", ""));
             }
         }
 

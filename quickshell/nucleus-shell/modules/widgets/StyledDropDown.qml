@@ -13,8 +13,17 @@ Item {
     property string label: "Select option"
     property var model: ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"]
     property int currentIndex: -1
-    property string currentText: currentIndex >= 0 ? model[currentIndex] : ""
+    property string currentText: {
+        if (currentIndex < 0)
+            return ""
+
+        if (textRole && model && model.get)
+            return model.get(currentIndex)[textRole] ?? ""
+
+        return model[currentIndex] ?? ""
+    }
     property bool enabled: true
+    property string textRole: ""
 
     signal selectedIndexChanged(int index)
 
@@ -90,6 +99,7 @@ Item {
         model: root.model
         currentIndex: root.currentIndex >= 0 ? root.currentIndex : -1
         enabled: root.enabled
+        textRole: root.textRole
 
         onCurrentIndexChanged: {
             if (currentIndex >= 0) {
@@ -133,9 +143,9 @@ Item {
 
                     background: Rectangle {
                         color: {
-                            if (itemMouse.pressed) return ColorUtils.transparentize(Appearance.m3colors.m3primary, 0.12)
-                            if (itemMouse.containsMouse) return ColorUtils.transparentize(Appearance.m3colors.m3primary, 0.08)
-                            if (index === root.currentIndex) return ColorUtils.transparentize(Appearance.m3colors.m3primary, 0.08)
+                            if (itemMouse.pressed) return ColorUtils.transparentize(Appearance.m3colors.m3primaryContainer, 0.12)
+                            if (itemMouse.containsMouse) return ColorUtils.transparentize(Appearance.m3colors.m3primaryContainer, 0.08)
+                            if (index === root.currentIndex) return ColorUtils.transparentize(Appearance.m3colors.m3primaryContainer, 0.08)
                             return "transparent"
                         }
                         Behavior on color {
@@ -164,12 +174,14 @@ Item {
             }
 
             enter: Transition {
-                NumberAnimation { running: Config.runtime.appearance.animations.enabled; property: "opacity"; from: 0.0; to: 1.0; duration: Appearance.animation.durations.small; easing.type: Easing.InOutCubic }
-                NumberAnimation { running: Config.runtime.appearance.animations.enabled; property: "scale"; from: 0.9; to: 1.0; duration: Appearance.animation.durations.small; easing.type: Easing.InOutCubic }
+                enabled: Config.runtime.appearance.animations.enabled
+                NumberAnimation {property: "opacity"; from: 0.0; to: 1.0; duration: Appearance.animation.durations.small; easing.type: Easing.InOutCubic }
+                NumberAnimation {property: "scale"; from: 0.9; to: 1.0; duration: Appearance.animation.durations.small; easing.type: Easing.InOutCubic }
             }
 
             exit: Transition {
-                NumberAnimation { running: Config.runtime.appearance.animations.enabled; property: "opacity"; from: 1.0; to: 0.0; duration: Appearance.animation.fast * 0.67; easing.type: Easing.InOutCubic }
+                enabled: Config.runtime.appearance.animations.enabled
+                NumberAnimation {property: "opacity"; from: 1.0; to: 0.0; duration: Appearance.animation.fast * 0.67; easing.type: Easing.InOutCubic }
             }
         }
     }

@@ -18,7 +18,7 @@ Item {
 
     Rectangle {
         id: bgRect
-        color: Appearance.m3colors.m3primary
+        color: isVertical ? Appearance.m3colors.m3primary : Appearance.m3colors.m3paddingContainer
         radius: Config.runtime.bar.modules.radius * Config.runtime.appearance.rounding.factor
 
         implicitWidth: child.implicitWidth + Appearance.margin.large - (isVertical ? 10 : 0)

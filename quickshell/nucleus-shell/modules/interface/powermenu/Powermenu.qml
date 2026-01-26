@@ -34,20 +34,6 @@ PanelWindow {
     implicitWidth: powermenuWidth
     implicitHeight: powermenuHeight
 
-    anchors {
-        top: true
-        right: false
-        left: false
-        bottom: false
-    }
-
-    margins {
-        top: screenH / 3 // I used these weird values to fix it not appearing on focused monitors. It's a wayland issue.
-        bottom: 20
-        left: Appearance.margin.large
-        right: Appearance.margin.large
-    }
-
     StyledRect {
         id: container
 
@@ -139,14 +125,6 @@ PanelWindow {
         }
 
         target: "powermenu"
-    }
-
-    Connections {
-        function onFocusedMonitorChanged() {
-            powermenu.monitor = Hyprland.focusedMonitor;
-        }
-        // Idk if this really works but I belive it does. (I've tested it on 2 monitors it works. But also works without it because Wlrlayershell does that. But I'll keep this.)
-        target: Hyprland
     }
 
     component PowerMenuButton: StyledButton {

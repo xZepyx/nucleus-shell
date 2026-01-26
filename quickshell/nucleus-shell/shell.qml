@@ -1,4 +1,4 @@
-import Quickshell 
+import Quickshell
 import QtQuick 
 
 import qs.config
@@ -9,9 +9,11 @@ import qs.modules.interface.background
 import qs.modules.interface.powermenu
 import qs.modules.interface.launcher
 import qs.modules.interface.notifications
+import qs.modules.interface.intelligence // Intelligence
 import qs.modules.interface.overlays
 import qs.modules.interface.sidebarRight
 import qs.modules.interface.settings
+import qs.modules.interface.sidebarLeft
 import qs.modules.interface.lockscreen
 
 ShellRoot {
@@ -62,6 +64,12 @@ ShellRoot {
     }
 
     LazyLoader {
+        id: sidebarLeftLoader
+        source: Contracts.sidebarLeft
+        active: Globals.visiblility.sidebarLeft && !Contracts.overriddenSidebarLeft
+    }
+
+    LazyLoader {
         id: lockScreenLoader
         source: Contracts.lockScreen
         active: true && !Contracts.overriddenLockScreen
@@ -69,6 +77,7 @@ ShellRoot {
 
     Settings { }
     Ipc { }
+    Intelligence { }
     UpdateNotifier { }
     PluginHost { }
 }

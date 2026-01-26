@@ -50,9 +50,9 @@ PanelWindow {
 
     anchors {
         top: true
-        left: false
-        right: false
-        bottom: false
+        left: true
+        right: true
+        bottom: true
     }
 
     margins {
@@ -60,6 +60,24 @@ PanelWindow {
         bottom: 10
         left: 10
         right: 10
+    }
+
+    Rectangle {
+        id: overlay
+        anchors.fill: parent 
+        color: "transparent"
+        MouseArea {
+            id: ma 
+            anchors.fill: parent
+            onClicked: {
+                Globals.visiblility.launcher = false;
+            }
+        }
+    }
+
+    mask: Region {
+        item: overlay
+        intersection: Intersection.Xor
     }
 
     FocusScope {
@@ -98,6 +116,7 @@ PanelWindow {
             implicitWidth: launcher.launcherWidth
             implicitHeight: 65
             anchors.top: parent.top
+            anchors.horizontalCenter: parent.horizontalCenter
 
             StyledTextField {
                 id: searchField
@@ -156,6 +175,7 @@ PanelWindow {
             bottomRightRadius: Appearance.rounding.verylarge
             opacity: searchField.text !== "" ? 1 : 0
             anchors.top: parent.top
+            anchors.horizontalCenter: parent.horizontalCenter
             anchors.topMargin: 65
             implicitWidth: launcher.launcherWidth
             implicitHeight: searchField.text !== "" ? contentHeightClamped : 0
