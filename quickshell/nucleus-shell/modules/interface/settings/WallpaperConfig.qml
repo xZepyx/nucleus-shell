@@ -119,8 +119,37 @@ ContentMenu {
     }
 
     ContentCard {
-        // Next wallpaper button
+        StyledText {
+            text: "Parallax Effect"
+            font.pixelSize: 20
+            font.bold: true
+        }
+        StyledSwitchOption {
+            title: "Enabled"
+            description: "Enabled or disable wallpaper parallax effect."
+            prefField: "appearance.background.parallax.enabled"
+        }
+        StyledSwitchOption {
+            title: "Enabled for Sidebar Left"
+            description: "Show parralax effect when sidebarLeft is opened."
+            prefField: "appearance.background.parallax.enableSidebarLeft"
+        }
+        StyledSwitchOption {
+            title: "Enabled for Sidebar Right"
+            description: "Show parralax effect when sidebarRight is opened."
+            prefField: "appearance.background.parallax.enableSidebarRight"
+        }
+        NumberStepper {
+            label: "Zoom Amount"
+            description: "Adjust the zoom of the parallax effect."
+            prefField: "appearance.background.parallax.zoom"
+            step: 0.1
+            minimum: 1.10
+            maximum: 2
+        }
+    }
 
+    ContentCard {
         StyledText {
             text: "Wallpaper Slideshow"
             font.pixelSize: 20
