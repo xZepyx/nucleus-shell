@@ -102,40 +102,69 @@ Item {
     function updateFilter() {
         filteredModel.clear();
         const query = searchQuery.toLowerCase().trim();
-        // Check if the query is a calculation
-        const calcVal = evalExpression(query);
-        if (calcVal !== null && query !== "")
-            filteredModel.append({
-            "name": String(calcVal),
-            "displayName": String(calcVal),
-            "comment": "Calculation",
-            "icon": "",
-            "exec": "",
-            "isCalc": true,
-            "isWeb": false
-        });
 
-        // Filter apps from appModel
+        // 1. Check for Math Calculation
+        const calcVal = evalExpression(query);
+        if (calcVal !== null && query !== "") {
+            filteredModel.append({
+                "name": String(calcVal),
+                "displayName": String(calcVal),
+                "comment": "Calculation",
+                "icon": "",
+                "exec": "",
+                "isCalc": true,
+                "isWeb": false
+            });
+        }
+
+        // If query is empty, show all apps (default order)
+        if (query === "") {
+            for (let i = 0; i < appModel.count; i++) {
+                filteredModel.append(appModel.get(i));
+            }
+            selectedIndex = filteredModel.count > 0 ? 0 : -1;
+            listView.currentIndex = selectedIndex;
+            return;
+        }
+
+        // 2. Ranking Algorithm
+        // Buckets for sorting relevance
+        let exactMatches = [];
+        let startsWithMatches = [];
+        let containsMatches = [];
+        let fuzzyMatches = [];
+
         for (let i = 0; i < appModel.count; i++) {
             const app = appModel.get(i);
-            let match = false;
-            if (query === "") {
-                match = true; // Show all if empty query
-            } else if (Config.runtime.launcher.fuzzySearchEnabled) {
-                if ((app.name && fuzzyMatch(app.name, query)) || (app.comment && fuzzyMatch(app.comment, query)))
-                    match = true;
+            const name = app.name ? app.name.toLowerCase() : "";
+            const comment = app.comment ? app.comment.toLowerCase() : "";
 
-            } else {
-                if ((app.name && app.name.toLowerCase().includes(query)) || (app.comment && app.comment.toLowerCase().includes(query)))
-                    match = true;
-
+            if (name === query) {
+                exactMatches.push(app);
+            } else if (name.startsWith(query)) {
+                startsWithMatches.push(app);
+            } else if (name.includes(query) || comment.includes(query)) {
+                containsMatches.push(app);
+            } else if (Config.runtime.launcher.fuzzySearchEnabled && fuzzyMatch(name, query)) {
+                fuzzyMatches.push(app);
             }
-            if (match)
-                filteredModel.append(app);
-
         }
-        // If nothing matched, offer a web search
-        if (filteredModel.count === 0 && query !== "")
+
+        // Combine buckets in order of priority
+        const sortedResults = [
+            ...exactMatches,
+            ...startsWithMatches,
+            ...containsMatches,
+            ...fuzzyMatches
+        ];
+
+        // Append sorted results to the visual model
+        for (let item of sortedResults) {
+            filteredModel.append(item);
+        }
+
+        // 3. Fallback to Web Search if no results found
+        if (filteredModel.count === 0 && query !== "") {
             filteredModel.append({
                 "name": query,
                 "displayName": "Search the web for \"" + query + "\"",
@@ -145,8 +174,9 @@ Item {
                 "isCalc": false,
                 "isWeb": true
             });
+        }
 
-        // Update selection
+        // Update selection to the first (most relevant) item
         selectedIndex = filteredModel.count > 0 ? 0 : -1;
         listView.currentIndex = selectedIndex;
         listView.positionViewAtBeginning();
