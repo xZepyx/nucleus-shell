@@ -94,11 +94,11 @@ Notes:
 
 <h2 align="center">✦ Configuration &amp; customization ✦</h2>
 
-- Primary config: `~/.local/share/nucleus/user/config.json`
+- Primary config: `~/.config/nucleus-shell/config/configuration.json`
 - Modular settings: prompt, completion, and widget modules are separated for easy replacement.
 - To customize:
   - Edit the primary config or use the provided settings app (if installed).
-  - Enable/disable modules by editing the module list in the `~/.config/quickshell/ae-qs/shell.qml` file.
+  - Enable/disable modules by editing the module list in the `~/.config/quickshell/nucleus-shell/shell.qml` file.
 
 ---
 
@@ -113,7 +113,7 @@ Notes:
 <h2 align="center">✦ Troubleshooting ✦</h2>
 
 - Missing/Unloaded Modules:
-  - Ensure the module file is loaded in the correct order. Check `~/.config/quickshell/shell.qml`.
+  - Ensure the module file is loaded in the correct order. Check `~/.config/quickshell/nucleus-shell/shell.qml`.
 - Broken visuals:
   - Check `~/.local/share/nucleus/user/config.json`
 - Slow startup:
@@ -188,8 +188,9 @@ Contributions are welcome. When contributing:
 
 <h2 align="center">✦ Thank You ✦</h2>
 
-* [@xr3tc](https://github.com/unf6): For helping me out on cli and web stuff (and being a great friend)
+* [@xr3tc](https://github.com/unf6): For helping me out on cli and lot of other web and stuff (and being a great friend)
 * [@end4](https://github.com/end-4): For his great projects. (I yoinked a lot of stuff)
+* [@ivan](https://github.com/SavingFrame): Thanks bro for being our first "actual" contributor.
 * [@soramanew](https://github.com/soramanew): We haven't talked but I was greatly inspired by his project **caelestia-shell**
 * [@Axenide](https://github.com/axenide): I also haven't talked to him but his project **Ax-Shell** led me into hyprland shells for the first time.
 
