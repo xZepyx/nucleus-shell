@@ -114,7 +114,7 @@ Item {
                         version: parts[2],
                         author: parts[3],
                         description: parts[4],
-                        img: parts[5],
+                        requires_nucleus: parts[5],
                         repo: parts[6],
                         installed: isInstalled(pid),
                         busy: false

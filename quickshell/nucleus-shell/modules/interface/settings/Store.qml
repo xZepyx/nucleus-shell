@@ -13,7 +13,7 @@ ContentMenu {
 
     ContentCard {
         GridLayout {
-            columns: 2
+            columns: 1
             columnSpacing: 16
             rowSpacing: 16
             anchors.fill: parent
@@ -22,92 +22,74 @@ ContentMenu {
                 model: PluginParser.model
 
                 delegate: StyledRect {
-                    Layout.preferredWidth: parent.width / 2.08
-                    Layout.preferredHeight: 590
-                    radius: 10
+                    Layout.preferredHeight: 90
+                    Layout.fillWidth: true
+                    radius: Appearance.rounding.small
                     color: Appearance.m3colors.m3surfaceContainer
 
-                    ColumnLayout {
-                        anchors.fill: parent
-                        anchors.margins: 16
-                        spacing: 6
+                    RowLayout {
+                        spacing: 8
+                        anchors.margins: 12
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
 
-                        ClippingRectangle {
-                            Layout.fillWidth: true
-                            Layout.preferredHeight: 400
-                            radius: Appearance.rounding.small
-
-                            Image {
-                                anchors.fill: parent
-                                fillMode: Image.PreserveAspectCrop
-                                source: img !== "none" ? img : "image://icon/plugin"
-                            }
-
+                        StyledButton {
+                            icon: "download"
+                            text: "Install"
+                            visible: !installed
+                            secondary: true
+                            onClicked: PluginParser.install(id)
+                            Layout.preferredWidth: 140
                         }
 
+                        StyledButton {
+                            icon: "update"
+                            text: "Update"
+                            visible: installed
+                            secondary: true
+                            onClicked: PluginParser.update(id)
+                            Layout.preferredWidth: 140
+                        }
+
+                        StyledButton {
+                            icon: "delete"
+                            text: "Remove"
+                            visible: installed
+                            secondary: true
+                            onClicked: PluginParser.uninstall(id)
+                            Layout.preferredWidth: 140
+                        }
+
+                    }
+
+                    Column {
+                        anchors.top: parent.top
+                        spacing: 2
+                        anchors.left: parent.left
+                        anchors.margins: 12
+
                         StyledText {
+                            font.pixelSize: 19 // Some Good Ass Perfection
                             text: name
-                            font.pixelSize: 20
-                            elide: Text.ElideRight
-                            font.bold: true
-                            Layout.fillWidth: true
-                            Layout.topMargin: 12
-                            Layout.rightMargin: 8
-                        }
-
-                        StyledText {
-                            text: description
-                            font.pixelSize: 16
-                            color: Appearance.colors.colSubtext
-                            elide: Text.ElideRight
-                            Layout.fillWidth: true
-                            Layout.rightMargin: 8
-                        }
-
-                        StyledText {
-                            text: "v" + version + " • " + author
-                            font.pixelSize: 12
-                            color: Appearance.colors.colSubtext
-                            Layout.rightMargin: 8
-                        }
-
-                        Item {
-                            Layout.fillHeight: true
                         }
 
                         RowLayout {
-                            spacing: 8
-                            Layout.topMargin: 12
-                            Layout.bottomMargin: 12
-                            Layout.alignment: Qt.AlignBottom
-
-                            StyledButton {
-                                icon: "download"
-                                text: "Install"
-                                visible: !installed
-                                secondary: true
-                                onClicked: PluginParser.install(id)
-                                Layout.preferredWidth: 160
+                            StyledText {
+                                font.pixelSize: 12
+                                text: author
+                                color: Appearance.colors.colSubtext
                             }
-
-                            StyledButton {
-                                icon: "update"
-                                text: "Update"
-                                visible: installed
-                                secondary: true
-                                onClicked: PluginParser.update(id)
-                                Layout.preferredWidth: 160
+                            StyledText {
+                                font.pixelSize: 12
+                                text: "| Requires Nucleus " + requires_nucleus
+                                color: Appearance.colors.colSubtext
                             }
+                        }
 
-                            StyledButton {
-                                icon: "delete"
-                                text: "Remove"
-                                visible: installed
-                                secondary: true
-                                onClicked: PluginParser.uninstall(id)
-                                Layout.preferredWidth: 160
-                            }
-
+                        StyledText {
+                            font.pixelSize: 16
+                            text: description
+                            color: Appearance.colors.colSubtext
                         }
 
                     }

@@ -78,7 +78,7 @@ name: \(.name)
 version: \(.version)
 author: \(.author)
 description: \(.description)
-img: \(.img // "none")
+requires_nucleus: \(.requires_nucleus // "none")
 repo: '"$repo"'
 ---"
       ' "$dir/manifest.json"
@@ -105,7 +105,7 @@ name: \(.name)
 version: \(.version)
 author: \(.author)
 description: \(.description)
-img: \(.img // "none")
+requires_nucleus: \(.requires_nucleus // "none")
 repo: '"$repo"'
 ---"
   ' "$path/manifest.json"
@@ -164,7 +164,7 @@ fetch_all_machine() { # For quickshell
           .version,
           .author,
           .description,
-          (.img // "none"),
+          (.requires_nucleus // "none"),
           "'"$repo"'"
         ] | @tsv
       ' "$dir/manifest.json"
