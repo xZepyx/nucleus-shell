@@ -29,11 +29,7 @@ Key goals:
 > * **Before reporting an issue:**
   If you encounter a problem in the current release, please first test against the latest source code by cloning the repository (`git clone ...`). This ensures you are not reporting an issue that has already been fixed.
   Only open an issue if the problem is still reproducible on the latest source.
-> * Head over to the [colorschemes](https://github.com/xZepyx/nucleus-colorschemes) repo to get some custom themes for nucleus-shell
-> * Also have a look at the [plugins](https://github.com/xZepyx/nucleus-plugins) repo to get some plugins for nucleus-shell
 
-> [!CAUTION]
-> Using llms inside the shell requires installing and setting up [zenith](https://github.com/xZepyx/zenith) into `/usr/bin` or `~/.local/bin`.
 ---
 
 <h2 align="center">✦ Previews ✦</h2>
@@ -48,6 +44,15 @@ Key goals:
 | ![LeftBar](/previews/1.png)                       | ![RightBar](/previews/4.png)                        |
 
 </div>
+
+---
+
+<h2 align="center">✦ Related Projects ✦</h2>
+
+* [nucleus-cli](https://github.com/unf6/nucleus): CLI for nucleus-shell
+* [nucleus-plugins](https://github.com/xZepyx/nucleus-plugins): Plugins for nucleus-shell
+* [nucleus-colorschemes](https://github.com/xZepyx/nucleus-colorschemes): Colorschemes for nucleus-shell
+* [zenith](https://github.com/xZepyx/zenith): Intelligence backend for nucleus-shell (required to use intelligence)
 
 ---
 
