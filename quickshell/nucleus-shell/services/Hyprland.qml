@@ -17,6 +17,7 @@ Singleton {
     id: root
 
     // --- Reactive Quickshell.Hyprland data ---
+    signal stateChanged()
     readonly property var toplevels: Hyprland.toplevels
     readonly property var workspaces: Hyprland.workspaces
     readonly property var monitors: Hyprland.monitors
@@ -43,6 +44,16 @@ Singleton {
     function dispatch(request: string): void {
         Hyprland.dispatch(request)
     }
+
+    function changeWorkspace(targetWorkspaceId) {
+        if (!targetWorkspaceId) return;
+
+        // Compose the hyprctl dispatch command for Hyprland
+        // "workspace <ID>" switches to the given workspace
+
+        root.dispatch("workspace " + targetWorkspaceId);
+    }
+
 
     function focusedWindowForWorkspace(workspaceId) {
         const wsWindows = root.windowList.filter(w => w.workspace.id === workspaceId);
@@ -204,6 +215,7 @@ Singleton {
                 Hyprland.refreshToplevels()
 
             updateAll()
+            root.stateChanged()
         }
     }
 

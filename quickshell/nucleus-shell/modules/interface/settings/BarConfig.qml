@@ -148,13 +148,17 @@ ContentMenu {
 
         StyledSwitchOption {
             title: "Show App Icons"
-            description: "Enable or disable app icons as workspace indicators."
+            description: "Show opened app icons (Hyprland Only)."
+            enabled: !Config.runtime.bar.modules.workspaces.showJapaneseNumbers
+            opacity: !Config.runtime.bar.modules.workspaces.showJapaneseNumbers ? 1 : 0.8
             prefField: "bar.modules.workspaces.showAppIcons"
         }
 
         StyledSwitchOption {
             title: "Show Japanese Numbers"
-            description: "Enable or disable japanese indicators."
+            description: "Enable or disable japanese indicators."``
+            enabled: !Config.runtime.bar.modules.workspaces.showAppIcons
+            opacity: !Config.runtime.bar.modules.workspaces.showAppIcons ? 1 : 0.8
             prefField: "bar.modules.workspaces.showJapaneseNumbers"
         }
 

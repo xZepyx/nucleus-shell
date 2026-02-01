@@ -16,11 +16,11 @@ PanelWindow {
     WlrLayershell.namespace: "nucleus:sidebarleft"
     WlrLayershell.layer: WlrLayer.Top
     visible: Config.initialized && Globals.visiblility.sidebarRight && !Globals.visiblility.sidebarLeft
-
     color: "transparent"
     exclusiveZone: 0
-
-    // --- Directly use Hyprland's focused monitor ---
+    focus: Compositor.require("niri")
+    WlrLayershell.keyboardFocus: Compositor.require("niri") && Globals.visiblility.sidebarRight
+    
     property var monitor: Hyprland.focusedMonitor
 
 
@@ -31,7 +31,7 @@ PanelWindow {
     HyprlandFocusGrab {
         id: grab
 
-        active: true
+        active: Compositor.require("hyprland")
         windows: [sidebarRight]
     }
 

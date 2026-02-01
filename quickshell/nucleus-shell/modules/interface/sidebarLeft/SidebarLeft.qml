@@ -27,11 +27,13 @@ PanelWindow {
     color: "transparent"
     exclusiveZone: 0
     implicitWidth: sidebarLeftWidth
+    focus: Compositor.require("niri")
+    WlrLayershell.keyboardFocus: Compositor.require("niri") && Globals.visiblility.sidebarRight
 
     HyprlandFocusGrab {
         id: grab
 
-        active: true
+        active: Compositor.require("hyprland")
         windows: [sidebarLeft]
     }
 

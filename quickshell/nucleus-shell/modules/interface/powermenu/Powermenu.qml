@@ -9,6 +9,7 @@ import Quickshell.Services.Pipewire
 import Quickshell.Wayland
 import qs.config
 import qs.modules.functions
+import qs.services
 import qs.modules.interface.lockscreen
 import qs.modules.widgets
 
@@ -21,8 +22,9 @@ PanelWindow {
     property real scale: monitor ? monitor.scale : 1
     property real powermenuWidth: screenW * 0.25 / scale
     property real powermenuHeight: screenH * 0.3 / scale
+    focus: Compositor.require("niri")
+    WlrLayershell.keyboardFocus: Compositor.require("niri") && Globals.visiblility.sidebarRight
 
-    // --- Toggle logic ---
     function togglepowermenu() {
         Globals.visiblility.powermenu = !Globals.visiblility.powermenu; // Simple toggle logic kept in a function as it might have more things to it later on.
     }
@@ -38,7 +40,7 @@ PanelWindow {
     HyprlandFocusGrab {
         id: grab
 
-        active: true
+        active: Compositor.require("hyprland")
         windows: [powermenu]
     }
 

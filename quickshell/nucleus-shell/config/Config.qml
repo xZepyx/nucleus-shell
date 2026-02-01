@@ -5,6 +5,7 @@ import QtCore
 import Quickshell
 import Quickshell.Io
 import qs.plugins
+import qs.services
 
 Singleton {
     id: root
@@ -212,7 +213,7 @@ Singleton {
                 property string position: "center"
             }
             property JsonObject shell: JsonObject {
-                property string version: "0.5.4"
+                property string version: "0.6.0"
                 property string releaseChannel: "stable"
                 property string qsVersion: "0.0.0"
             }

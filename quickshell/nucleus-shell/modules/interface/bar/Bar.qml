@@ -89,7 +89,6 @@ Scope {
 
             StyledRect {
                 id: background
-
                 color: Appearance.m3colors.m3background
                 anchors.fill: parent
                 topLeftRadius: {

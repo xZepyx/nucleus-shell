@@ -32,10 +32,11 @@ Item {
     }
 
     function updateWorkspaceOccupied() {
+        const offset = 1
         workspaceOccupied = Array.from({
             "length": numWorkspaces
         }, (_, i) => {
-            return Hyprland.isWorkspaceOccupied(i + 1);
+            return Compositor.isWorkspaceOccupied(Compositor.require("niri") ? (i + 1 + offset) : (i + 1));
         });
         const ranges = [];
         let start = -1;
@@ -45,16 +46,14 @@ Item {
                     start = i;
 
             } else if (start !== -1) {
-                if (i - 1 > start)
-                    ranges.push({
+                ranges.push({
                     "start": start,
                     "end": i - 1
                 });
-
                 start = -1;
             }
         }
-        if (start !== -1 && workspaceOccupied.length - 1 > start)
+        if (start !== -1)
             ranges.push({
             "start": start,
             "end": workspaceOccupied.length - 1
@@ -69,11 +68,11 @@ Item {
     Component.onCompleted: updateWorkspaceOccupied()
 
     Connections {
-        function onWindowListChanged() {
+        function onStateChanged() {
             updateWorkspaceOccupied();
         }
 
-        target: Hyprland
+        target: Compositor
     }
 
     Rectangle {
@@ -84,6 +83,7 @@ Item {
         implicitWidth: workspaceRow.implicitWidth + Appearance.margin.large - 8
         implicitHeight: Config.runtime.bar.modules.height
 
+        // occupied background highlight
         Item {
             id: occupiedStretchLayer
 
@@ -108,14 +108,20 @@ Item {
 
         }
 
+        // workspace highlight
         Rectangle {
             id: highlight
 
-            property int index: Hyprland.focusedWorkspaceId - 1
+            property int offset: Compositor.require("hyprland") ? 1 : 0
+            property int index: Math.max(0, Compositor.focusedWorkspaceId - 1 - offset)
             property real itemWidth: 26
             property real spacing: workspaceRow.spacing
-            property real targetX: Math.min(index, numWorkspaces - 1) * (itemWidth + spacing) + 7.3
-            // Animated endpoints
+            property int highlightIndex: {
+                if (!Compositor.focusedWorkspaceId) return 0
+                if (Compositor.require("hyprland")) return Compositor.focusedWorkspaceId - 1 // Hyprland starts at 2 internally
+                return Compositor.focusedWorkspaceId - 2 // Niri or default
+            }
+            property real targetX: Math.min(highlightIndex, numWorkspaces - 1) * (itemWidth + spacing) + 7.3            
             property real animatedX1: targetX
             property real animatedX2: targetX
 
@@ -132,6 +138,7 @@ Item {
 
             Behavior on animatedX1 {
                 enabled: Config.runtime.appearance.animations.enabled
+
                 NumberAnimation {
                     duration: 400
                     easing.type: Easing.OutSine
@@ -141,8 +148,9 @@ Item {
 
             Behavior on animatedX2 {
                 enabled: Config.runtime.appearance.animations.enabled
+
                 NumberAnimation {
-                    duration: 400 / 3 // One side moves faster to create stretch
+                    duration: 133
                     easing.type: Easing.OutSine
                 }
 
@@ -160,8 +168,9 @@ Item {
                 model: numWorkspaces
 
                 Item {
-                    property bool focused: (index + 1) === Hyprland.focusedWorkspaceId
-                    property bool occupied: Hyprland.isWorkspaceOccupied(index + 1)
+                    property int wsIndex: index + 1
+                    property bool focused: wsIndex === Compositor.focusedWorkspaceId
+                    property bool occupied: Compositor.isWorkspaceOccupied(wsIndex)
 
                     width: 26
                     height: 26
@@ -179,11 +188,11 @@ Item {
                         IconImage {
                             id: appIcon
 
-                            visible: Config.runtime.bar.modules.workspaces.showAppIcons
                             anchors.fill: parent
+                            visible: Config.runtime.bar.modules.workspaces.showAppIcons && occupied
                             rotation: (Config.runtime.bar.position === "left" || Config.runtime.bar.position === "right") ? 270 : 0
                             source: {
-                                const win = Hyprland.focusedWindowForWorkspace(index + 1);
+                                const win = Compositor.focusedWindowForWorkspace(wsIndex);
                                 return win ? Quickshell.iconPath(FileUtils.resolveIcon(win.class)) : "";
                             }
                         }
@@ -191,45 +200,46 @@ Item {
                     }
 
                     Tint {
-                        rotation: (Config.runtime.bar.position === "left" || Config.runtime.bar.position === "right") ? 270 : 0
+                        rotation: iconContainer.rotation
                         sourceItem: appIcon
                     }
 
+                    // Kanji mode: show Kanji everywhere
+                    StyledText {
+                        anchors.centerIn: parent
+                        visible: Config.runtime.bar.modules.workspaces.showJapaneseNumbers
+                        text: japaneseNumber(index + 1)
+                    }
+
+                    // Numbers mode: show numbers everywhere
+                    StyledText {
+                        anchors.centerIn: parent
+                        visible: !Config.runtime.bar.modules.workspaces.showAppIcons && !Config.runtime.bar.modules.workspaces.showJapaneseNumbers
+                        text: index + 1
+                    }
+
+                    // Note that if both kanji and icons are enabled both will be visible, in the settings app there is a enabled value so only one of them can be toggled
+
+                    // Symbols for unoccupied workspaces when app icons enabled
                     MaterialSymbol {
-                        id: symbol
-
-                        // Compute text based on priority
                         property string displayText: {
-                            const square = "crop_square" // Make it square so it won't be inconsistent when rounding factor is 0
-                            const circle = "fiber_manual_record"
-                            const useSquare = Config.runtime.appearance.rounding.factor === 0
-
-                            if (Config.runtime.bar.modules.workspaces.showAppIcons)
-                                return occupied ? "" : (useSquare ? square : circle)
-
-                            if (Config.runtime.bar.modules.workspaces.showJapaneseNumbers)
-                                return (occupied || focused)
-                                    ? japaneseNumber(index + 1)
-                                    : (useSquare ? square : circle)
-
-                            return (occupied || focused)
-                                ? "󰮯"
-                                : (useSquare ? square : circle)
+                            const square = "crop_square";
+                            const circle = "fiber_manual_record";
+                            const useSquare = Config.runtime.appearance.rounding.factor === 0;
+                            return useSquare ? square : circle;
                         }
 
                         anchors.centerIn: parent
-                        animate: false
-                        visible: true
-                        rotation: (Config.runtime.bar.position === "left" || Config.runtime.bar.position === "right") ? 270 : 0
+                        visible: Config.runtime.bar.modules.workspaces.showAppIcons && !occupied
                         text: displayText
-                        font.pixelSize: (displayText === "fiber_manual_record" || displayText === "crop_square") ? 10 : (Config.runtime.bar.modules.workspaces.showJapaneseNumbers ? Appearance.font.size.large - 2 : Appearance.font.size.large)
-                        fill: (displayText === "fiber_manual_record" || displayText === "crop_square")  ? 1 : 0
-                        color: focused ? Appearance.m3colors.m3shadow : Appearance.m3colors.m3secondary
+                        rotation: (Config.runtime.bar.position === "left" || Config.runtime.bar.position === "right") ? 270 : 0
+                        font.pixelSize: 10
+                        fill: 1
                     }
 
                     MouseArea {
                         anchors.fill: parent
-                        onClicked: Hyprland.dispatch("workspace " + (index + 1))
+                        onClicked: Compositor.changeWorkspace(wsIndex)
                     }
 
                 }
