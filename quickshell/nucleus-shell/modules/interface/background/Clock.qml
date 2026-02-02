@@ -206,7 +206,7 @@ Scope {
 
                     // Minute hand
                     StyledRect {
-                        width: 14
+                        width: 18
                         height: parent.height * 0.35
                         radius: Appearance.rounding.full
                         color: Appearance.m3colors.m3secondary

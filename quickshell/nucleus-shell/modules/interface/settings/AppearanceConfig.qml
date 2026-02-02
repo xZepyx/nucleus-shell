@@ -293,6 +293,26 @@ ContentMenu {
             step: 0.1
         }
     }
+   ContentCard {
+        StyledText {
+            text: "Transparency"
+            font.pixelSize: 20
+            font.bold: true
+        }
+        StyledSwitchOption {
+            title: "Enabled"
+            description: "Whether to enable or disable transparency."
+            prefField: "appearance.transparency.enabled"
+        }
+        NumberStepper {
+            label: "Factor"
+            description: "Adjust the alpha value for transparency."
+            prefField: "appearance.transparency.alpha"
+            minimum: 0.1
+            maximum: 1
+            step: 0.1
+        }
+    }
     ContentCard {
         StyledText {
             text: "Animations"

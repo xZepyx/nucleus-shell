@@ -166,6 +166,7 @@ Singleton {
                 property string theme: "dark"
                 property bool tintIcons: false
                 property JsonObject animations: JsonObject { property bool enabled: true }
+                property JsonObject transparency: JsonObject { property bool enabled: false; property double alpha: 0.2 }
                 property JsonObject rounding: JsonObject { property double factor: 0.6 }
                 property JsonObject colors: JsonObject {
                     property string scheme: "catppuccin-lavender"

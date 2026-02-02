@@ -243,6 +243,7 @@ Scope {
                                         text: modelData.label
                                         font.pixelSize: 14
                                         font.bold: true
+                                        opacity: modelData.header ? 1 : 0
                                     }
 
                                 }

@@ -135,7 +135,7 @@ Item {
         anchors.topMargin: 74
         radius: Appearance.rounding.normal
         anchors.fill: parent
-        color: Appearance.m3colors.m3background
+        color: "transparent"
         visible: Config.runtime.misc.intelligence.enabled
 
         ColumnLayout {

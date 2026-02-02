@@ -31,5 +31,8 @@ Singleton {
         Quickshell.execDetached(["mkdir", "-p", `${shellConfig}`])
         Quickshell.execDetached(["mkdir", "-p", `${shellConfig}/config`])
         Quickshell.execDetached(["mkdir", "-p", `${shellConfig}/plugins`])
+        // Create dirs for intelligence shit
+        Quickshell.execDetached(["mkdir", "-p", FileUtils.trimFileProtocol(`${config}/zenith/`), FileUtils.trimFileProtocol(`${config}/zenith/chats`)])
+        Quickshell.execDetached(["touch", FileUtils.trimFileProtocol(`${config}/zenith/chats/default.txt`)])
     }
 }
