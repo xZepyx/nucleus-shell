@@ -88,6 +88,7 @@ if [[ "$DISTRO" == "arch" ]]; then
 	qt6ct qt5ct kvantum
         kitty fish starship
         firefox nautilus
+        wl-color-picker imagemagic
         networkmanager wireplumber bluez-utils
         fastfetch playerctl brightnessctl
         papirus-icon-theme-git hyprsunset

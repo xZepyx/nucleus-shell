@@ -81,7 +81,7 @@ Item {
                         iconSize: Appearance.font.size.hugeass + 2
 
                         onButtonClicked: {
-                            Quickshell.execDetached(["hyprpicker"])
+                            Quickshell.execDetached(["wl-color-picker"])
                             Globals.visiblility.sidebarRight = false;
                         }
                     }

@@ -26,7 +26,7 @@ Singleton {
         for (let i = 0; i < keys.length - 1; ++i) {
             let k = keys[i]
             if (obj[k] === undefined || obj[k] === null || typeof obj[k] !== "object") {
-                obj[k] = new JsonObject()  // Use JsonObject for serialization
+                obj[k] = {}  // Use Plain JS for serialization
             }
             obj = obj[k]
             if (!obj) {
@@ -58,7 +58,7 @@ Singleton {
             return
 
         if (!root.runtime.plugins)
-            root.runtime.plugins = new JsonObject()
+            root.runtime.plugins = {}
 
         function mergeDefaults(target, defaults) {
             let changed = false
@@ -110,7 +110,7 @@ Singleton {
                 pluginObj.defaults = { enabled: false }
 
             if (!root.runtime.plugins[name]) {
-                root.runtime.plugins[name] = new JsonObject()
+                root.runtime.plugins[name] = {}
                 anyChange = true
             }
 
@@ -215,7 +215,7 @@ Singleton {
                 property string position: "center"
             }
             property JsonObject shell: JsonObject {
-                property string version: "0.6.0"
+                property string version: "0.6.2"
                 property string releaseChannel: "stable"
                 property string qsVersion: "0.0.0"
             }
