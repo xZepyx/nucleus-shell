@@ -119,8 +119,8 @@ run "Updating configuration" bash -c "
 
 # Reload shell
 run "Reloading shell" bash -c "
-    killall qs &>/dev/null || true
-    nohup qs -c nucleus-shell &>/dev/null & disown
+    killall quickshell &>/dev/null || true
+    nohup quickshell -c nucleus-shell &>/dev/null & disown
 "
 
 printf "[✓] Updated nucleus-shell: %s -> %s\n" "$current" "$latest"
