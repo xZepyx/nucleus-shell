@@ -1,111 +1,126 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
+# Paths / repo
 CONFIG="$HOME/.config/nucleus-shell/config/configuration.json"
 QS_DIR="$HOME/.config/quickshell/nucleus-shell"
 REPO="xZepyx/nucleus-shell"
 API="https://api.github.com/repos/$REPO/releases"
 
-cat <<'EOF'
- _   _           _       _   _
-| | | |_ __   __| | __ _| |_(_)_ __   __ _
-| | | | '_ \ / _` |/ _` | __| | '_ \ / _` |
-| |_| | |_) | (_| | (_| | |_| | | | | (_| |
- \___/| .__/ \__,_|\__,_|\__|_|_| |_|\__, |
-      |_|                            |___/
+# Spinner
+spinner() {
+    local pid=$1
+    local spin='|/-\'
+    local i=0
 
-EOF
+    while kill -0 "$pid" 2>/dev/null; do
+        printf "\r[*] %s %c" "$SPINNER_MSG" "${spin:i++%4:1}"
+        sleep 0.1
+    done
+}
 
-echo "Version to install:"
-echo "  1. Stable"
-echo "  2. Edge"
-echo
+run() {
+    SPINNER_MSG="$1"
+    shift
+    "$@" &>/dev/null &
+    spinner $!
+    wait $! || fail "$SPINNER_MSG failed"
+    printf "\r[✓] %s\n" "$SPINNER_MSG"
+}
 
-read -rp "Select option (1/2): " choice
+fail() {
+    printf "[✗] %s\n" "$1" >&2
+    exit 1
+}
+
+info() {
+    printf "[*] %s\n" "$1"
+}
+
+# Selection
+echo "Select the version to install:"
+echo "1. Latest"
+echo "2. Edge"
+echo "3. Git"
+
+read -rp "[?] Choice: " choice
 
 case "$choice" in
     1) mode="stable" ;;
     2) mode="indev" ;;
-    *)
-        echo "invalid option"
-        exit 1
+    3)
+        read -rp "[?] Enter git tag or version: " input
+        [[ -z "$input" ]] && fail "No version provided"
+        latest="${input#v}"
+        latest_tag="v$latest"
         ;;
+    *) fail "Invalid choice" ;;
 esac
 
-# Check config exists
-if [[ ! -f "$CONFIG" ]]; then
-    echo "configuration.json not found"
-    exit 1
-fi
+# Validate config
+[[ -f "$CONFIG" ]] || fail "configuration.json not found"
 
-# Get current version
 current="$(jq -r '.shell.version // empty' "$CONFIG")"
-if [[ -z "$current" ]]; then
-    echo "version not found"
-    exit 1
+[[ -n "$current" ]] || fail "Current version not set"
+
+# Resolve release
+if [[ "${mode:-}" ]]; then
+    info "Resolving release"
+    latest_tag="$(
+        curl -fsSL "$API" |
+        jq -r "
+            map(select(.draft == false)) |
+            $( [[ "$mode" == "stable" ]] && echo 'map(select(.prerelease == false)) |' )
+            sort_by(.published_at) |
+            last |
+            .tag_name
+        "
+    )"
+    [[ -n "$latest_tag" && "$latest_tag" != "null" ]] || fail "Release resolution failed"
+    latest="${latest_tag#v}"
 fi
 
-# Fetch releases and select tag
-latest_tag="$(
-  curl -fsSL "$API" |
-  jq -r "
-    map(select(.draft == false)) |
-    $( [[ "$mode" == "stable" ]] && echo 'map(select(.prerelease == false)) |' ) 
-    sort_by(.published_at) |
-    last |
-    .tag_name
-  "
-)"
-
-if [[ -z "$latest_tag" || "$latest_tag" == "null" ]]; then
-    echo "failed to determine release version"
-    exit 1
-fi
-
-latest="${latest_tag#v}"
-
+# No-op
 if [[ "$current" == "$latest" ]]; then
-    echo "already up to date ($current)"
+    info "Already up to date ($current)"
     exit 0
 fi
 
-# Download GitHub source zip
+# Temp workspace
 tmp="$(mktemp -d)"
 zip="$tmp/source.zip"
+root_dir="$tmp/nucleus-shell-$latest"
+SRC_DIR="$root_dir/quickshell/nucleus-shell"
 
-curl -fL \
+# Download
+run "Downloading nucleus-shell $latest" \
+    curl -fsSL \
     "https://github.com/$REPO/archive/refs/tags/$latest_tag.zip" \
     -o "$zip"
 
-# Extract zip
-unzip -q "$zip" -d "$tmp"
+# Extract
+run "Extracting archive" unzip -q "$zip" -d "$tmp"
 
-root_dir="$tmp/nucleus-shell-${latest}"
+[[ -d "$SRC_DIR" ]] || fail "nucleus-shell directory missing in archive"
 
-if [[ ! -d "$root_dir" ]]; then
-    echo "failed to locate extracted source directory: $root_dir"
-    exit 1
-fi
+# Install
+run "Installing files" bash -c "
+    rm -rf '$QS_DIR' &&
+    mkdir -p '$QS_DIR' &&
+    cp -r '$SRC_DIR/'* '$QS_DIR/'
+"
 
-SRC_DIR="$root_dir/quickshell/nucleus-shell"
+# Update config
+run "Updating configuration" bash -c "
+    tmp_cfg=\$(mktemp) &&
+    jq --arg v '$latest' '.shell.version = \$v' '$CONFIG' > \"\$tmp_cfg\" &&
+    mv \"\$tmp_cfg\" '$CONFIG'
+"
 
-if [[ ! -d "$SRC_DIR" ]]; then
-    echo "nucleus-shell folder not found in source archive"
-    exit 1
-fi
+# Reload shell
+run "Reloading shell" bash -c "
+    killall qs &>/dev/null || true
+    nohup qs -c nucleus-shell &>/dev/null & disown
+"
 
-# Replace contents
-rm -rf "$QS_DIR"
-mkdir -p "$QS_DIR"
-cp -r "$SRC_DIR/"* "$QS_DIR/"
-
-# Update version in config.json
-tmp_cfg="$(mktemp)"
-jq --arg v "$latest" '.shell.version = $v' "$CONFIG" > "$tmp_cfg"
-mv "$tmp_cfg" "$CONFIG"
-
-# Reload system
-killall qs 
-nohup qs -c nucleus-shell > /dev/null 2>&1 & disown
-
-echo "Updated $current -> $latest"
+printf "[✓] Updated nucleus-shell: %s -> %s\n" "$current" "$latest"
