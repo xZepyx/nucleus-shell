@@ -128,7 +128,7 @@ Control {
     background: Rectangle {
         id: background
 
-        radius: 20
+        radius: Appearance.rounding.large
         color: root.backgroundColor
 
         Behavior on color {

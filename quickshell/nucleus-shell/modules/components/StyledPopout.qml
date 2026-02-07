@@ -286,7 +286,7 @@ LazyLoader {
                 id: popupBackground
                 anchors.fill: parent
                 color: Appearance.m3colors.m3surface
-                radius: 10
+                radius: Appearance.rounding.normal
 
                 ColumnLayout {
                     id: contentArea

@@ -84,7 +84,7 @@ TextField {
             id: bg
 
             anchors.fill: parent
-            radius: 4
+            radius: Appearance.rounding.unsharpenmore
             color: control.backgroundColor
 
             Rectangle {
