@@ -126,13 +126,7 @@ Notes:
 
 <h2 align="center">✦ To-Do ✦</h2>
 
-- [x] Redesign config layout and widget system for improved modularity and discoverability
-- [x] Add more curated optional modules and theme variants 
-- [x] Improve installer prompts and backup behavior
-- [x] Add inbuilt-ai
-- [ ] Improve support for multiple monitors (I do not have multiple monitors, I hope someone else will contribute and add these features)
-- [ ] Add support for customizable bar per monitor
-- [x] Improve shell performance (currently a big laggy on my machine)
+- Read [Todo.md](../docs/Todo.md)
 
 ---
 <div align="center">
