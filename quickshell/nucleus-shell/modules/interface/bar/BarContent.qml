@@ -3,6 +3,7 @@ import QtQuick.Layouts
 import Quickshell
 import "content/"
 import qs.config
+import qs.modules.components
 
 Item {
     property bool isHorizontal: (Config.runtime.bar.position === "top" || Config.runtime.bar.position === "bottom")
@@ -14,21 +15,11 @@ Item {
         anchors.centerIn: parent
         spacing: 4
 
-        MediaPlayerModule {
-        }
-
-        ActiveWindowModule {
-        }
-
-        SystemUsageModule {
-        }
-
-        ClockModule {
-        }
-
-        BatteryIndicatorModule {
-        }
-
+        SystemUsageModule { }
+        MediaPlayerModule { }
+        WorkspaceModule { }
+        ClockModule { }
+        BatteryIndicatorModule { }
     }
 
     RowLayout {
@@ -38,23 +29,26 @@ Item {
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
         spacing: 4
-        anchors.leftMargin: Config.runtime.bar.density * 0.3 // Dynamic Margins
+        anchors.leftMargin: Config.runtime.bar.density * 0.3
 
-        ToggleModule {
-            icon: "menu"
-            iconSize: 23
-            iconColor: Appearance.m3colors.m3error
-            toggle: Globals.visiblility.sidebarLeft
-            onToggled: {
-                if (Globals.visiblility.sidebarRight)
-                    return
-                Globals.visiblility.sidebarLeft = value
+        
+        StyledText {
+            id: hGlyph
+            Layout.alignment: Qt.AlignLeft
+            Layout.rightMargin: Appearance.margin.small - 4
+            font.pixelSize: Appearance.font.size.wildass
+            color: Globals.visiblility.sidebarLeft ? Appearance.m3colors.m3error : Appearance.syntaxHighlightingTheme
+            text: "✦"
+
+            MouseArea {
+                id: ma
+                anchors.fill: parent
+                onClicked: Globals.visiblility.sidebarLeft = !Globals.visiblility.sidebarLeft
             }
         }
+        
 
-        WorkspaceModule {
-        }
-
+        ActiveWindowModule { }
     }
 
     RowLayout {
@@ -66,20 +60,17 @@ Item {
         spacing: 4
         anchors.rightMargin: Config.runtime.bar.density * 0.3
 
-        BongoCat {
-            Layout.rightMargin: 20
+        SystemTray { id: sysTray }
+
+        StyledText {
+            visible: sysTray.items.count > 0
+            id: seperator
+            Layout.alignment: Qt.AlignLeft
+            font.pixelSize: Appearance.font.size.hugeass
+            text: "·"
         }
 
-        StatusIconsModule {
-        }
-
-        ToggleModule {
-            icon: "power_settings_new"
-            iconSize: 22
-            iconColor: Appearance.m3colors.m3error
-            toggle: Globals.visiblility.powermenu
-            onToggled: Globals.visiblility.powermenu = value
-        }
+        StatusIconsModule { }
 
     }
 
@@ -89,7 +80,7 @@ Item {
         anchors.top: parent.top
         anchors.topMargin: Config.runtime.bar.density * 0.1
         anchors.horizontalCenter: parent.horizontalCenter
-        // Contain rotated bounds
+
         implicitWidth: vRow.implicitHeight
         implicitHeight: vRow.implicitWidth
 
@@ -100,30 +91,20 @@ Item {
             spacing: 8
             rotation: 90
 
+            
             ToggleModule {
-                icon: "menu" // Better on vertical Bar
+                icon: "menu"
                 iconSize: 22
                 iconColor: Appearance.m3colors.m3error
+                toggle: Globals.visiblility.powermenu
                 rotation: 270
-                toggle: Globals.visiblility.sidebarLeft
-                onToggled: {
-                    if (Globals.visiblility.sidebarRight)
-                        return
-                    Globals.visiblility.sidebarLeft = value
-                }
+                onToggled: Globals.visiblility.powermenu = value
             }
+            
 
-            SystemUsageModule {
-            }
-
-            MediaPlayerModule {
-            }
-
-            BongoCat {
-            }
-
+            SystemUsageModule { }
+            MediaPlayerModule { }
         }
-
     }
 
     Item {
@@ -141,9 +122,7 @@ Item {
             WorkspaceModule {
                 rotation: 90
             }
-
         }
-
     }
 
     Item {
@@ -165,12 +144,10 @@ Item {
                 rotation: 270
             }
 
-            StatusIconsModule {
-            }
+            StatusIconsModule { }
+            BatteryIndicatorModule { }
 
-            BatteryIndicatorModule {
-            }
-
+            
             ToggleModule {
                 icon: "power_settings_new"
                 iconSize: 22
@@ -179,9 +156,7 @@ Item {
                 rotation: 270
                 onToggled: Globals.visiblility.powermenu = value
             }
-
+            
         }
-
     }
-
 }

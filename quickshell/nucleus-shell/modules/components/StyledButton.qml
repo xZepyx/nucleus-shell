@@ -29,6 +29,7 @@ Control {
     property color pressed_bg: Qt.darker(base_bg, 1.2)
     property color backgroundColor: !root.enabled ? disabled_bg : mouse_area.pressed ? pressed_bg : mouse_area.containsMouse ? hover_bg : base_bg
     property color textColor: !root.enabled ? disabled_fg : base_fg
+    property bool beingHovered: mouse_area.containsMouse
 
     signal clicked()
     signal toggled(bool checked)
@@ -141,7 +142,7 @@ Control {
 
         Behavior on radius {
             NumberAnimation {
-                duration: Appearance.animation.durations.small / 2
+                duration: Appearance.animation.durations.normal / 2
                 easing.type: Appearance.animation.easing
             }
 

@@ -215,7 +215,7 @@ Singleton {
                 property string position: "center"
             }
             property JsonObject shell: JsonObject {
-                property string version: "0.6.2"
+                property string version: "0.7.0"
                 property string releaseChannel: "stable"
                 property string qsVersion: "0.0.0"
             }
@@ -252,8 +252,6 @@ Singleton {
                         property bool enabled: true
                         property bool networkStatusEnabled: true 
                         property bool bluetoothStatusEnabled: true 
-                        property bool keyboardLayoutStatusEnabled: false
-                        property bool themeStatusEnabled: true
                     }
                     property JsonObject systemUsage: JsonObject {
                         property bool enabled: true

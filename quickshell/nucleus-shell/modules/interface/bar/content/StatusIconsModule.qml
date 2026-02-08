@@ -18,7 +18,7 @@ Item {
     StyledRect {
         id: bgRect
 
-        color: Appearance.m3colors.m3errorContainer
+        color: Globals.visiblility.sidebarRight ? Appearance.m3colors.m3paddingContainer : "transparent"
         radius: Config.runtime.bar.modules.radius * Config.runtime.appearance.rounding.factor
         implicitWidth: isVertical ? contentRow.implicitWidth + Appearance.margin.large - 8 : contentRow.implicitWidth + Appearance.margin.large
         implicitHeight: Config.runtime.bar.modules.height
@@ -27,21 +27,12 @@ Item {
             id: contentRow
 
             anchors.centerIn: parent
-            spacing: isVertical ? 2 : 8
+            spacing: isVertical ? 8 : 16
 
-            MaterialSymbol {
-                id: themeIcon
-
-                visible: Config.runtime.bar.modules.statusIcons.themeStatusEnabled
-                rotation: isVertical ? 270 : 0
-                fill: 1
-                icon: Config.runtime.appearance.theme === "light" ? "light_mode" : "dark_mode"
-                iconSize: Appearance.font.size.huge
-            }
 
             MaterialSymbol {
                 id: wifi
-
+                animate: false
                 visible: Config.runtime.bar.modules.statusIcons.networkStatusEnabled
                 rotation: isVertical ? 270 : 0
                 icon: Network.icon
@@ -50,22 +41,13 @@ Item {
 
             MaterialSymbol {
                 id: btIcon
-
+                animate: false
                 visible: Config.runtime.bar.modules.statusIcons.bluetoothStatusEnabled
                 rotation: isVertical ? 270 : 0
                 icon: Bluetooth.icon
                 iconSize: Appearance.font.size.huge
             }
 
-            StyledText {
-                id: keyboardLayoutIcon
-
-                visible: Config.runtime.bar.modules.statusIcons.keyboardLayoutStatusEnabled
-                rotation: isVertical ? 270 : 0
-                text: SystemDetails.keyboardLayout
-                font.pixelSize: Appearance.font.size.huge - 4
-                Layout.leftMargin: isVertical ? 0 : -3
-            }
 
         }
 

@@ -97,7 +97,7 @@ Item {
 
                 Rectangle {
                     height: 26
-                    radius: Appearance.rounding.small
+                    radius: Config.runtime.bar.modules.radius * Config.runtime.appearance.rounding.factor
                     color: ColorUtils.mix(Appearance.m3colors.m3tertiary, Appearance.m3colors.m3surfaceContainerLowest)
                     opacity: 0.8
                     x: modelData.start * (26 + workspaceRow.spacing)
@@ -129,7 +129,7 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             width: Math.abs(animatedX2 - animatedX1) + itemWidth - 1
             height: 24
-            radius: Appearance.rounding.small
+            radius: Config.runtime.bar.modules.radius * Config.runtime.appearance.rounding.factor
             color: Appearance.m3colors.m3tertiary
             onTargetXChanged: {
                 animatedX1 = targetX;
@@ -192,8 +192,8 @@ Item {
                             visible: Config.runtime.bar.modules.workspaces.showAppIcons && occupied
                             rotation: (Config.runtime.bar.position === "left" || Config.runtime.bar.position === "right") ? 270 : 0
                             source: {
-                                const win = Compositor.focusedWindowForWorkspace(wsIndex);
-                                return win ? Quickshell.iconPath(FileUtils.resolveIcon(win.class)) : "";
+                                const win = Compositor.focusedWindowForWorkspace(wsIndex)
+                                return win ? AppRegistry.iconForClass(win.class) : ""
                             }
                         }
 

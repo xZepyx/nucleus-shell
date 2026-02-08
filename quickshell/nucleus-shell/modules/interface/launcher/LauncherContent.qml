@@ -2,39 +2,29 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
-import Quickshell.Io
 import qs.config
 import qs.modules.functions
 import qs.modules.components
 import qs.services
 
 Item {
-    // Root item for the launcher
-    // Handles searching, launching apps, web search, and calculations, basiclly all the stuff in the launcher
-
     id: content
 
-    // Index of the currently selected app in the filtered list
     property int selectedIndex: -1
-    // Current search query typed by the user
     property string searchQuery: ""
-    // Variables used for calculations
-    property var calcVars: ({
-    })
-    // Expose the ListView and filtered model to other components if needed
+    property var calcVars: ({})
+
     property alias listView: listView
     property alias filteredModel: filteredModel
 
-    // Launch the currently selected item
     function launchCurrent() {
-        launchApp(listView.currentIndex);
+        launchApp(listView.currentIndex)
     }
 
-    // Build URL for web search based on user's configured search engine
     function webSearchUrl(query) {
-        const engine = (Config.runtime.launcher.webSearchEngine || "").toLowerCase();
+        const engine = (Config.runtime.launcher.webSearchEngine || "").toLowerCase()
         if (engine.startsWith("http"))
-            return engine.replace("%s", encodeURIComponent(query));
+            return engine.replace("%s", encodeURIComponent(query))
 
         const engines = {
             "google": "https://www.google.com/search?q=%s",
@@ -42,226 +32,167 @@ Item {
             "brave": "https://search.brave.com/search?q=%s",
             "bing": "https://www.bing.com/search?q=%s",
             "startpage": "https://www.startpage.com/search?q=%s"
-        };
-        const template = engines[engine] || engines["duckduckgo"];
-        return template.replace("%s", encodeURIComponent(query));
-    }
-
-    // Move selection up/down in the filtered list
-    function moveSelection(delta) {
-        if (filteredModel.count === 0)
-            return ;
-
-        selectedIndex = Math.max(0, Math.min(selectedIndex + delta, filteredModel.count - 1));
-        listView.currentIndex = selectedIndex;
-        listView.positionViewAtIndex(selectedIndex, ListView.Contain);
-    }
-
-    // Reload all apps (re-run the app finder script)
-    function reloadApps() {
-        appModel.clear();
-        filteredModel.clear();
-        appLoader.running = true;
-    }
-
-    // Simple fuzzy search helper
-    function fuzzyMatch(text, pattern) {
-        text = text.toLowerCase();
-        pattern = pattern.toLowerCase();
-        let ti = 0, pi = 0;
-        while (ti < text.length && pi < pattern.length) {
-            if (text[ti] === pattern[pi])
-                pi++;
-
-            ti++;
         }
-        return pi === pattern.length;
+        const template = engines[engine] || engines["duckduckgo"]
+        return template.replace("%s", encodeURIComponent(query))
     }
 
-    // Evaluate math expressions in search (e.g., "2+2")
+    function moveSelection(delta) {
+        if (filteredModel.count === 0) return
+
+        selectedIndex = Math.max(0, Math.min(selectedIndex + delta, filteredModel.count - 1))
+        listView.currentIndex = selectedIndex
+        listView.positionViewAtIndex(selectedIndex, ListView.Contain)
+    }
+
+    function fuzzyMatch(text, pattern) {
+        text = text.toLowerCase()
+        pattern = pattern.toLowerCase()
+        let ti = 0, pi = 0
+        while (ti < text.length && pi < pattern.length) {
+            if (text[ti] === pattern[pi]) pi++
+            ti++
+        }
+        return pi === pattern.length
+    }
+
     function evalExpression(expr) {
         try {
             const fn = new Function("vars", `
-                with (vars) {
-                    with (Math) {
-                        return (${expr});
-                    }
-                }
-            `);
-            const res = fn(calcVars);
-            if (res === undefined || Number.isNaN(res))
-                return null;
-
-            return res;
+                with (vars) { with (Math) { return (${expr}); } }
+            `)
+            const res = fn(calcVars)
+            if (res === undefined || Number.isNaN(res)) return null
+            return res
         } catch (e) {
-            return null;
+            return null
         }
     }
 
-    // Filter apps and calculations based on current query
     function updateFilter() {
-        filteredModel.clear();
-        const query = searchQuery.toLowerCase().trim();
+        filteredModel.clear()
+        const query = searchQuery.toLowerCase().trim()
 
-        // 1. Check for Math Calculation
-        const calcVal = evalExpression(query);
+        const calcVal = evalExpression(query)
         if (calcVal !== null && query !== "") {
             filteredModel.append({
-                "name": String(calcVal),
-                "displayName": String(calcVal),
-                "comment": "Calculation",
-                "icon": "",
-                "exec": "",
-                "isCalc": true,
-                "isWeb": false
-            });
+                name: String(calcVal),
+                displayName: String(calcVal),
+                comment: "Calculation",
+                icon: "",
+                exec: "",
+                isCalc: true,
+                isWeb: false
+            })
         }
 
-        // If query is empty, show all apps (default order)
+        const sourceApps = AppRegistry.apps
+
         if (query === "") {
-            for (let i = 0; i < appModel.count; i++) {
-                filteredModel.append(appModel.get(i));
+            for (let app of sourceApps) {
+                filteredModel.append({
+                    name: app.name,
+                    displayName: app.name,
+                    comment: app.comment,
+                    icon: AppRegistry.iconForDesktopIcon(app.icon),
+                    exec: app.exec,
+                    isCalc: false,
+                    isWeb: false
+                })
             }
-            selectedIndex = filteredModel.count > 0 ? 0 : -1;
-            listView.currentIndex = selectedIndex;
-            return;
+            selectedIndex = filteredModel.count > 0 ? 0 : -1
+            listView.currentIndex = selectedIndex
+            return
         }
 
-        // 2. Ranking Algorithm
-        // Buckets for sorting relevance
-        let exactMatches = [];
-        let startsWithMatches = [];
-        let containsMatches = [];
-        let fuzzyMatches = [];
+        let exactMatches = []
+        let startsWithMatches = []
+        let containsMatches = []
+        let fuzzyMatches = []
 
-        for (let i = 0; i < appModel.count; i++) {
-            const app = appModel.get(i);
-            const name = app.name ? app.name.toLowerCase() : "";
-            const comment = app.comment ? app.comment.toLowerCase() : "";
+        for (let app of sourceApps) {
+            const name = app.name ? app.name.toLowerCase() : ""
+            const comment = app.comment ? app.comment.toLowerCase() : ""
 
-            if (name === query) {
-                exactMatches.push(app);
-            } else if (name.startsWith(query)) {
-                startsWithMatches.push(app);
-            } else if (name.includes(query) || comment.includes(query)) {
-                containsMatches.push(app);
-            } else if (Config.runtime.launcher.fuzzySearchEnabled && fuzzyMatch(name, query)) {
-                fuzzyMatches.push(app);
-            }
+            if (name === query) exactMatches.push(app)
+            else if (name.startsWith(query)) startsWithMatches.push(app)
+            else if (name.includes(query) || comment.includes(query)) containsMatches.push(app)
+            else if (Config.runtime.launcher.fuzzySearchEnabled && fuzzyMatch(name, query)) fuzzyMatches.push(app)
         }
 
-        // Combine buckets in order of priority
         const sortedResults = [
             ...exactMatches,
             ...startsWithMatches,
             ...containsMatches,
             ...fuzzyMatches
-        ];
+        ]
 
-        // Append sorted results to the visual model
-        for (let item of sortedResults) {
-            filteredModel.append(item);
+        for (let app of sortedResults) {
+            filteredModel.append({
+                name: app.name,
+                displayName: app.name,
+                comment: app.comment,
+                icon: AppRegistry.iconForDesktopIcon(app.icon),
+                exec: app.exec,
+                isCalc: false,
+                isWeb: false
+            })
         }
 
-        // 3. Fallback to Web Search if no results found
         if (filteredModel.count === 0 && query !== "") {
             filteredModel.append({
-                "name": query,
-                "displayName": "Search the web for \"" + query + "\"",
-                "comment": "Web search",
-                "icon": "public",
-                "exec": webSearchUrl(query),
-                "isCalc": false,
-                "isWeb": true
-            });
+                name: query,
+                displayName: "Search the web for \"" + query + "\"",
+                comment: "Web search",
+                icon: "public",
+                exec: webSearchUrl(query),
+                isCalc: false,
+                isWeb: true
+            })
         }
 
-        // Update selection to the first (most relevant) item
-        selectedIndex = filteredModel.count > 0 ? 0 : -1;
-        listView.currentIndex = selectedIndex;
-        listView.positionViewAtBeginning();
+        selectedIndex = filteredModel.count > 0 ? 0 : -1
+        listView.currentIndex = selectedIndex
+        listView.positionViewAtBeginning()
     }
 
-    // Launch app, calculation, or web search
     function launchApp(idx) {
-        if (idx < 0 || idx >= filteredModel.count)
-            return ;
+        if (idx < 0 || idx >= filteredModel.count) return
 
-        const app = filteredModel.get(idx);
-        if (app.isCalc)
-            return ;
- // Calculations are displayed only
+        const app = filteredModel.get(idx)
+        if (app.isCalc) return
         if (app.isWeb)
-            Quickshell.execDetached(["xdg-open", app.exec]);
+            Quickshell.execDetached(["xdg-open", app.exec])
         else
-            Quickshell.execDetached(["bash", "-c", app.exec + " &"]);
-        closeLauncher();
+            Quickshell.execDetached(["bash", "-c", app.exec + " &"])
+
+        closeLauncher()
     }
 
-    // Close the launcher
     function closeLauncher() {
-        Globals.visiblility.launcher = false;
+        Globals.visiblility.launcher = false
     }
 
-    // Reset the search
     function resetSearch() {
-        searchQuery = "";
-        updateFilter();
-        selectedIndex = -1;
-        listView.currentIndex = -1;
+        searchQuery = ""
+        updateFilter()
+        selectedIndex = -1
+        listView.currentIndex = -1
+    }
+
+    Connections {
+        target: AppRegistry
+        function onReady() {
+            updateFilter()
+        }
     }
 
     anchors.fill: parent
     opacity: Globals.visiblility.launcher ? 1 : 0
     anchors.margins: 10
-    Component.onCompleted: reloadApps()
 
-    // All installed apps
-    ListModel {
-        id: appModel
-    }
+    ListModel { id: filteredModel }
 
-    // Filtered apps for display
-    ListModel {
-        id: filteredModel
-    }
-
-    // Runs script to populate appModel
-    Process {
-        id: appLoader
-
-        running: true
-        command: ["bash", "-c", Directories.scriptsPath + "/finders/find-apps.sh"]
-
-        stdout: SplitParser {
-            onRead: (data) => {
-                const lines = data.split("\n");
-                for (let i = 0; i < lines.length; ++i) {
-                    const line = lines[i].trim();
-                    if (!line)
-                        continue;
-
-                    const parts = line.split("|");
-                    if (parts.length >= 4) {
-                        const displayName = parts[0].trim();
-                        appModel.append({
-                            "name": displayName,
-                            "displayName": displayName,
-                            "comment": parts[1].trim(),
-                            "icon": parts[2].trim(),
-                            "exec": parts[3].trim(),
-                            "isCalc": false,
-                            "isWeb": false
-                        });
-                    }
-                }
-                updateFilter();
-            }
-        }
-
-    }
-
-    // Main UI layout
     ColumnLayout {
         anchors.fill: parent
         anchors.margins: 16
@@ -274,7 +205,6 @@ Item {
 
             ListView {
                 id: listView
-
                 model: filteredModel
                 spacing: 8
                 clip: true
@@ -285,7 +215,6 @@ Item {
                 highlightMoveDuration: 120
                 currentIndex: selectedIndex
 
-                // Delegate for each app / calculation / web search
                 delegate: Rectangle {
                     property bool isSelected: listView.currentIndex === index
 
@@ -303,7 +232,6 @@ Item {
                             width: 32
                             height: 32
 
-                            // Show app icon if normal app
                             Image {
                                 anchors.fill: parent
                                 visible: !model.isCalc && !model.isWeb
@@ -313,10 +241,9 @@ Item {
                                 fillMode: Image.PreserveAspectFit
                                 sourceSize.width: 128
                                 sourceSize.height: 128
-                                source: model.icon && model.icon.startsWith("/") ? model.icon : ""
+                                source: model.icon
                             }
 
-                            // Calculator icon for calculations
                             MaterialSymbol {
                                 anchors.centerIn: parent
                                 visible: model.isCalc
@@ -325,7 +252,6 @@ Item {
                                 color: Appearance.m3colors.m3onSurfaceVariant
                             }
 
-                            // Web search icon
                             MaterialSymbol {
                                 anchors.centerIn: parent
                                 visible: model.isWeb
@@ -333,10 +259,8 @@ Item {
                                 iconSize: 28
                                 color: Appearance.m3colors.m3onSurfaceVariant
                             }
-
                         }
 
-                        // App / calculation / web search text
                         Column {
                             anchors.verticalCenter: parent.verticalCenter
                             width: listView.width - 120
@@ -356,11 +280,8 @@ Item {
                                 elide: Text.ElideRight
                                 color: Appearance.m3colors.m3onSurfaceVariant
                             }
-
                         }
-
                     }
-
 
                     MouseArea {
                         anchors.fill: parent
@@ -369,16 +290,11 @@ Item {
                         onClicked: launchApp(index)
                         onEntered: listView.currentIndex = index
                     }
-
                 }
-
             }
-
         }
-
     }
 
-    // Fade animation when launcher opens/closes
     Behavior on opacity {
         enabled: Config.runtime.appearance.animations.enabled
         NumberAnimation {
@@ -386,7 +302,5 @@ Item {
             easing.type: Easing.BezierSpline
             easing.bezierCurve: Appearance.animation.curves.standard
         }
-
     }
-
 }

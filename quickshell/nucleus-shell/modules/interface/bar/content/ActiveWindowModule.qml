@@ -1,15 +1,22 @@
-import QtQuick
-import QtQuick.Layouts
-import Quickshell
-import Quickshell.Wayland
-import qs.modules.functions
-import qs.services
 import qs.config
 import qs.modules.components
+import qs.modules.functions
+import qs.services
+import QtQuick
+import Quickshell
+import Quickshell.Wayland
+import QtQuick.Layouts
 
 Item {
     id: container
-    property Toplevel activeToplevel: Hyprland.isWorkspaceOccupied(Hyprland.focusedWorkspaceId) ? Hyprland.activeToplevel : null // Get active top level value
+    Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+
+    property Toplevel activeToplevel: Hyprland.isWorkspaceOccupied(Hyprland.focusedWorkspaceId)
+        ? Hyprland.activeToplevel
+        : null
+
+    implicitWidth: col.implicitWidth
+    implicitHeight: col.implicitHeight
 
     function simplifyTitle(title) {
         if (!title)
@@ -72,35 +79,30 @@ Item {
         return parts.join("-");
     }
 
-    Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-    implicitWidth: row.implicitWidth + 30
-    implicitHeight: Config.runtime.bar.modules.height
-
-    Rectangle {
-        visible: (Config.runtime.bar.position === "top" || Config.runtime.bar.position === "bottom")
-        color: Appearance.m3colors.m3paddingContainer
-        anchors.fill: parent 
-        height: 34 
-        width: row.height + 30
-        radius: Config.runtime.bar.modules.radius * Config.runtime.appearance.rounding.factor
-    }
-
-
-    RowLayout {
-        id: row
-        spacing: 12
+    Column {
+        id: col
+        spacing: 0
         anchors.centerIn: parent
 
-        MaterialSymbol {
-            icon: "desktop_windows"
-            rotation: (Config.runtime.bar.position === "left" || Config.runtime.bar.position === "right") ? 270 : 0
+        StyledText {
+            id: workspaceText
+            font.pixelSize: Appearance.font.size.smallie
+            text: {
+                if (!activeToplevel)
+                    return "Desktop"
+
+                const id = activeToplevel.appId || ""
+
+                return id // Just for aesthetics
+            }
+            horizontalAlignment: Text.AlignHCenter
         }
 
         StyledText {
-            text: StringUtils.shortText(simplifyTitle(activeToplevel?.title), 24) || `Workspace ${Hyprland.focusedWorkspaceId}`
+            id: titleText
+            text: StringUtils.shortText(simplifyTitle(activeToplevel?.title, 24) || `Workspace ${Hyprland.focusedWorkspaceId}`)
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: Appearance.font.size.small
-        }        
+        }
     }
-
 }

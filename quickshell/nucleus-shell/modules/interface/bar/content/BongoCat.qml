@@ -11,8 +11,8 @@ Item {
     property bool isVertical: (Config.runtime.bar.position === "left" || Config.runtime.bar.position === "right")
 
     Layout.alignment: Qt.AlignVCenter
-    implicitWidth: 42
-    implicitHeight: 35
+    implicitWidth: 37
+    implicitHeight: 30
 
     AnimatedImage {
         id: art

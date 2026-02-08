@@ -10,7 +10,7 @@
 - [ ] Improve Intelligence chat interface.
 - [ ] Add greetd.
 - [x] Add polkit agent.
-- [ ] Improve/Redesign bar.
+- [x] Improve/Redesign bar.
 - [ ] Improve support for multiple displays... (There is decent support for that but needs optimization)
 - [ ] Implement material ui.
 - [ ] Add `First Time` setup

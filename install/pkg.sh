@@ -72,7 +72,7 @@ packages=(
     qt6ct qt5ct kvantum kvantum-qt5
     kitty fish starship
     firefox nautilus
-    wl-color-picker imagemagick
+    wl-color-picker imagemagick qt6-svg
     networkmanager wireplumber bluez-utils
     fastfetch playerctl brightnessctl
     papirus-icon-theme-git hyprsunset
