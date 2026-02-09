@@ -74,15 +74,15 @@ Follow these steps to install the collection. The automated setup is conservativ
 
 ### Using the cli:
 ```bash
-   yay -S nucleus-cli
-   nucleus install
+yay -S nucleus-cli
+nucleus install
 ```
 ### Using the install script
 ```bash
-   git clone https://github.com/xZepyx/nucleus-shell
-   cd nucleus-shell
-   cd install
-   ./unified.sh
+git clone https://github.com/xZepyx/nucleus-shell
+cd nucleus-shell
+cd install
+./unified.sh
 ```
 Notes:
 - Manual installation (symlinking files yourself) is supported and recommended for cautious users.
