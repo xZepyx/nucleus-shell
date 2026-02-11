@@ -14,7 +14,7 @@ ContentMenu {
     ContentCard {
         StyledText {
             text: "Versions"
-            font.pixelSize: Metrics.pixelSize(20)
+            font.pixelSize: Metrics.fontSize(20)
             font.bold: true
         }
 
@@ -28,12 +28,12 @@ ContentMenu {
             ColumnLayout {
                 StyledText {
                     text: releaseChannelSelector.title
-                    font.pixelSize: Metrics.pixelSize(16)
+                    font.pixelSize: Metrics.fontSize(16)
                 }
 
                 StyledText {
                     text: releaseChannelSelector.description
-                    font.pixelSize: Metrics.pixelSize(12)
+                    font.pixelSize: Metrics.fontSize(12)
                 }
 
             }
@@ -59,7 +59,7 @@ ContentMenu {
     ContentCard {
         StyledText {
             text: "Intelligence"
-            font.pixelSize: Metrics.pixelSize(20)
+            font.pixelSize: Metrics.fontSize(20)
             font.bold: true
         }
 
@@ -74,7 +74,7 @@ ContentMenu {
     ContentCard {
         StyledText {
             text: "Intelligence Bearer/API"
-            font.pixelSize: Metrics.pixelSize(20)
+            font.pixelSize: Metrics.fontSize(20)
             font.bold: true
         }
 
@@ -92,7 +92,7 @@ ContentMenu {
                     Quickshell.execDetached(["notify-send", "Saved Bearer/API Key"])
                 }
             }
-            font.pixelSize: Metrics.pixelSize(16)
+            font.pixelSize: Metrics.fontSize(16)
         }
 
         Item {

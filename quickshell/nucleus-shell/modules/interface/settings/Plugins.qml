@@ -15,14 +15,14 @@ Item { // I didn't want the flicable implicitHeight headache
     Behavior on opacity {
         enabled: Config.runtime.appearance.animations.enabled
         NumberAnimation {
-            duration: Appearance.animation.durations.normal
+            duration: Metrics.duration("normal")
             easing.type: Appearance.animation.curves.standard[0] // using standard easing
         }
     }
     Behavior on scale {
         enabled: Config.runtime.appearance.animations.enabled
         NumberAnimation {
-            duration: Appearance.animation.durations.normal
+            duration: Metrics.duration("normal")
             easing.type: Appearance.animation.curves.standard[0]
         }
     }

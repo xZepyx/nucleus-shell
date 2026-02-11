@@ -289,6 +289,22 @@ ContentMenu {
 
     ContentCard {
         StyledText {
+            text: "Font"
+            font.pixelSize: Metrics.fontSize(20)
+            font.bold: true
+        }
+        NumberStepper {
+            label: "Scale"
+            description: "Adjust the font scale."
+            prefField: "appearance.font.scale"
+            minimum: 0.5
+            maximum: 1
+            step: 0.1
+        }
+    }
+
+    ContentCard {
+        StyledText {
             text: "Transparency"
             font.pixelSize: Metrics.fontSize(20)
             font.bold: true
@@ -319,5 +335,13 @@ ContentMenu {
             description: "Whether to enable or disable animations (applies everywhere in the shell)."
             prefField: "appearance.animations.enabled"
         }
+        NumberStepper {
+            label: "Duration Scale"
+            description: "Adjust the duration scale of the animations."
+            prefField: "appearance.animations.durationScale"
+            minimum: 0.1
+            maximum: 1
+            step: 0.1
+        }        
     }
 }
