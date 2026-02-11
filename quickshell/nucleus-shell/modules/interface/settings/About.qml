@@ -14,23 +14,23 @@ Item {
         anchors.centerIn: parent
 
         ColumnLayout {
-            spacing: 10
+            spacing: Metrics.spacing(10)
             Layout.alignment: Qt.AlignHCenter
 
 
             ColumnLayout {
-                spacing: 10
+                spacing: Metrics.spacing(10)
                 Layout.alignment: Qt.AlignHCenter
 
                 StyledText {
                     text: SystemDetails.osIcon
-                    font.pixelSize: 280
+                    font.pixelSize: Metrics.fontSize(280)
                     horizontalAlignment: Text.AlignHCenter
                 }
 
                 StyledText {
                     text: "Nucleus Shell"
-                    font.pixelSize: 24
+                    font.pixelSize: Metrics.fontSize(24)
                     font.family: "Outfit ExtraBold"
                     horizontalAlignment: Text.AlignHCenter
                     Layout.preferredWidth: 400
@@ -38,7 +38,7 @@ Item {
 
                 StyledText {
                     text: "A Shell built to get things done."
-                    font.pixelSize: 14
+                    font.pixelSize: Metrics.fontSize(14)
                     wrapMode: Text.Wrap
                     horizontalAlignment: Text.AlignHCenter
                     Layout.preferredWidth: 400
@@ -47,7 +47,7 @@ Item {
             Item {}
             RowLayout {
                 Layout.alignment: Qt.AlignHCenter
-                spacing: 10
+                spacing: Metrics.spacing(10)
 
                 StyledButton {
                     text: "View on GitHub"
@@ -74,14 +74,14 @@ Item {
         color: ma.containsMouse ? Qt.lighter(Appearance.m3colors.m3secondaryContainer, 1.1) : Appearance.m3colors.m3secondaryContainer
         anchors.bottom: parent.bottom
         anchors.right: parent.right
-        anchors.margins: 40
+        anchors.margins: Metrics.margin(40)
         implicitHeight: updateText.height + 20
         implicitWidth: implicitHeight
         radius: Appearance.rounding.small
         StyledText {
             id: updateText
             text: "󰚰" // These come in handy sometimes
-            font.pixelSize: 24
+            font.pixelSize: Metrics.fontSize(24)
             anchors.centerIn: parent
         }
         MouseArea {
@@ -97,11 +97,11 @@ Item {
     }
     StyledText {
         text: "Nucleus-Shell v" + Config.runtime.shell.version
-        font.pixelSize: 12
+        font.pixelSize: Metrics.fontSize(12)
         textFormat: Text.RichText
         horizontalAlignment: Text.AlignHCenter
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 60
+        anchors.bottomMargin: Metrics.margin(60)
         anchors.horizontalCenter: parent.horizontalCenter
         onLinkActivated: Qt.openUrlExternally(link)
     }

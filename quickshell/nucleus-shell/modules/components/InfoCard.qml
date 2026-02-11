@@ -13,28 +13,28 @@ ContentRowCard {
     property string description: "Description"
 
     color: backgroundColor
-    cardSpacing: 12   // nice spacing between elements
+    cardSpacing: Metrics.spacing(12)   // nice spacing between elements
 
     RowLayout {
         id: mainLayout
         Layout.fillHeight: true 
         Layout.fillWidth: true
         
-        spacing: 16
+        spacing: Metrics.spacing(16)
         Layout.alignment: Qt.AlignVCenter
 
         // --- Icon ---
         MaterialSymbol {
             id: infoIcon
             icon: infoCard.icon
-            iconSize: 26
+            iconSize: Metrics.iconSize(26)
             color: contentColor
             Layout.alignment: Qt.AlignVCenter
         }
 
         // --- Text column ---
         ColumnLayout {
-            spacing: 2
+            spacing: Metrics.spacing(2)
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignVCenter
 
@@ -42,14 +42,14 @@ ContentRowCard {
                 text: infoCard.title
                 font.bold: true
                 color: contentColor
-                font.pixelSize: 14
+                font.pixelSize: Metrics.fontSize(14)
                 Layout.fillWidth: true
             }
 
             StyledText {
                 text: infoCard.description
                 color: contentColor
-                font.pixelSize: 12
+                font.pixelSize: Metrics.fontSize(12)
                 Layout.fillWidth: true
                 wrapMode: Text.WordWrap
             }

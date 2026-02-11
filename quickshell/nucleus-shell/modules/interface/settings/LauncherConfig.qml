@@ -14,7 +14,7 @@ ContentMenu {
     ContentCard {
         StyledText {
             text: "Filters & Search"
-            font.pixelSize: 20
+            font.pixelSize: Metrics.pixelSize(20)
             font.bold: true
         }
 
@@ -34,12 +34,12 @@ ContentMenu {
             ColumnLayout {
                 StyledText {
                     text: webEngineSelector.title
-                    font.pixelSize: 16
+                    font.pixelSize: Metrics.pixelSize(16)
                 }
 
                 StyledText {
                     text: webEngineSelector.description
-                    font.pixelSize: 12
+                    font.pixelSize: Metrics.pixelSize(12)
                 }
 
             }

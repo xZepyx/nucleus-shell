@@ -9,12 +9,11 @@ StyledRect {
     id: root
     width: 200
     height: 80
-    radius: Appearance.rounding.verylarge
+    radius: Metrics.radius("verylarge")
     color: Appearance.m3colors.m3surfaceContainerHigh
 
     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
-    // --- Service bindings ---
     readonly property bool adapterPresent: Bluetooth.defaultAdapter !== null
     readonly property bool enabled: Bluetooth.defaultAdapter?.enabled ?? false
     readonly property var activeDevice: Bluetooth.activeDevice
@@ -33,15 +32,14 @@ StyledRect {
             : "Enabled";
     }
 
-    // --- Icon background ---
     StyledRect {
         id: iconBg
         width: 50
         height: 50
-        radius: Appearance.rounding.verylarge
+        radius: Metrics.radius("verylarge")
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
-        anchors.leftMargin: Appearance.margin.small
+        anchors.leftMargin: Metrics.margin("small")
 
         color: {
             if (!enabled)
@@ -53,35 +51,33 @@ StyledRect {
 
         MaterialSymbol {
             anchors.centerIn: parent
-            iconSize: 35
+            iconSize: Metrics.iconSize(35)
             icon: iconName
         }
     }
 
-    // --- Text ---
     Column {
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: iconBg.right
-        anchors.leftMargin: Appearance.margin.small
-        spacing: 2
+        anchors.leftMargin: Metrics.margin("small")
+        spacing: Metrics.spacing(2)
 
         StyledText {
             text: "Bluetooth"
-            font.pixelSize: Appearance.font.size.large
+            font.pixelSize: Metrics.fontSize("large")
             elide: Text.ElideRight
             width: root.width - iconBg.width - 30
         }
 
         StyledText {
             text: statusText
-            font.pixelSize: Appearance.font.size.small
+            font.pixelSize: Metrics.fontSize("small")
             color: Appearance.m3colors.m3onSurfaceVariant
             elide: Text.ElideRight
             width: root.width - iconBg.width - 30
         }
     }
 
-    // --- Interaction ---
     MouseArea {
         anchors.fill: parent
         onClicked: {

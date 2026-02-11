@@ -19,7 +19,7 @@ StyledRect {
         ? Appearance.m3colors.m3paddingContainer
         : "transparent"
 
-    radius: Appearance.rounding.childish
+    radius: Metrics.radius("childish")
 
     implicitWidth: textItem.implicitWidth + 12
     implicitHeight: textItem.implicitHeight + 6

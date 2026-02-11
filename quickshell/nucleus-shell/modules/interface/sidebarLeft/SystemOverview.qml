@@ -15,37 +15,37 @@ Item {
     implicitHeight: parent ? parent.height : 500
 
     ColumnLayout {
-        anchors.topMargin: 90
+        anchors.topMargin: Metrics.margin(90)
         anchors.fill: parent
-        anchors.margins: Appearance.margin.normal
-        spacing: Appearance.margin.small
+        anchors.margins: Metrics.margin("normal")
+        spacing: Metrics.margin("small")
 
         // Header
         RowLayout {
             Layout.fillWidth: true
 
             RowLayout {
-                spacing: Appearance.margin.normal
+                spacing: Metrics.margin("normal")
 
                 StyledText {
                     text: SystemDetails.osIcon
-                    font.family: Appearance.font.family.nerdIcons
-                    font.pixelSize: 48
+                    font.family: Metrics.fontFamily("nerdIcons")
+                    font.pixelSize: Metrics.fontSize(48)
                     color: Appearance.colors.colPrimary
                 }
 
                 ColumnLayout {
-                    spacing: 2
+                    spacing: Metrics.spacing(2)
 
                     StyledText {
                         text: SystemDetails.osName
-                        font.pixelSize: Appearance.font.size.large
+                        font.pixelSize: Metrics.fontSize("large")
                         color: Appearance.m3colors.m3onSurface
                     }
 
                     StyledText {
                         text: `${SystemDetails.username}@${SystemDetails.hostname}`
-                        font.pixelSize: Appearance.font.size.small
+                        font.pixelSize: Metrics.fontSize("small")
                         color: Appearance.colors.colSubtext
                     }
 
@@ -58,18 +58,18 @@ Item {
             }
 
             ColumnLayout {
-                spacing: 2
+                spacing: Metrics.spacing(2)
                 Layout.alignment: Qt.AlignRight
 
                 StyledText {
                     text: `qs ${SystemDetails.qsVersion}`
-                    font.pixelSize: Appearance.font.size.small
+                    font.pixelSize: Metrics.fontSize("small")
                     color: Appearance.colors.colSubtext
                 }
 
                 StyledText {
                     text: `nucleus-shell v${Config.runtime.shell.version}`
-                    font.pixelSize: Appearance.font.size.smaller
+                    font.pixelSize: Metrics.fontSize("smaller")
                     color: Appearance.colors.colSubtext
                 }
 
@@ -77,20 +77,19 @@ Item {
 
         }
 
-        // Uptime
         Rectangle {
             Layout.fillWidth: true
             implicitHeight: 56
-            radius: Appearance.rounding.normal
+            radius: Metrics.radius("normal")
             color: Appearance.colors.colLayer2
 
             RowLayout {
                 anchors.fill: parent
-                anchors.margins: Appearance.margin.small
+                anchors.margins: Metrics.margin("small")
 
                 StyledText {
                     text: "Uptime"
-                    font.pixelSize: Appearance.font.size.normal
+                    font.pixelSize: Metrics.fontSize("normal")
                     color: Appearance.colors.colPrimary
                 }
 
@@ -100,7 +99,7 @@ Item {
 
                 StyledText {
                     text: SystemDetails.uptime
-                    font.pixelSize: Appearance.font.size.small
+                    font.pixelSize: Metrics.fontSize("small")
                     color: Appearance.m3colors.m3onSurface
                 }
 
@@ -108,20 +107,19 @@ Item {
 
         }
 
-        // OS
         Rectangle {
             Layout.fillWidth: true
             implicitHeight: 56
-            radius: Appearance.rounding.normal
+            radius: Metrics.radius("normal")
             color: Appearance.colors.colLayer2
 
             RowLayout {
                 anchors.fill: parent
-                anchors.margins: Appearance.margin.small
+                anchors.margins: Metrics.margin("small")
 
                 StyledText {
                     text: "Operating System"
-                    font.pixelSize: Appearance.font.size.normal
+                    font.pixelSize: Metrics.fontSize("normal")
                     color: Appearance.colors.colPrimary
                 }
 
@@ -131,7 +129,7 @@ Item {
 
                 StyledText {
                     text: SystemDetails.osName
-                    font.pixelSize: Appearance.font.size.small
+                    font.pixelSize: Metrics.fontSize("small")
                     color: Appearance.m3colors.m3onSurface
                     elide: Text.ElideRight
                 }
@@ -143,16 +141,16 @@ Item {
         Rectangle {
             Layout.fillWidth: true
             implicitHeight: 320
-            radius: Appearance.rounding.large
+            radius: Metrics.radius("large")
             color: Appearance.colors.colLayer2
 
             ColumnLayout {
                 anchors.fill: parent
-                anchors.margins: Appearance.margin.large
-                spacing: Appearance.margin.normal
+                anchors.margins: Metrics.margin("large")
+                spacing: Metrics.margin("normal")
 
                 ColumnLayout {
-                    spacing: 6
+                    spacing: Metrics.spacing(6)
 
                     RowLayout {
                         StyledText {
@@ -175,13 +173,13 @@ Item {
                     Rectangle {
                         Layout.fillWidth: true
                         height: 10
-                        radius: 5
+                        radius: Metrics.radius(5)
                         color: Appearance.colors.colLayer1
 
                         Rectangle {
                             width: parent.width * SystemDetails.cpuPercent
                             height: parent.height
-                            radius: 5
+                            radius: Metrics.radius(5)
                             color: Appearance.colors.colPrimary
                         }
 
@@ -190,7 +188,7 @@ Item {
                 }
 
                 ColumnLayout {
-                    spacing: 6
+                    spacing: Metrics.spacing(6)
 
                     RowLayout {
                         StyledText {
@@ -213,13 +211,13 @@ Item {
                     Rectangle {
                         Layout.fillWidth: true
                         height: 10
-                        radius: 5
+                        radius: Metrics.radius(5)
                         color: Appearance.colors.colLayer1
 
                         Rectangle {
                             width: parent.width * SystemDetails.ramPercent
                             height: parent.height
-                            radius: 5
+                            radius: Metrics.radius(5)
                             color: Appearance.colors.colPrimary
                         }
 
@@ -228,7 +226,7 @@ Item {
                 }
 
                 ColumnLayout {
-                    spacing: 6
+                    spacing: Metrics.spacing(6)
 
                     RowLayout {
                         StyledText {
@@ -251,13 +249,13 @@ Item {
                     Rectangle {
                         Layout.fillWidth: true
                         height: 10
-                        radius: 5
+                        radius: Metrics.radius(5)
                         color: Appearance.colors.colLayer1
 
                         Rectangle {
                             width: parent.width * SystemDetails.diskPercent
                             height: parent.height
-                            radius: 5
+                            radius: Metrics.radius(5)
                             color: Appearance.colors.colPrimary
                         }
 
@@ -266,7 +264,7 @@ Item {
                 }
 
                 ColumnLayout {
-                    spacing: 6
+                    spacing: Metrics.spacing(6)
 
                     RowLayout {
                         StyledText {
@@ -288,13 +286,13 @@ Item {
                     Rectangle {
                         Layout.fillWidth: true
                         height: 10
-                        radius: 5
+                        radius: Metrics.radius(5)
                         color: Appearance.colors.colLayer1
 
                         Rectangle {
                             width: parent.width * SystemDetails.swapPercent
                             height: parent.height
-                            radius: 5
+                            radius: Metrics.radius(5)
                             color: Appearance.colors.colPrimary
                         }
 
@@ -309,26 +307,26 @@ Item {
         Rectangle {
             Layout.fillWidth: true
             implicitHeight: 72
-            radius: Appearance.rounding.normal
+            radius: Metrics.radius("normal")
             color: Appearance.colors.colLayer2
 
             RowLayout {
                 anchors.fill: parent
-                anchors.margins: Appearance.margin.small
-                spacing: Appearance.margin.large
+                anchors.margins: Metrics.margin("small")
+                spacing: Metrics.margin("large")
 
                 ColumnLayout {
-                    spacing: 2
+                    spacing: Metrics.spacing(2)
 
                     StyledText {
                         text: "Kernel"
-                        font.pixelSize: Appearance.font.size.small
+                        font.pixelSize: Metrics.fontSize("small")
                         color: Appearance.colors.colSubtext
                     }
 
                     StyledText {
                         text: SystemDetails.kernelVersion
-                        font.pixelSize: Appearance.font.size.small
+                        font.pixelSize: Metrics.fontSize("small")
                         color: Appearance.m3colors.m3onSurface
                     }
 
@@ -339,19 +337,19 @@ Item {
                 }
 
                 ColumnLayout {
-                    spacing: 2
+                    spacing: Metrics.spacing(2)
                     Layout.alignment: Qt.AlignRight
 
                     StyledText {
                         text: "Architecture"
-                        font.pixelSize: Appearance.font.size.small
+                        font.pixelSize: Metrics.fontSize("small")
                         color: Appearance.colors.colSubtext
                         horizontalAlignment: Text.AlignRight
                     }
 
                     StyledText {
                         text: SystemDetails.architecture
-                        font.pixelSize: Appearance.font.size.small
+                        font.pixelSize: Metrics.fontSize("small")
                         color: Appearance.m3colors.m3onSurface
                         horizontalAlignment: Text.AlignRight
                     }
@@ -365,27 +363,27 @@ Item {
         Rectangle {
             Layout.fillWidth: true
             implicitHeight: 72
-            radius: Appearance.rounding.normal
+            radius: Metrics.radius("normal")
             color: Appearance.colors.colLayer2
             visible: UPower.batteryPresent
 
             RowLayout {
                 anchors.fill: parent
-                anchors.margins: Appearance.margin.small
-                spacing: Appearance.margin.large
+                anchors.margins: Metrics.margin("small")
+                spacing: Metrics.margin("large")
 
                 ColumnLayout {
-                    spacing: 2
+                    spacing: Metrics.spacing(2)
 
                     StyledText {
                         text: "Battery"
-                        font.pixelSize: Appearance.font.size.small
+                        font.pixelSize: Metrics.fontSize("small")
                         color: Appearance.colors.colSubtext
                     }
 
                     StyledText {
                         text: `${Math.round(UPower.percentage)}%`
-                        font.pixelSize: Appearance.font.size.small
+                        font.pixelSize: Metrics.fontSize("small")
                         color: Appearance.m3colors.m3onSurface
                     }
 
@@ -396,19 +394,19 @@ Item {
                 }
 
                 ColumnLayout {
-                    spacing: 2
+                    spacing: Metrics.spacing(2)
                     Layout.alignment: Qt.AlignRight
 
                     StyledText {
                         text: "AC"
-                        font.pixelSize: Appearance.font.size.small
+                        font.pixelSize: Metrics.fontSize("small")
                         color: Appearance.colors.colSubtext
                         horizontalAlignment: Text.AlignRight
                     }
 
                     StyledText {
                         text: UPower.acOnline ? "online" : "battery"
-                        font.pixelSize: Appearance.font.size.small
+                        font.pixelSize: Metrics.fontSize("small")
                         color: Appearance.m3colors.m3onSurface
                         horizontalAlignment: Text.AlignRight
                     }
@@ -422,16 +420,16 @@ Item {
         Rectangle {
             Layout.fillWidth: true
             implicitHeight: 56
-            radius: Appearance.rounding.normal
+            radius: Metrics.radius("normal")
             color: Appearance.colors.colLayer2
 
             RowLayout {
                 anchors.fill: parent
-                anchors.margins: Appearance.margin.small
+                anchors.margins: Metrics.margin("small")
 
                 StyledText {
                     text: "Running Processes"
-                    font.pixelSize: Appearance.font.size.normal
+                    font.pixelSize: Metrics.fontSize("normal")
                     color: Appearance.colors.colPrimary
                 }
 
@@ -441,7 +439,7 @@ Item {
 
                 StyledText {
                     text: SystemDetails.runningProcesses
-                    font.pixelSize: Appearance.font.size.small
+                    font.pixelSize: Metrics.fontSize("small")
                     color: Appearance.m3colors.m3onSurface
                 }
 
@@ -452,16 +450,16 @@ Item {
         Rectangle {
             Layout.fillWidth: true
             implicitHeight: 56
-            radius: Appearance.rounding.normal
+            radius: Metrics.radius("normal")
             color: Appearance.colors.colLayer2
 
             RowLayout {
                 anchors.fill: parent
-                anchors.margins: Appearance.margin.small
+                anchors.margins: Metrics.margin("small")
 
                 StyledText {
                     text: "Logged-in Users"
-                    font.pixelSize: Appearance.font.size.normal
+                    font.pixelSize: Metrics.fontSize("normal")
                     color: Appearance.colors.colPrimary
                 }
 
@@ -471,7 +469,7 @@ Item {
 
                 StyledText {
                     text: SystemDetails.loggedInUsers
-                    font.pixelSize: Appearance.font.size.small
+                    font.pixelSize: Metrics.fontSize("small")
                     color: Appearance.m3colors.m3onSurface
                 }
 

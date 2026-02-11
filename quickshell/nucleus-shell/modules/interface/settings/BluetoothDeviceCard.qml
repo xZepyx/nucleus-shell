@@ -15,9 +15,9 @@ ContentRowCard {
     property bool showPair: false
     property bool showRemove: false
 
-    cardMargin: 0
-    cardSpacing: 10
-    verticalPadding: 0
+    cardMargin: Metrics.margin(0)
+    cardSpacing: Metrics.spacing(10)
+    verticalPadding: Metrics.padding(0)
     opacity: device.state === QsBluetooth.BluetoothDeviceState.Connecting ||
              device.state === QsBluetooth.BluetoothDeviceState.Disconnecting ? 0.6 : 1
 
@@ -40,22 +40,22 @@ ContentRowCard {
 
     MaterialSymbol {
         icon: mapBluetoothIcon(device.icon, device.name)
-        font.pixelSize: 32
+        font.pixelSize: Metrics.fontSize(32)
     }
 
     ColumnLayout {
         Layout.alignment: Qt.AlignVCenter
-        spacing: 0
+        spacing: Metrics.spacing(0)
 
         StyledText {
             text: device.name || device.address
-            font.pixelSize: 16
+            font.pixelSize: Metrics.fontSize(16)
             font.bold: true
         }
 
         StyledText {
             text: statusText
-            font.pixelSize: 12
+            font.pixelSize: Metrics.fontSize(12)
             color: usePrimary
                 ? Appearance.m3colors.m3primary
                 : ColorUtils.transparentize(Appearance.m3colors.m3onSurface, 0.6)

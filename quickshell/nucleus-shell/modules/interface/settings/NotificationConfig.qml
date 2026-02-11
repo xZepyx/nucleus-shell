@@ -6,6 +6,7 @@ import Quickshell.Widgets
 import qs.config
 import qs.modules.components
 import qs.services
+import qs.modules.functions
 
 ContentMenu {
     title: "Notifications & Overlays"
@@ -14,7 +15,7 @@ ContentMenu {
     ContentCard {
         StyledText {
             text: "Notifications"
-            font.pixelSize: 20
+            font.pixelSize: Metrics.fontSize(20)
             font.bold: true
         }
 
@@ -40,12 +41,12 @@ ContentMenu {
             ColumnLayout {
                 StyledText {
                     text: notificationPosSelector.title
-                    font.pixelSize: 16
+                    font.pixelSize: Metrics.fontSize(16)
                 }
 
                 StyledText {
                     text: notificationPosSelector.description
-                    font.pixelSize: 12
+                    font.pixelSize: Metrics.fontSize(12)
                 }
 
             }
@@ -87,12 +88,12 @@ ContentMenu {
             ColumnLayout {
                 StyledText {
                     text: testNotif.title
-                    font.pixelSize: 16
+                    font.pixelSize: Metrics.fontSize(16)
                 }
 
                 StyledText {
                     text: testNotif.description
-                    font.pixelSize: 12
+                    font.pixelSize: Metrics.fontSize(12)
                 }
 
             }
@@ -114,7 +115,7 @@ ContentMenu {
     ContentCard {
         StyledText {
             text: "Overlays/OSDs"
-            font.pixelSize: 20
+            font.pixelSize: Metrics.fontSize(20)
             font.bold: true
         }
 
@@ -146,12 +147,12 @@ ContentMenu {
             ColumnLayout {
                 StyledText {
                     text: brightnessPosSelector.title
-                    font.pixelSize: 16
+                    font.pixelSize: Metrics.fontSize(16)
                 }
 
                 StyledText {
                     text: brightnessPosSelector.description
-                    font.pixelSize: 12
+                    font.pixelSize: Metrics.fontSize(12)
                 }
 
             }
@@ -199,12 +200,12 @@ ContentMenu {
             ColumnLayout {
                 StyledText {
                     text: volumePosSelector.title
-                    font.pixelSize: 16
+                    font.pixelSize: Metrics.fontSize(16)
                 }
 
                 StyledText {
                     text: volumePosSelector.description
-                    font.pixelSize: 12
+                    font.pixelSize: Metrics.fontSize(12)
                 }
 
             }

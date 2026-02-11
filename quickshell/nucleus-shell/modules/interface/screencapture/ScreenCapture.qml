@@ -170,7 +170,7 @@ Scope {
 
             Timer {
                 id: readyTimer
-                interval: Appearance.animation.durations.normal + 50
+                interval: Metrics.chronoDuration("normal") + 50
                 onTriggered: {
                     console.info("screencap", "UI ready");
                     win.ready = true;
@@ -215,7 +215,7 @@ Scope {
                     NumberAnimation on opacity {
                         id: fadeIn
                         to: 1
-                        duration: Appearance.animation.durations.normal
+                        duration: Metrics.chronoDuration("normal")
                         easing.type: Appearance.animation.easing
                     }
                 }
@@ -311,17 +311,17 @@ Scope {
                     Rectangle {
                         visible: selection.selecting
                         anchors.top: outline.bottom
-                        anchors.topMargin: 10
+                        anchors.topMargin: Metrics.margin(10)
                         anchors.horizontalCenter: outline.horizontalCenter
                         width: coords.width + 10
                         height: coords.height + 10
                         color: Appearance.m3colors.m3surface
-                        radius: 20
+                        radius: Metrics.radius(20)
 
                         StyledText {
                             id: coords
                             anchors.centerIn: parent
-                            font.pixelSize: 14
+                            font.pixelSize: Metrics.fontSize(14)
                             animate: false
                             color: Appearance.m3colors.m3onSurface
                             property real scaleX: container.width / win.width
@@ -430,9 +430,9 @@ Scope {
                                 color: "transparent"
                                 border.color: Appearance.m3colors.m3primary
                                 border.width: hover.containsMouse ? 3 : 0
-                                radius: 8
+                                radius: Metrics.radius(8)
                                 Behavior on border.width {
-                                    NumberAnimation { duration: 150 }
+                                    NumberAnimation { duration: Metrics.chronoDuration(150) }
                                 }
                             }
 
@@ -440,9 +440,9 @@ Scope {
                                 anchors.fill: parent
                                 color: Appearance.m3colors.m3primary
                                 opacity: hover.containsMouse ? 0.15 : 0
-                                radius: 8
+                                radius: Metrics.radius(8)
                                 Behavior on opacity {
-                                    NumberAnimation { duration: 150 }
+                                    NumberAnimation { duration: Metrics.chronoDuration(150) }
                                 }
                             }
 
@@ -465,21 +465,21 @@ Scope {
                             target: bg
                             property: "scale"
                             to: bg.scale + 0.05
-                            duration: Appearance.animation.durations.normal
+                            duration: Metrics.chronoDuration("normal")
                             easing.type: Appearance.animation.easing
                         }
                         NumberAnimation {
                             target: container
                             property: "width"
                             to: win.width * 0.8
-                            duration: Appearance.animation.durations.normal
+                            duration: Metrics.chronoDuration("normal")
                             easing.type: Appearance.animation.easing
                         }
                         NumberAnimation {
                             target: container
                             property: "height"
                             to: win.height * 0.8
-                            duration: Appearance.animation.durations.normal
+                            duration: Metrics.chronoDuration("normal")
                             easing.type: Appearance.animation.easing
                         }
                     }
@@ -491,35 +491,35 @@ Scope {
                             target: bg
                             property: "scale"
                             to: bg.scale - 0.05
-                            duration: Appearance.animation.durations.normal
+                            duration: Metrics.chronoDuration("normal")
                             easing.type: Appearance.animation.easing
                         }
                         NumberAnimation {
                             target: container
                             property: "width"
                             to: win.width
-                            duration: Appearance.animation.durations.normal
+                            duration: Metrics.chronoDuration("normal")
                             easing.type: Appearance.animation.easing
                         }
                         NumberAnimation {
                             target: container
                             property: "height"
                             to: win.height
-                            duration: Appearance.animation.durations.normal
+                            duration: Metrics.chronoDuration("normal")
                             easing.type: Appearance.animation.easing
                         }
                         NumberAnimation {
                             target: darkOverlay
                             property: "opacity"
                             to: 0
-                            duration: Appearance.animation.durations.normal
+                            duration: Metrics.chronoDuration("normal")
                             easing.type: Appearance.animation.easing
                         }
                         NumberAnimation {
                             target: outline
                             property: "opacity"
                             to: 0
-                            duration: Appearance.animation.durations.normal
+                            duration: Metrics.chronoDuration("normal")
                             easing.type: Appearance.animation.easing
                         }
 
@@ -541,14 +541,15 @@ Scope {
                 Item {
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 30
+                    anchors.bottomMargin: Metrics.margin(30)
                     width: row.width + 20
                     height: row.height + 20
+		            visible: false
 
                     Rectangle {
                         anchors.fill: parent
                         color: Appearance.m3colors.m3surface
-                        radius: Appearance.rounding.large
+                        radius: Metrics.radius("large")
                     }
 
                     RowLayout {

@@ -13,7 +13,7 @@ Item {
 
         visible: isHorizontal
         anchors.centerIn: parent
-        spacing: 4
+        spacing: Metrics.spacing(4)
 
         SystemUsageModule { }
         MediaPlayerModule { }
@@ -28,15 +28,15 @@ Item {
         visible: isHorizontal
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
-        spacing: 4
+        spacing: Metrics.spacing(4)
         anchors.leftMargin: Config.runtime.bar.density * 0.3
 
         
         StyledText {
             id: hGlyph
             Layout.alignment: Qt.AlignLeft
-            Layout.rightMargin: Appearance.margin.small - 4
-            font.pixelSize: Appearance.font.size.wildass
+            Layout.rightMargin: Metrics.margin("small") - 4
+            font.pixelSize: Metrics.fontSize("wildass")
             color: Globals.visiblility.sidebarLeft ? Appearance.m3colors.m3error : Appearance.syntaxHighlightingTheme
             text: "✦"
 
@@ -57,7 +57,7 @@ Item {
         visible: isHorizontal
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
-        spacing: 4
+        spacing: Metrics.spacing(4)
         anchors.rightMargin: Config.runtime.bar.density * 0.3
 
         SystemTray { id: sysTray }
@@ -66,7 +66,7 @@ Item {
             visible: sysTray.items.count > 0
             id: seperator
             Layout.alignment: Qt.AlignLeft
-            font.pixelSize: Appearance.font.size.hugeass
+            font.pixelSize: Metrics.fontSize("hugeass")
             text: "·"
         }
 
@@ -88,13 +88,13 @@ Item {
             id: vRow
 
             anchors.centerIn: parent
-            spacing: 8
+            spacing: Metrics.spacing(8)
             rotation: 90
 
             
             ToggleModule {
                 icon: "menu"
-                iconSize: 22
+                iconSize: Metrics.iconSize(22)
                 iconColor: Appearance.m3colors.m3error
                 toggle: Globals.visiblility.sidebarLeft
                 rotation: 270
@@ -137,7 +137,7 @@ Item {
             id: row
 
             anchors.centerIn: parent
-            spacing: 6
+            spacing: Metrics.spacing(6)
             rotation: 90
 
             ClockModule {
@@ -150,7 +150,7 @@ Item {
             
             ToggleModule {
                 icon: "power_settings_new"
-                iconSize: 22
+                iconSize: Metrics.iconSize(22)
                 iconColor: Appearance.m3colors.m3error
                 toggle: Globals.visiblility.powermenu
                 rotation: 270

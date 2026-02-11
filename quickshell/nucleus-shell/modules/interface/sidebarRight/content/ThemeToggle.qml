@@ -13,14 +13,14 @@ Rectangle {
 
     width: 200
     height: 80
-    radius: Appearance.rounding.childish
+    radius: Metrics.radius("childish")
     color: Appearance.m3colors.m3paddingContainer
     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
     Layout.margins: 0
 
     MaterialSymbol {
         anchors.centerIn: parent
-        iconSize: 35
+        iconSize: Metrics.iconSize(35)
         icon: themestatusicon
     }
 

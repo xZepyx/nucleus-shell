@@ -28,13 +28,13 @@ Item {
 
     Rectangle {
         height: 2
-        width: parent.width - Appearance.margin.verylarge
+        width: parent.width - Metrics.margin("verylarge")
         color: Appearance.m3colors.m3outlineVariant
         opacity: 0.6
 
         anchors {
             top: view.top
-            topMargin: segmentedIndicator.height + Appearance.margin.verysmall
+            topMargin: segmentedIndicator.height + Metrics.margin("verysmall")
             horizontalCenter: view.horizontalCenter
         }
 
@@ -45,18 +45,18 @@ Item {
 
         height: 2
         width: 96
-        radius: 1
+        radius: Metrics.radius(1)
         color: Appearance.m3colors.m3primary
         x: (segmentedIndicator.width / view.count) * view.currentIndex + (segmentedIndicator.width / view.count - width) / 2
 
         anchors {
             top: segmentedIndicator.bottom
-            topMargin: Appearance.margin.verysmall
+            topMargin: Metrics.margin("verylarge")
         }
 
         Behavior on x {
             NumberAnimation {
-                duration: 220
+                duration: Metrics.chronoDuration(220)
                 easing.type: Easing.OutCubic
             }
 
@@ -100,13 +100,13 @@ Item {
                     // Icon (true center)
                     MaterialSymbol {
                         icon: modelData.icon
-                        iconSize: Appearance.font.size.huge
+                        iconSize: Metrics.iconSize("huge")
                         color: view.currentIndex === index ? Appearance.m3colors.m3primary : Appearance.m3colors.m3onSurfaceVariant
 
                         anchors {
                             horizontalCenter: parent.horizontalCenter
                             top: parent.top
-                            topMargin: 12
+                            topMargin: Metrics.margin(12)
                         }
 
                     }
@@ -114,7 +114,7 @@ Item {
                     // Label (independent centering)
                     StyledText {
                         text: modelData.text
-                        font.pixelSize: Appearance.font.size.large
+                        font.pixelSize: Metrics.fontSize("large")
                         font.weight: Font.Medium
                         color: view.currentIndex === index ? Appearance.m3colors.m3primary : Appearance.m3colors.m3onSurfaceVariant
 

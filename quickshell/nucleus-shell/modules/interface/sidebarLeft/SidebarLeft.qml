@@ -43,27 +43,30 @@ PanelWindow {
     }
 
     margins {
-        top: 10
-        bottom: 10
-        right: Appearance.margin.small
-        left: Appearance.margin.small
+        top: Metrics.margin("small")
+        bottom: Metrics.margin("small")
+        right: Metrics.margin("small")
+        left: Metrics.margin("small")
     }
 
     StyledRect {
         id: container
 
         color: Appearance.m3colors.m3background
-        radius: Appearance.rounding.normal
+        radius: Metrics.radius("normal")
         implicitWidth: sidebarLeft.sidebarLeftWidth
         anchors.fill: parent
+
         FocusScope {
             focus: true 
             anchors.fill: parent
+
             Keys.onPressed: {
                 if (event.key === Qt.Key_Escape) {
                     Globals.visiblility.sidebarLeft = false;
                 }
             }
+
             SidebarLeftContent {
             }
         }
@@ -76,5 +79,4 @@ PanelWindow {
 
         target: "sidebarLeft"
     }
-
 }

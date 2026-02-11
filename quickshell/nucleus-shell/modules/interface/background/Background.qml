@@ -150,7 +150,7 @@ Scope {
 
                     Behavior on x {
                         NumberAnimation {
-                            duration: 600
+                            duration: Metrics.chronoDuration(600)
                             easing.type: Easing.OutCubic
                         }
                     }
@@ -182,19 +182,19 @@ Scope {
 
                         ColumnLayout {
                             anchors.centerIn: parent
-                            anchors.margins: Appearance.margin.normal
-                            spacing: Appearance.margin.small
+                            anchors.margins: Metrics.margin("normal")
+                            spacing: Metrics.margin("small")
 
                             MaterialSymbol {
                                 text: "wallpaper"
-                                font.pixelSize: Appearance.font.size.wildass
+                                font.pixelSize: Metrics.fontSize("wildass")
                                 color: Appearance.colors.colOnLayer2
                                 Layout.alignment: Qt.AlignHCenter
                             }
 
                             StyledText {
                                 text: "Wallpaper Missing"
-                                font.pixelSize: Appearance.font.size.hugeass
+                                font.pixelSize: Metrics.fontSize("hugeass")
                                 font.bold: true
                                 color: Appearance.colors.colOnLayer2
                                 horizontalAlignment: Text.AlignHCenter
@@ -203,7 +203,7 @@ Scope {
 
                             StyledText {
                                 text: "Seems like you haven't set a wallpaper yet."
-                                font.pixelSize: Appearance.font.size.small
+                                font.pixelSize: Metrics.fontSize("small")
                                 color: Appearance.colors.colSubtext
                                 horizontalAlignment: Text.AlignHCenter
                                 wrapMode: Text.WordWrap
@@ -216,7 +216,7 @@ Scope {
                                 text: "Set wallpaper"
                                 icon: "wallpaper"
                                 secondary: true
-                                radius: Appearance.rounding.large
+                                radius: Metrics.radius("large")
                                 Layout.alignment: Qt.AlignHCenter
                                 onClicked: wallpaperProc.running = true
                             }

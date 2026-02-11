@@ -80,7 +80,7 @@ Item {
 
         color: Appearance.m3colors.m3paddingContainer
         radius: Config.runtime.bar.modules.radius * Config.runtime.appearance.rounding.factor
-        implicitWidth: workspaceRow.implicitWidth + Appearance.margin.large - 8
+        implicitWidth: workspaceRow.implicitWidth + Metrics.margin("large") - 8
         implicitHeight: Config.runtime.bar.modules.height
 
         // occupied background highlight
@@ -145,7 +145,7 @@ Item {
                 enabled: Config.runtime.appearance.animations.enabled
 
                 NumberAnimation {
-                    duration: 400
+                    duration: Metrics.chronoDuration(400)
                     easing.type: Easing.OutSine
                 }
 
@@ -155,7 +155,7 @@ Item {
                 enabled: Config.runtime.appearance.animations.enabled
 
                 NumberAnimation {
-                    duration: 133
+                    duration: Metrics.chronoDuration(133)
                     easing.type: Easing.OutSine
                 }
 
@@ -167,7 +167,7 @@ Item {
             id: workspaceRow
 
             anchors.centerIn: parent
-            spacing: 10
+            spacing: Metrics.spacing(10)
 
             Repeater {
                 model: numWorkspaces
@@ -222,7 +222,7 @@ Item {
                     // Numbers mode — only if not Hyprland
                     StyledText {
                         anchors.centerIn: parent
-                        visible: !Config.runtime.bar.modules.workspaces.showJapaneseNumbers && !Config.runtime.bar.modules.workspaces.showAppIconse
+                        visible: !Config.runtime.bar.modules.workspaces.showJapaneseNumbers && !Config.runtime.bar.modules.workspaces.showAppIcons
                         text: index + 1
                         rotation: (Config.runtime.bar.position === "left" || Config.runtime.bar.position === "right") ? 270 : 0
                     }
@@ -235,7 +235,7 @@ Item {
                         visible: Compositor.require("hyprland") && Config.runtime.bar.modules.workspaces.showAppIcons && !occupied
                         text: displayText
                         rotation: (Config.runtime.bar.position === "left" || Config.runtime.bar.position === "right") ? 270 : 0
-                        font.pixelSize: 10
+                        font.pixelSize: Metrics.iconSize(10)
                         fill: 1
                     }
 

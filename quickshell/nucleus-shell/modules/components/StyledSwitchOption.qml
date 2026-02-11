@@ -10,8 +10,8 @@ RowLayout {
     property string prefField: ''
 
     ColumnLayout {
-        StyledText { text: main.title; font.pixelSize: 16;  }
-        StyledText { text: main.description; font.pixelSize: 12; }
+        StyledText { text: main.title; font.pixelSize: Metrics.fontSize(16);  }
+        StyledText { text: main.description; font.pixelSize: Metrics.fontSize(12); }
     }
     Item { Layout.fillWidth: true }
 

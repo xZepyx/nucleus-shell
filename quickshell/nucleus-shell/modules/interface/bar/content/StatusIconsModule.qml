@@ -20,14 +20,14 @@ Item {
 
         color: Globals.visiblility.sidebarRight ? Appearance.m3colors.m3paddingContainer : "transparent"
         radius: Config.runtime.bar.modules.radius * Config.runtime.appearance.rounding.factor
-        implicitWidth: isVertical ? contentRow.implicitWidth + Appearance.margin.large - 8 : contentRow.implicitWidth + Appearance.margin.large
+        implicitWidth: isVertical ? contentRow.implicitWidth + Metrics.margin("large") - 8 : contentRow.implicitWidth + Metrics.margin("large")
         implicitHeight: Config.runtime.bar.modules.height
 
         RowLayout {
             id: contentRow
 
             anchors.centerIn: parent
-            spacing: isVertical ? 8 : 16
+            spacing: isVertical ? Metrics.spacing(8) : Metrics.spacing(16)
 
 
             MaterialSymbol {
@@ -36,7 +36,7 @@ Item {
                 visible: Config.runtime.bar.modules.statusIcons.networkStatusEnabled
                 rotation: isVertical ? 270 : 0
                 icon: Network.icon
-                iconSize: Appearance.font.size.huge
+                iconSize: Metrics.fontSize("huge")
             }
 
             MaterialSymbol {
@@ -45,7 +45,7 @@ Item {
                 visible: Config.runtime.bar.modules.statusIcons.bluetoothStatusEnabled
                 rotation: isVertical ? 270 : 0
                 icon: Bluetooth.icon
-                iconSize: Appearance.font.size.huge
+                iconSize: Metrics.fontSize("huge")
             }
 
 

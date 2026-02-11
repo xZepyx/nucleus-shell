@@ -1,5 +1,6 @@
 import QtQuick
 import "shapes/morph.js" as Morph
+import qs.config
 
 // From github.com/end-4/rounded-polygons-qmljs
 
@@ -22,7 +23,7 @@ Canvas {
     property double progress: 1
     property var morph: new Morph.Morph(roundedPolygon, roundedPolygon)
     property Animation animation: NumberAnimation {
-        duration: 350
+        duration: Metrics.chronoDuration(350)
         easing.type: Easing.BezierSpline
         easing.bezierCurve: [0.42, 1.67, 0.21, 0.90, 1, 1] // Material 3 Expressive fast spatial (https://m3.material.io/styles/motion/overview/specs)
     }
@@ -87,7 +88,7 @@ Canvas {
                 points.push({ x: c.anchor1X, y: c.anchor1Y })
             }
 
-            let radius = 2
+            let radius = Metrics.radius(2)
 
             ctx.fillStyle = "red"
             for (const p of points) {

@@ -10,7 +10,7 @@ TextField {
     property string icon: ""
     property color iconColor: Appearance.m3colors.m3onSurfaceVariant
     property string placeholder: ""
-    property real iconSize: 24
+    property real iconSize: Metrics.iconSize(24)
     property alias radius: bg.radius
     property bool outline: true
     property alias topLeftRadius: bg.topLeftRadius
@@ -18,9 +18,9 @@ TextField {
     property alias bottomLeftRadius: bg.bottomLeftRadius
     property alias bottomRightRadius: bg.bottomRightRadius
     property color backgroundColor: filled ? Appearance.m3colors.m3surfaceContainerHigh : "transparent"
-    property int fieldPadding: 20
-    property int iconSpacing: 14
-    property int iconMargin: 20
+    property int fieldPadding: Metrics.padding(20)
+    property int iconSpacing: Metrics.spacing(14)
+    property int iconMargin: Metrics.margin(20)
     property bool filled: true
     property bool highlight: true
 
@@ -32,7 +32,7 @@ TextField {
     color: Appearance.m3colors.m3onSurface
     placeholderTextColor: Appearance.m3colors.m3onSurfaceVariant
     font.family: "Outfit"
-    font.pixelSize: 14
+    font.pixelSize: Metrics.fontSize(14)
     cursorVisible: control.focus
 
     MaterialSymbol {
@@ -46,7 +46,7 @@ TextField {
 
         Behavior on color {
             ColorAnimation {
-                duration: Appearance.animation.durations.small
+                duration: Metrics.chronoDuration("small")
                 easing.type: Appearance.animation.easing
             }
 
@@ -66,13 +66,13 @@ TextField {
             NumberAnimation {
                 from: 1
                 to: 0
-                duration: Appearance.animation.durations.large * 2
+                duration: Metrics.chronoDuration("lrage") * 2
             }
 
             NumberAnimation {
                 from: 0
                 to: 1
-                duration: Appearance.animation.durations.large * 2
+                duration: Metrics.chronoDuration("lrage") * 2
             }
 
         }
@@ -84,7 +84,7 @@ TextField {
             id: bg
 
             anchors.fill: parent
-            radius: Appearance.rounding.unsharpenmore
+            radius: Metrics.radius("unsharpenmore")
             color: control.backgroundColor
 
             Rectangle {
@@ -104,7 +104,7 @@ TextField {
                     enabled: Config.runtime.appearance.animations.enabled
 
                     ColorAnimation {
-                        duration: Appearance.animation.durations.small
+                        duration: Metrics.chronoDuration("small")
                         easing.type: Appearance.animation.easing
                     }
 
@@ -135,7 +135,7 @@ TextField {
             Behavior on height {
                 enabled: Config.runtime.appearance.animations.enabled
                 NumberAnimation {
-                    duration: Appearance.animation.durations.small
+                    duration: Metrics.chronoDuration("small")
                     easing.type: Appearance.animation.easing
                 }
 
@@ -144,7 +144,7 @@ TextField {
             Behavior on color {
                 enabled: Config.runtime.appearance.animations.enabled
                 ColorAnimation {
-                    duration: Appearance.animation.durations.small
+                    duration: Metrics.chronoDuration("small")
                     easing.type: Appearance.animation.easing
                 }
 
@@ -173,7 +173,7 @@ TextField {
             Behavior on border.width {
                 enabled: Config.runtime.appearance.animations.enabled
                 NumberAnimation {
-                    duration: Appearance.animation.durations.small
+                    duration: Metrics.chronoDuration("small")
                     easing.type: Appearance.animation.easing
                 }
 
@@ -182,7 +182,7 @@ TextField {
             Behavior on border.color {
                 enabled: Config.runtime.appearance.animations.enabled
                 ColorAnimation {
-                    duration: Appearance.animation.durations.small
+                    duration: Metrics.chronoDuration("small")
                     easing.type: Appearance.animation.easing
                 }
 

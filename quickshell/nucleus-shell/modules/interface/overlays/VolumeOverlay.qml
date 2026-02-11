@@ -50,10 +50,10 @@ Scope {
             anchors.right: Config.runtime.overlays.volumeOverlayPosition.endsWith("right")
             anchors.left: Config.runtime.overlays.volumeOverlayPosition.endsWith("left")
 			margins {
-                top: 10
-                bottom: 10
-                left: 10
-                right: 10
+                top: Metrics.margin(10)
+                bottom: Metrics.margin(10)
+                left: Metrics.margin(10)
+                right: Metrics.margin(10)
             }
 			implicitWidth: 460
 			implicitHeight: 105
@@ -67,11 +67,11 @@ Scope {
 				color: Appearance.m3colors.m3background
 
 				RowLayout {
-					spacing: 10
+					spacing: Metrics.spacing(10)
 					anchors {
 						fill: parent
-						leftMargin: 15
-						rightMargin: 25
+						leftMargin: Metrics.margin(15)
+						rightMargin: Metrics.margin(25)
 					}
 
 					MaterialSymbol {
@@ -79,17 +79,17 @@ Scope {
 													icon: {
 								return volume > 50 ? "volume_up" : volume > 0 ? "volume_down" : 'volume_off'
 							}
-						iconSize: 34;
+						iconSize: Metrics.iconSize(34);
 					}
 
 					ColumnLayout {
 						implicitHeight: 40
-						spacing: 5
+						spacing: Metrics.spacing(5)
                         
 						StyledText {
 							animate: false
 							text: Pipewire.defaultAudioSink?.description + " - " + (Pipewire.defaultAudioSink?.audio.muted ? 'Muted' : Math.floor(Pipewire.defaultAudioSink?.audio.volume*100) + '%')
-							font.pixelSize: 18
+							font.pixelSize: Metrics.pixelSize(18)
 						}
 
 						StyledSlider {

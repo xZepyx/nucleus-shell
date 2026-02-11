@@ -45,8 +45,8 @@ PanelWindow {
     margins {
         top: Config.runtime.bar.margins
         bottom: Config.runtime.bar.margins
-        left: Appearance.margin.small
-        right: Appearance.margin.small
+        left: Metrics.margin("small")
+        right: Metrics.margin("small")
     }
 
     PwObjectTracker {
@@ -59,7 +59,7 @@ PanelWindow {
     StyledRect {
         id: container
         color: Appearance.m3colors.m3background
-        radius: Appearance.rounding.large
+        radius: Metrics.radius("large")
         implicitWidth: sidebarRight.sidebarRightWidth
 
         anchors.fill: parent

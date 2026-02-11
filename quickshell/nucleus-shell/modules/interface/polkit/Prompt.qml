@@ -71,7 +71,7 @@ PanelWindow {
             property: "opacity"
             from: 0
             to: 1
-            duration: Appearance.animation.durations.normal
+            duration: Metrics.chronoDuration("normal")
             easing.type: Appearance.animation.easing
             running: screencopy.visible && !window.isClosing
         }
@@ -84,7 +84,7 @@ PanelWindow {
                 property: "scale"
                 from: 0.9
                 to: 1
-                duration: Appearance.animation.durations.normal
+                duration: Metrics.chronoDuration("normal")
                 easing.type: Appearance.animation.easing
             }
             ColorAnimation {
@@ -92,7 +92,7 @@ PanelWindow {
                 property: "color"
                 from: "transparent"
                 to: Appearance.m3colors.m3surface
-                duration: Appearance.animation.durations.normal
+                duration: Metrics.chronoDuration("normal")
                 easing.type: Appearance.animation.easing
             }
             NumberAnimation {
@@ -100,7 +100,7 @@ PanelWindow {
                 property: "opacity"
                 from: 0
                 to: 1
-                duration: Appearance.animation.durations.normal
+                duration: Metrics.chronoDuration("normal")
                 easing.type: Appearance.animation.easing
             }
         }
@@ -111,28 +111,28 @@ PanelWindow {
                 target: screencopy
                 property: "opacity"
                 to: 0
-                duration: Appearance.animation.durations.normal
+                duration: Metrics.chronoDuration("normal")
                 easing.type: Appearance.animation.easing
             }
             ColorAnimation {
                 target: window
                 property: "color"
                 to: "transparent"
-                duration: Appearance.animation.durations.normal
+                duration: Metrics.chronoDuration("normal")
                 easing.type: Appearance.animation.easing
             }
             NumberAnimation {
                 target: contentContainer
                 property: "opacity"
                 to: 0
-                duration: Appearance.animation.durations.normal
+                duration: Metrics.chronoDuration("normal")
                 easing.type: Appearance.animation.easing
             }
             NumberAnimation {
                 target: contentContainer
                 property: "scale"
                 to: 0.9
-                duration: Appearance.animation.durations.normal
+                duration: Metrics.chronoDuration("normal")
                 easing.type: Appearance.animation.easing
             }
             onFinished: {

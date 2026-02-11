@@ -19,7 +19,7 @@ Item {
         color: Appearance.m3colors.m3paddingContainer
         radius: Config.runtime.bar.modules.radius * Config.runtime.appearance.rounding.factor
         // Padding around the text
-        implicitWidth: child.implicitWidth + Appearance.margin.large
+        implicitWidth: child.implicitWidth + Metrics.margin("large")
         implicitHeight: Config.runtime.bar.modules.height
     }
 
@@ -27,15 +27,15 @@ Item {
         id: child
 
         anchors.centerIn: parent
-        spacing: 4
+        spacing: Metrics.spacing(4)
 
         CircularProgressBar {
             rotation: !isHorizontal ? 270 : 0
             icon: "memory"
             visible: Config.runtime.bar.modules.systemUsage.cpuStatsEnabled
-            iconSize: 14
+            iconSize: Metrics.iconSize(14)
             value: SystemDetails.cpuPercent
-            Layout.bottomMargin: 2
+            Layout.bottomMargin: Metrics.margin(2)
         }
 
         StyledText {
@@ -46,12 +46,12 @@ Item {
 
         CircularProgressBar {
             rotation: !isHorizontal ? 270 : 0
-            Layout.leftMargin: 4
+            Layout.leftMargin: Metrics.margin(4)
             icon: "memory_alt"
             visible: Config.runtime.bar.modules.systemUsage.memoryStatsEnabled
-            iconSize: 14
+            iconSize: Metrics.iconSize(14)
             value: SystemDetails.ramPercent
-            Layout.bottomMargin: 2
+            Layout.bottomMargin: Metrics.margin(2)
         }
 
         StyledText {
@@ -63,11 +63,11 @@ Item {
         CircularProgressBar {
             rotation: !isHorizontal ? 270 : 0
             visible: Config.runtime.bar.modules.systemUsage.tempStatsEnabled
-            Layout.leftMargin: 4
+            Layout.leftMargin: Metrics.margin(4)
             icon: "device_thermostat"
-            iconSize: 14
+            iconSize: Metrics.iconSize(14)
             value: SystemDetails.cpuTempPercent
-            Layout.bottomMargin: 2
+            Layout.bottomMargin: Metrics.margin(2)
         }
 
         StyledText {

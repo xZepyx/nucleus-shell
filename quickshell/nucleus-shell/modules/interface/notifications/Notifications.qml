@@ -12,7 +12,7 @@ import qs.modules.components
 Scope {
     id: root
 
-    property int innerSpacing: 10
+    property int innerSpacing: Metrics.spacing(10)
 
     PanelWindow {
         id: window
@@ -35,7 +35,7 @@ Scope {
             id: notificationList
 
             anchors.leftMargin: 0
-            anchors.topMargin: 10
+            anchors.topMargin: Metrics.margin(10)
             anchors.rightMargin: 0
             anchors.top: parent.top
             anchors.left: parent.left
@@ -47,12 +47,12 @@ Scope {
                 layer.enabled: true
                 anchors.top: parent.top
                 anchors.left: parent.left
-                anchors.leftMargin: 20
-                anchors.rightMargin: 20
+                anchors.leftMargin: Metrics.margin(20)
+                anchors.rightMargin: Metrics.margin(20)
                 anchors.right: parent.right
                 height: window.mask.height > 0 ? window.mask.height + 40 : 0
                 color: Appearance.m3colors.m3background
-                radius: Appearance.rounding.large
+                radius: Metrics.radius("large")
 
                 layer.effect: MultiEffect {
                     shadowEnabled: true
@@ -65,7 +65,7 @@ Scope {
                 Behavior on height {
                     enabled: Config.runtime.appearance.animations.enabled
                     NumberAnimation {
-                        duration: Appearance.animation.durations.small
+                        duration: Metrics.chronoDuration("small")
                         easing.type: Easing.InOutExpo
                     }
 
@@ -121,7 +121,7 @@ Scope {
                         Behavior on y {
                             enabled: Config.runtime.appearance.animations.enabled
                             NumberAnimation {
-                                duration: Appearance.animation.durations.normal
+                                duration: Metrics.chronoDuration("normal")
                                 easing.type: Easing.InOutExpo
                             }
 

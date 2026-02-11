@@ -81,12 +81,11 @@ Item {
 
     Column {
         id: col
-        spacing: 0
         anchors.centerIn: parent
 
         StyledText {
             id: workspaceText
-            font.pixelSize: Appearance.font.size.smallie
+            font.pixelSize: Metrics.fontSize("smallie")
             text: {
                 if (!activeToplevel)
                     return "Desktop"
@@ -102,7 +101,7 @@ Item {
             id: titleText
             text: StringUtils.shortText(simplifyTitle(activeToplevel?.title, 24) || `Workspace ${Hyprland.focusedWorkspaceId}`)
             horizontalAlignment: Text.AlignHCenter
-            font.pixelSize: Appearance.font.size.small
+            font.pixelSize: Metrics.fontSize("smalle")
         }
     }
 }

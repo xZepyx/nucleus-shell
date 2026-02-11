@@ -42,27 +42,27 @@ RowLayout {
         Config.updateKey(prefField, nv);
     }
 
-    spacing: 8
+    spacing: Metrics.spacing(8)
     Layout.alignment: Qt.AlignVCenter
 
     ColumnLayout {
-        spacing: 2
+        spacing: Metrics.spacing(2)
 
         StyledText {
             text: root.label
-            font.pixelSize: 14
+            font.pixelSize: Metrics.fontSize(14)
         }
 
         StyledText {
             text: root.description
-            font.pixelSize: 10
+            font.pixelSize: Metrics.fontSize(10)
         }
     }
 
     Item { Layout.fillWidth: true }
 
     RowLayout {
-        spacing: 6
+        spacing: Metrics.spacing(6)
 
         StyledButton {
             text: "-"
@@ -72,7 +72,7 @@ RowLayout {
 
         StyledText {
             text: value.toFixed(2)
-            font.pixelSize: 14
+            font.pixelSize: Metrics.fontSize(14)
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             width: 72

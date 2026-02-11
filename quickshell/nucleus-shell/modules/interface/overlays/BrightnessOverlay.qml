@@ -41,10 +41,10 @@ Scope {
             anchors.right: Config.runtime.overlays.brightnessOverlayPosition.endsWith("right")
             anchors.left: Config.runtime.overlays.brightnessOverlayPosition.endsWith("left")
 			margins {
-                top: 10
-                bottom: 10
-                left: 10
-                right: 10
+                top: Metrics.margin(10)
+                bottom: Metrics.margin(10)
+                left: Metrics.margin(10)
+                right: Metrics.margin(10)
             }
 
 			implicitWidth: 460
@@ -58,11 +58,11 @@ Scope {
                 color: Appearance.m3colors.m3background
 
                 RowLayout {
-                    spacing: 10
+                    spacing: Metrics.spacing(10)
 					anchors {
 						fill: parent
-						leftMargin: 15
-						rightMargin: 25
+						leftMargin: Metrics.margin(15)
+						rightMargin: Metrics.margin(25)
 					}
 
                     MaterialSymbol {
@@ -72,17 +72,17 @@ Scope {
                             else if (brightnessLevel > 33) return "brightness_medium"
                             else return "brightness_low"
                         }
-                        iconSize: 30
+                        iconSize: Metrics.iconSize(30)
                     }
 
                     ColumnLayout {
                         implicitHeight: 40
-                        spacing: 5
+                        spacing: Metrics.spacing(5)
 
                         StyledText {            
                             animate: false
                             text: "Brightness - " + Math.round(monitor.brightness * 100) + '%'
-                            font.pixelSize: 18
+                            font.pixelSize: Metrics.fontSize(18)
                         }
 
                         StyledSlider {

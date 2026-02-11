@@ -129,6 +129,7 @@ Singleton {
         property int normal: 16
         property int large: 22
         property int verylarge: 30
+        property int extraLarge: 35
     }
 
     animation: QtObject {

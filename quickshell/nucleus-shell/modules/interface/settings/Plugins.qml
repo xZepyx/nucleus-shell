@@ -3,6 +3,7 @@ import QtQuick.Layouts
 import qs.config
 import qs.plugins
 import qs.modules.components
+import qs.modules.functions
 
 Item { // I didn't want the flicable implicitHeight headache
     id: pluginsPage
@@ -26,29 +27,29 @@ Item { // I didn't want the flicable implicitHeight headache
         }
     }
     // Outer margins
-    property int sideMargin: Appearance.margin.verylarge * 8
-    property int topMargin: Appearance.margin.verylarge
-    property int contentSpacing: Appearance.margin.normal
+    property int sideMargin: Metrics.margin("verylarge") * 8
+    property int topMargin: Metrics.margin("verylarge")
+    property int contentSpacing: Metrics.margin("normal")
 
     // Header + description
     ColumnLayout {
         id: headerColumn
         anchors.left: parent.left
         anchors.top: parent.top
-        anchors.leftMargin: Appearance.margin.verylarge + Appearance.margin.small
+        anchors.leftMargin: Metrics.margin("verylarge") + Metrics.margin("small")
         anchors.topMargin: topMargin
-        spacing: Appearance.margin.small
+        spacing: Metrics.margin("small")
 
         StyledText {
             text: "Plugins"
-            font.pixelSize: Appearance.font.size.huge
+            font.pixelSize: Metrics.fontSize("huge")
             font.bold: true
-            font.family: Appearance.font.family.title
+            font.family: Metrics.fontFamily("title")
         }
 
         StyledText {
             text: "Modify and Customize Installed Plugins."
-            font.pixelSize: Appearance.font.size.small
+            font.pixelSize: Metrics.fontSize("small")
         }
 
     }
@@ -74,7 +75,7 @@ Item { // I didn't want the flicable implicitHeight headache
 
             StyledText {
                 text: "Plugins not found!"
-                font.pixelSize: 20
+                font.pixelSize: Metrics.fontSize(20)
                 font.bold: true
                 visible: PluginLoader.plugins.length === 0
                 Layout.alignment: Qt.AlignHCenter

@@ -12,18 +12,18 @@ Text {
   property string animateProp: "scale"
   property real animateFrom: 0
   property real animateTo: 1
-  property int animateDuration: Appearance.animation.durations.small
+  property int animateDuration: Metrics.chronoDuration("small")
 
   renderType: Text.NativeRendering
   textFormat: Text.PlainText
   color: Appearance.syntaxHighlightingTheme
-  font.family: Appearance.font.family.main 
-  font.pixelSize: Appearance.font.size.normal
+  font.family: Metrics.fontFamily("main") 
+  font.pixelSize: Metrics.fontSize("normal")
 
   Behavior on color {
     enabled: Config.runtime.appearance.animations.enabled
     ColorAnimation {
-      duration: Appearance.animation.durations.small
+      duration: Metrics.chronoDuration("small")
       easing.type: Easing.BezierSpline
       easing.bezierCurve: Appearance.animation.curves.standard
     }

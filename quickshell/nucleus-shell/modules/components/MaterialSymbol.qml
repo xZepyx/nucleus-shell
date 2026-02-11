@@ -4,7 +4,7 @@ import qs.config
 StyledText {
     property string icon: ""
     property int fill: 0
-    property int iconSize: Appearance.font.size.large
+    property int iconSize: Metrics.iconSize("large")
 
     font.family: Appearance.font.family.materialIcons
     font.pixelSize: iconSize

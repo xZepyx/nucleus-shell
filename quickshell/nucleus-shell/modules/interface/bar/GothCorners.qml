@@ -45,7 +45,7 @@ PanelWindow {
             Behavior on opacity {
                 enabled: Config.runtime.appearance.animations.enabled
                 NumberAnimation {
-                    duration: Appearance.animation.durations.large
+                    duration: Metrics.chronoDuration("large")
                     easing.type: Easing.InOutExpo
                     easing.bezierCurve: Appearance.animation.elementMove.bezierCurve
                 }
@@ -67,7 +67,7 @@ PanelWindow {
                 anchors.bottomMargin: Config.runtime.bar.position === "top" ? -15 : 0
                 anchors.leftMargin: Config.runtime.bar.position === "right" ? -15 : 0
                 anchors.rightMargin: Config.runtime.bar.position === "left" ? -15 : 0
-                radius: Appearance.rounding.normal
+                radius: Metrics.radius("normal")
             }
 
         }

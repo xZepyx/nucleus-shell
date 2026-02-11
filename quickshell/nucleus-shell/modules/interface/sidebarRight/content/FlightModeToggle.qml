@@ -11,7 +11,7 @@ StyledRect {
     id: root
     width: 150
     height: 50
-    radius: Appearance.rounding.verylarge
+    radius: Metrics.radius("verylarge")
     color: Appearance.m3colors.m3surfaceContainerHigh
 
     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
@@ -32,20 +32,19 @@ StyledRect {
         }
     }
 
-    // Icon background
     StyledRect {
         id: iconBg
         width: 50
         height: 50
-        radius: Appearance.rounding.large
+        radius: Metrics.radius("large")
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
-        anchors.leftMargin: 10
+        anchors.leftMargin: Metrics.margin(10)
         color: !flightMode ? Appearance.m3colors.m3surfaceContainerHigh : Appearance.m3colors.m3primaryContainer
 
         MaterialSymbol {
             anchors.centerIn: parent
-            iconSize: 35
+            iconSize: Metrics.iconSize(35)
             icon: "flight"
         }
     }
@@ -53,20 +52,19 @@ StyledRect {
     Column {
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: iconBg.right
-        anchors.leftMargin: 10
+        anchors.leftMargin: Metrics.margin(10)
 
         StyledText {
             text: "Flight Mode"
-            font.pixelSize: 20
+            font.pixelSize: Metrics.fontSize(20)
         }
 
         StyledText {
             text: flightModeText
-            font.pixelSize: Appearance.font.size.small
+            font.pixelSize: Metrics.fontSize("small")
         }
     }
 
-    // Whole card toggles flightMode radio
     MouseArea {
         anchors.fill: parent
         propagateComposedEvents: true

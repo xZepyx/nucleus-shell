@@ -2,5 +2,5 @@
 
 This folder contains the docs for `nucleus-shell`.
 
-Currently there aren't any docs written but I will work on them soon.
+Currently the docs are not complete but I am working on them...
 

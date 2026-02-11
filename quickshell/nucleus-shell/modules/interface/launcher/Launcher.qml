@@ -49,10 +49,10 @@ PanelWindow {
     }
 
     margins {
-        top: 10
-        bottom: 10
-        left: 10
-        right: 10
+        top: Metrics.margin(10)
+        bottom: Metrics.margin(10)
+        left: Metrics.margin(10)
+        right: Metrics.margin(10)
     }
 
     Rectangle {
@@ -102,10 +102,10 @@ PanelWindow {
 
         StyledRect {
             color: Appearance.m3colors.m3background
-            topLeftRadius: Appearance.rounding.verylarge
-            topRightRadius: Appearance.rounding.verylarge
-            bottomLeftRadius: searchField.text !== "" ? 0 : Appearance.rounding.verylarge
-            bottomRightRadius: searchField.text !== "" ? 0 : Appearance.rounding.verylarge
+            topLeftRadius: Metrics.radius("verylarge")
+            topRightRadius: Metrics.radius("verylarge")
+            bottomLeftRadius: searchField.text !== "" ? 0 : Metrics.radius("verylarge")
+            bottomRightRadius: searchField.text !== "" ? 0 : Metrics.radius("verylarge")
             implicitWidth: launcher.implicitWidth
             implicitHeight: 65
             anchors.top: parent.top
@@ -116,12 +116,12 @@ PanelWindow {
 
                 height: 50
                 filled: false
-                radius: Appearance.rounding.verylarge
+                radius: Metrics.radius("verylarge")
                 anchors.fill: parent
                 icon: ""
                 highlight: false
                 placeholder: "Search applications..."
-                font.pixelSize: 15
+                font.pixelSize: Metrics.fontSize(15)
                 outline: false
                 onTextChanged: {
                     if (launcherContent.searchQuery === text)
@@ -136,7 +136,7 @@ PanelWindow {
             Behavior on bottomLeftRadius {
                 enabled: Config.runtime.appearance.animations.enabled
                 NumberAnimation {
-                    duration: 100
+                    duration: Metrics.chronoDuration(100)
                     easing.type: Easing.BezierSpline
                 }
 
@@ -145,7 +145,7 @@ PanelWindow {
             Behavior on bottomRightRadius {
                 enabled: Config.runtime.appearance.animations.enabled
                 NumberAnimation {
-                    duration: 100
+                    duration: Metrics.chronoDuration(100)
                     easing.type: Easing.BezierSpline
                 }
 
@@ -162,14 +162,14 @@ PanelWindow {
             readonly property real contentHeightClamped: Math.min(launcherContent.listView.contentHeight + 50, maxResultsHeight)
 
             color: Appearance.m3colors.m3background
-            topLeftRadius: searchField.text !== "" ? 0 : Appearance.rounding.verylarge
-            topRightRadius: searchField.text !== "" ? 0 : Appearance.rounding.verylarge
-            bottomLeftRadius: Appearance.rounding.verylarge 
-            bottomRightRadius: Appearance.rounding.verylarge
+            topLeftRadius: searchField.text !== "" ? 0 : Metrics.radius("verylarge")
+            topRightRadius: searchField.text !== "" ? 0 : Metrics.radius("verylarge")
+            bottomLeftRadius: Metrics.radius("verylarge") 
+            bottomRightRadius: Metrics.radius("verylarge")
             opacity: searchField.text !== "" ? 1 : 0
             anchors.top: parent.top
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.topMargin: 65
+            anchors.topMargin: Metrics.margin(65)
             implicitWidth: launcher.implicitWidth
             implicitHeight: searchField.text !== "" ? contentHeightClamped : 0
 
@@ -190,7 +190,7 @@ PanelWindow {
             Behavior on topLeftRadius {
                 enabled: Config.runtime.appearance.animations.enabled
                 NumberAnimation {
-                    duration: 100
+                    duration: Metrics.chronoDuration(100)
                     easing.type: Easing.BezierSpline
                 }
 
@@ -199,7 +199,7 @@ PanelWindow {
             Behavior on topRightRadius {
                 enabled: Config.runtime.appearance.animations.enabled
                 NumberAnimation {
-                    duration: 100
+                    duration: Metrics.chronoDuration(100)
                     easing.type: Easing.BezierSpline
                 }
 

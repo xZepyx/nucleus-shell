@@ -18,9 +18,14 @@ Thank you for your interest in contributing. Please follow these guidelines to h
 
 ### Code Style
 
-- Use clear, descriptive variable and function names.
-- Maintain modular, readable configuration files.
-- Comment non-obvious sections.
+* Use clear, descriptive variable and function names.
+* Maintain modular, readable configuration files.
+* Comment non-obvious sections.
+* Note that it is requried to use Metrics.function(value) whenever you use properties like (read [docs/shell/config/Metrics.md](../shell/config/Metrics.md) for details):
+ - Spacing
+ - Margin
+ - Radius
+ - Duration (Not requried for timers) 
 
 # Collaborating Workflow
 

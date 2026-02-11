@@ -10,7 +10,7 @@ Control {
 
     property alias text: label.text
     property string icon: ""
-    property int iconSize: 20
+    property int iconSize: Metrics.iconSize(20)
     property alias radius: background.radius
     property alias topLeftRadius: background.topLeftRadius
     property alias topRightRadius: background.topRightRadius
@@ -66,7 +66,7 @@ Control {
 
         StyledPopout {
             hoverTarget: hover
-            hoverDelay: 500
+            hoverDelay: Metrics.chronoDuration(500)
 
             Component {
                 StyledText {
@@ -97,7 +97,7 @@ Control {
 
                 Behavior on color {
                     ColorAnimation {
-                        duration: Appearance.animation.durations.small / 2
+                        duration: Metrics.chronoDuration("small") / 2
                         easing.type: Appearance.animation.easing
                     }
 
@@ -114,7 +114,7 @@ Control {
 
                 Behavior on color {
                     ColorAnimation {
-                        duration: Appearance.animation.durations.small / 2
+                        duration: Metrics.chronoDuration("small") / 2
                         easing.type: Appearance.animation.easing
                     }
 
@@ -129,12 +129,12 @@ Control {
     background: Rectangle {
         id: background
 
-        radius: Appearance.rounding.large
+        radius: Metrics.radius("large") 
         color: root.backgroundColor
 
         Behavior on color {
             ColorAnimation {
-                duration: Appearance.animation.durations.small / 2
+                duration: Metrics.chronoDuration("small") / 2
                 easing.type: Appearance.animation.easing
             }
 
@@ -142,7 +142,7 @@ Control {
 
         Behavior on radius {
             NumberAnimation {
-                duration: Appearance.animation.durations.normal / 2
+                duration: Metrics.chronoDuration("small") / 2
                 easing.type: Appearance.animation.easing
             }
 
@@ -150,7 +150,7 @@ Control {
 
         Behavior on topLeftRadius {
             NumberAnimation {
-                duration: Appearance.animation.durations.small
+                duration: Metrics.chronoDuration("small")
                 easing.type: Appearance.animation.easing
             }
 
@@ -158,7 +158,7 @@ Control {
 
         Behavior on topRightRadius {
             NumberAnimation {
-                duration: Appearance.animation.durations.small
+                duration: Metrics.chronoDuration("small") 
                 easing.type: Appearance.animation.easing
             }
 
@@ -166,7 +166,7 @@ Control {
 
         Behavior on bottomLeftRadius {
             NumberAnimation {
-                duration: Appearance.animation.durations.small
+                duration: Metrics.chronoDuration("small") 
                 easing.type: Appearance.animation.easing
             }
 
@@ -174,7 +174,7 @@ Control {
 
         Behavior on bottomRightRadius {
             NumberAnimation {
-                duration: Appearance.animation.durations.small
+                duration: Metrics.chronoDuration("small") 
                 easing.type: Appearance.animation.easing
             }
 

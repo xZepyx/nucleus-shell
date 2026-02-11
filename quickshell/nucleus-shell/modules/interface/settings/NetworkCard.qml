@@ -30,27 +30,27 @@ Item {
     ColumnLayout {
         id: mainLayout
         anchors.fill: parent
-        spacing: 10
+        spacing: Metrics.spacing(10)
 
         RowLayout {
-            spacing: 10
+            spacing: Metrics.spacing(10)
 
             // Signal icon with lock overlay
             Item {
-                width: 32
-                height: 32
+                width: Metrics.spacing(32)
+                height: Metrics.spacing(32)
 
                 MaterialSymbol {
                     anchors.fill: parent
                     icon: connection ? signalIcon(connection.strength, connection.isSecure) : "network_wifi"
-                    font.pixelSize: 32
+                    font.pixelSize: Metrics.fontSize(32)
                 }
 
                 // Lock overlay (anchors are safe because Item is not layout-managed)
                 MaterialSymbol {
                     icon: "lock"
                     visible: connection && connection.type === "wifi" && connection.isSecure
-                    font.pixelSize: 12
+                    font.pixelSize: Metrics.fontSize(12)
                     anchors.right: parent.right
                     anchors.bottom: parent.bottom
                 }
@@ -58,11 +58,11 @@ Item {
 
             ColumnLayout {
                 Layout.alignment: Qt.AlignVCenter
-                spacing: 0
+                spacing: Metrics.spacing(0)
 
                 StyledText {
                     text: connection ? connection.name : ""
-                    font.pixelSize: 16
+                    font.pixelSize: Metrics.fontSize(16)
                     font.bold: true
                 }
 
@@ -72,7 +72,7 @@ Item {
                         connection.type === "ethernet" ? connection.device || "Ethernet" :
                         connection.isSecure ? "Secured" : "Open"
                     ) : ""
-                    font.pixelSize: 12
+                    font.pixelSize: Metrics.fontSize(12)
                     color: isActive
                         ? Appearance.m3colors.m3primary
                         : ColorUtils.transparentize(Appearance.m3colors.m3onSurface, 0.4)
@@ -102,10 +102,10 @@ Item {
         // Password row
         RowLayout {
             visible: showPasswordField && connection && connection.type === "wifi"
-            spacing: 10
+            spacing: Metrics.spacing(10)
 
             StyledTextField {
-                padding: 10
+                padding: Metrics.padding(10)
                 Layout.fillWidth: true
                 placeholderText: "Enter password"
                 echoMode: parent.showPassword ? TextInput.Normal : TextInput.Password

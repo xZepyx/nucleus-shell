@@ -24,13 +24,13 @@ Rectangle {
     Behavior on opacity {
         enabled: Config.runtime.appearance.animations.enabled
         NumberAnimation {
-            duration: Appearance.animation.durations.small
+            duration: Metrics.chronoDuration("small")
             easing.type: Easing.InOutExpo
         }
     }
 
     Layout.fillWidth: true
-    radius: Appearance.rounding.large
+    radius: Metrics.radius("large")
 
     property bool hovered: mouseHandler.containsMouse
     property bool clicked: mouseHandler.containsPress
@@ -38,7 +38,7 @@ Rectangle {
     Behavior on color {
         enabled: Config.runtime.appearance.animations.enabled
         ColorAnimation {
-            duration: Appearance.animation.durations.small
+            duration: Metrics.chronoDuration("small")
             easing.type: Easing.InOutExpo
         }
     }
@@ -47,13 +47,13 @@ Rectangle {
     RowLayout {
         id: content
         anchors.fill: parent
-        anchors.margins: 10
-        spacing: 10
+        anchors.margins: Metrics.margin(10)
+        spacing: Metrics.spacing(10)
 
         ClippingRectangle {
             width: 50
             height: 50
-            radius: Appearance.rounding.large
+            radius: Metrics.radius("large")
             clip: true
             color: root.image === "" ? Appearance.m3colors.m3surfaceContainer : "transparent"
             Image {
@@ -67,7 +67,7 @@ Rectangle {
                 color: Appearance.m3colors.m3onSurfaceVariant
                 anchors.centerIn: parent
                 visible: root.image === ""
-                iconSize: 32
+                iconSize: Metrics.iconSize(22)
             }
         }
 
@@ -75,7 +75,7 @@ Rectangle {
             StyledText {
                 text: root.title
                 font.bold: true
-                font.pixelSize: 18
+                font.pixelSize: Metrics.fontSize(18)
                 wrapMode: Text.Wrap
                 color: Appearance.m3colors.m3onSurface
                 Layout.fillWidth: true
@@ -84,7 +84,7 @@ Rectangle {
             StyledText {
                 text: root.body.length > 123 ? root.body.substr(0, 120) + "..." : root.body
                 visible: root.body.length > 0
-                font.pixelSize: 12
+                font.pixelSize: Metrics.fontSize(12)
                 color: Appearance.m3colors.m3onSurfaceVariant
                 wrapMode: Text.Wrap
                 Layout.fillWidth: true
@@ -94,7 +94,7 @@ Rectangle {
                 visible: root.buttons.length > 1
                 Layout.preferredHeight: 40
                 Layout.fillWidth: true
-                spacing: 10
+                spacing: Metrics.spacing(10)
 
                 Repeater {
                     model: buttons

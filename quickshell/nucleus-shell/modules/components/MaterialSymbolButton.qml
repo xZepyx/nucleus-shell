@@ -40,7 +40,7 @@ MaterialSymbol {
         active: root.tooltipText !== ""
         StyledPopout {
             hoverTarget: hover
-            hoverDelay: 500
+            hoverDelay: Metrics.chronoDuration(500)
 
             Component {
                 StyledText {

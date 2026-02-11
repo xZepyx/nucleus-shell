@@ -11,7 +11,7 @@ LazyLoader {
 
     property PanelWindow instance: null
     property HoverHandler hoverTarget
-    property real margin: 10
+    property real margin: Metrics.margin(10)
     default property list<Component> content
     property bool startAnim: false
     property bool isVisible: false
@@ -24,7 +24,7 @@ LazyLoader {
 
     property bool requiresHover: true
     property bool _manualControl: false
-    property int hoverDelay: 250
+    property int hoverDelay: Metrics.chronoDuration(250)
 
     property bool targetHovered: hoverTarget && hoverTarget.hovered
     property bool containerHovered: interactable && root.item && root.item.containerHovered
@@ -51,7 +51,7 @@ LazyLoader {
     }
 
     property Timer hangTimer: Timer {
-        interval: 200
+        interval: Metrics.chronoDuration(200)
         repeat: false
         onTriggered: {
             root.startAnim = false;
@@ -60,7 +60,7 @@ LazyLoader {
     }
 
     property Timer cleanupTimer: Timer {
-        interval: Appearance.animation.durations.small
+        interval: Metrics.chronoDuration("small") 
         repeat: false
         onTriggered: {
             root.isVisible = false;
@@ -256,28 +256,28 @@ LazyLoader {
 
             Behavior on opacity {
                 NumberAnimation {
-                    duration: Appearance.animation.durations.small
+                    duration: Metrics.chronoDuration("small") 
                     easing.type: Appearance.animation.easing
                 }
             }
             Behavior on scale {
                 enabled: !root.interactable
                 NumberAnimation {
-                    duration: Appearance.animation.durations.small
+                    duration: Metrics.chronoDuration("small") 
                     easing.type: Appearance.animation.easing
                 }
             }
             Behavior on implicitWidth {
                 enabled: root.interactable
                 NumberAnimation {
-                    duration: Appearance.animation.durations.small
+                    duration: Metrics.chronoDuration("small") 
                     easing.type: Appearance.animation.easing
                 }
             }
             Behavior on implicitHeight {
                 enabled: root.interactable
                 NumberAnimation {
-                    duration: Appearance.animation.durations.small
+                    duration: Metrics.chronoDuration("small") 
                     easing.type: Appearance.animation.easing
                 }
             }

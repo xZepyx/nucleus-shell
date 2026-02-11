@@ -8,8 +8,8 @@ Slider {
     id: root
 
     property real trackHeightDiff: 15
-    property real handleGap: 6
-    property real trackDotSize: 4
+    property real handleGap: Metrics.spacing(4)
+    property real trackDotSize: Metrics.iconSize(4)
     property real trackNearHandleRadius: Appearance.rounding.unsharpen
     property bool useAnim: true
     property int iconSize: Appearance.font.size.large 
@@ -38,10 +38,8 @@ Slider {
         iconSize: root.iconSize 
         anchors.right: parent.right 
         anchors.verticalCenter: parent.verticalCenter 
-        anchors.rightMargin: 15
+        anchors.rightMargin: Metrics.margin(16)
     }
-
-    // ========= TRACK =========
 
     background: Item {
         anchors.verticalCenter: parent.verticalCenter
@@ -58,14 +56,14 @@ Slider {
 
             height: root.height - root.trackHeightDiff
             color: Appearance.colors.colPrimary
-            radius: Appearance.rounding.small
+            radius: Metrics.radius("small") 
             topRightRadius: root.trackNearHandleRadius
             bottomRightRadius: root.trackNearHandleRadius
 
             Behavior on width {
                 enabled: Config.runtime.appearance.animations.enabled
                 NumberAnimation {
-                    duration: !root.useAnim ? 0 : Appearance.animation.durations.small
+                    duration: !root.useAnim ? 0 : Metrics.chronoDuration("small") 
                     easing.type: Easing.BezierSpline
                     easing.bezierCurve: Appearance.animation.curves.expressiveEffects
                 }
@@ -82,14 +80,14 @@ Slider {
 
             height: root.height - root.trackHeightDiff
             color: Appearance.colors.colSecondaryContainer
-            radius: Appearance.rounding.small
+            radius: Metrics.radius("small") 
             topLeftRadius: root.trackNearHandleRadius
             bottomLeftRadius: root.trackNearHandleRadius
 
             Behavior on width {
                 enabled: Config.runtime.appearance.animations.enabled
                 NumberAnimation {
-                    duration: !root.useAnim ? 0 : Appearance.animation.durations.small
+                    duration: !root.useAnim ? 0 : Metrics.chronoDuration("small") 
                     easing.type: Easing.BezierSpline
                     easing.bezierCurve: Appearance.animation.curves.expressiveEffects
                 }

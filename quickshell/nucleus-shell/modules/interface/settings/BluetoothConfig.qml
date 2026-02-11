@@ -10,16 +10,15 @@ ContentMenu {
     title: "Bluetooth"
     description: "Manage Bluetooth devices and connections."
 
-
     ContentCard {
         ContentRowCard {
-            cardSpacing: 0
-            verticalPadding: Bluetooth.defaultAdapter.enabled ? 10 : 0
-            cardMargin: 0
+            cardSpacing: Metrics.spacing(0)
+            verticalPadding: Bluetooth.defaultAdapter.enabled ? Metrics.padding(10) : Metrics.padding(0)
+            cardMargin: Metrics.margin(0)
 
             StyledText {
                 text: powerSwitch.checked ? "Power: On" : "Power: Off"
-                font.pixelSize: 16
+                font.pixelSize: Metrics.fontSize(16)
                 font.bold: true
             }
 
@@ -34,21 +33,21 @@ ContentMenu {
 
         ContentRowCard {
             visible: Bluetooth.defaultAdapter.enabled
-            cardSpacing: 0
-            verticalPadding: 10
-            cardMargin: 0
+            cardSpacing: Metrics.spacing(0)
+            verticalPadding: Metrics.padding(10)
+            cardMargin: Metrics.margin(0)
 
             ColumnLayout {
-                spacing: 2
+                spacing: Metrics.spacing(2)
 
                 StyledText {
                     text: "Discoverable"
-                    font.pixelSize: 16
+                    font.pixelSize: Metrics.fontSize(16)
                 }
 
                 StyledText {
                     text: "Allow other devices to find this computer."
-                    font.pixelSize: 12
+                    font.pixelSize: Metrics.fontSize(12)
                     color: ColorUtils.transparentize(Appearance.m3colors.m3onSurface, 0.6)
                 }
             }
@@ -63,21 +62,21 @@ ContentMenu {
 
         ContentRowCard {
             visible: Bluetooth.defaultAdapter.enabled
-            cardSpacing: 0
-            verticalPadding: 0
-            cardMargin: 0
+            cardSpacing: Metrics.spacing(0)
+            verticalPadding: Metrics.padding(0)
+            cardMargin: Metrics.margin(0)
 
             ColumnLayout {
-                spacing: 2
+                spacing: Metrics.spacing(2)
 
                 StyledText {
                     text: "Scanning"
-                    font.pixelSize: 16
+                    font.pixelSize: Metrics.fontSize(16)
                 }
 
                 StyledText {
                     text: "Search for nearby Bluetooth devices."
-                    font.pixelSize: 12
+                    font.pixelSize: Metrics.fontSize(12)
                     color: ColorUtils.transparentize(Appearance.m3colors.m3onSurface, 0.6)
                 }
             }
@@ -96,7 +95,7 @@ ContentMenu {
 
         StyledText {
             text: "Connected Devices"
-            font.pixelSize: 18
+            font.pixelSize: Metrics.fontSize(18)
             font.bold: true
         }
 
@@ -121,19 +120,19 @@ ContentMenu {
 
         StyledText {
             text: "Paired Devices"
-            font.pixelSize: 18
+            font.pixelSize: Metrics.fontSize(18)
             font.bold: true
         }
 
         Item {
             visible: pairedDevices.count === 0
             width: parent.width
-            height: 40
+            height: Metrics.spacing(40)
 
             StyledText {
                 anchors.left: parent.left
                 text: "No paired devices"
-                font.pixelSize: 14
+                font.pixelSize: Metrics.fontSize(14)
                 color: ColorUtils.transparentize(Appearance.m3colors.m3onSurface, 0.6)
             }
         }
@@ -156,19 +155,19 @@ ContentMenu {
 
         StyledText {
             text: "Available Devices"
-            font.pixelSize: 18
+            font.pixelSize: Metrics.fontSize(18)
             font.bold: true
         }
 
         Item {
             visible: discoveredDevices.count === 0 && !Bluetooth.defaultAdapter.discovering
             width: parent.width
-            height: 40
+            height: Metrics.spacing(40)
 
             StyledText {
                 Layout.alignment: Qt.AlignHCenter
                 text: "No new devices found"
-                font.pixelSize: 14
+                font.pixelSize: Metrics.fontSize(14)
                 color: ColorUtils.transparentize(Appearance.m3colors.m3onSurface, 0.6)
             }
         }

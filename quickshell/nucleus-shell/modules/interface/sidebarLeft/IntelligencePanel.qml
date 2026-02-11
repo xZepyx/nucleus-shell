@@ -114,13 +114,13 @@ Item {
     }
 
     ColumnLayout {
-        spacing: 8
+        spacing: Metrics.spacing(8)
         anchors.centerIn: parent
 
         StyledText {
             visible: !Config.runtime.misc.intelligence.enabled
             text: "Intelligence is disabled!"
-            Layout.leftMargin: 24
+            Layout.leftMargin: Metrics.margin(24)
             font.pixelSize: Appearance.font.size.huge
         }
 
@@ -132,20 +132,20 @@ Item {
     }
 
     StyledRect {
-        anchors.topMargin: 74
-        radius: Appearance.rounding.normal
+        anchors.topMargin: Metrics.margin(74)
+        radius: Metrics.radius("normal")
         anchors.fill: parent
         color: "transparent"
         visible: Config.runtime.misc.intelligence.enabled
 
         ColumnLayout {
             anchors.fill: parent
-            anchors.margins: 16
-            spacing: 10
+            anchors.margins: Metrics.margin(16)
+            spacing: Metrics.spacing(10)
 
             RowLayout {
                 Layout.fillWidth: true
-                spacing: 10
+                spacing: Metrics.spacing(10)
 
                 StyledDropDown {
                     id: chatSelector
@@ -213,7 +213,7 @@ Item {
 
             RowLayout {
                 Layout.fillWidth: true
-                spacing: 10
+                spacing: Metrics.spacing(10)
 
                 StyledDropDown {
                     id: modelSelector
@@ -239,7 +239,7 @@ Item {
             StyledRect {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                radius: Appearance.rounding.normal
+                radius: Metrics.radius("normal")
                 color: Appearance.m3colors.m3surfaceContainerLow
 
                 ScrollView {
@@ -250,9 +250,9 @@ Item {
                         id: chatView
 
                         model: messageModel
-                        spacing: 8
+                        spacing: Metrics.spacing(8)
                         anchors.fill: parent
-                        anchors.margins: 12
+                        anchors.margins: Metrics.margin(12)
                         clip: true
 
                         delegate: Item {
@@ -266,7 +266,7 @@ Item {
 
                             Row {
                                 width: parent.width
-                                spacing: 8
+                                spacing: Metrics.spacing(8)
 
                                 Item {
                                     width: sender === "AI" ? 0 : parent.width * 0.2
@@ -275,13 +275,13 @@ Item {
                                 StyledRect {
                                     id: bubble
 
-                                    radius: Appearance.rounding.normal
+                                    radius: Metrics.radius("normal")
                                     color: sender === "You" ? Appearance.m3colors.m3primaryContainer : Appearance.m3colors.m3surfaceContainerHigh
                                     implicitWidth: Math.min(textItem.implicitWidth + 20, chatView.width * 0.8)
                                     implicitHeight: textItem.implicitHeight
                                     anchors.right: sender === "You" ? parent.right : undefined
                                     anchors.left: sender === "AI" ? parent.left : undefined
-                                    anchors.topMargin: 2
+                                    anchors.topMargin: Metrics.margin(2)
 
                                     TextEdit {
                                         id: textItem
@@ -290,10 +290,10 @@ Item {
                                         wrapMode: TextEdit.Wrap
                                         textFormat: TextEdit.RichText
                                         readOnly: true // make it selectable but not editable
-                                        font.pixelSize: 16
-                                        anchors.leftMargin: 12
+                                        font.pixelSize: Metrics.fontSize(16)
+                                        anchors.leftMargin: Metrics.margin(12)
                                         color: Appearance.syntaxHighlightingTheme
-                                        padding: 8
+                                        padding: Metrics.padding(8)
                                         anchors.fill: parent
                                     }
 
@@ -327,7 +327,7 @@ Item {
             StyledRect {
                 Layout.fillWidth: true
                 height: 50
-                radius: Appearance.rounding.normal
+                radius: Metrics.radius("normal")
                 color: Appearance.m3colors.m3surfaceContainer
 
                 RowLayout {
@@ -343,8 +343,8 @@ Item {
 
                         Layout.fillWidth: true
                         placeholderText: "Type your message..."
-                        font.pixelSize: 14
-                        padding: 8
+                        font.pixelSize: Metrics.fontSize(14)
+                        padding: Metrics.padding(8)
                         Keys.onPressed: {
                             if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
                                 if (event.modifiers & Qt.ShiftModifier)
@@ -383,12 +383,12 @@ Item {
 
             ColumnLayout {
                 anchors.fill: parent
-                anchors.margins: 16
-                spacing: 12
+                anchors.margins: Metrics.margin(16)
+                spacing: Metrics.spacing(12)
 
                 StyledText {
                     text: "Enter a new name for the chat"
-                    font.pixelSize: 18
+                    font.pixelSize: Metrics.fontSize(18)
                     horizontalAlignment: Text.AlignHCenter
                     Layout.fillWidth: true
                 }
@@ -401,14 +401,14 @@ Item {
                     filled: false
                     highlight: false
                     text: chatSelector.currentText
-                    font.pixelSize: 16
+                    font.pixelSize: Metrics.iconSize(16)
                     Layout.preferredHeight: 45
-                    padding: 8
+                    padding: Metrics.padding(8)
                 }
 
                 RowLayout {
                     Layout.fillWidth: true
-                    spacing: 12
+                    spacing: Metrics.spacing(12)
                     Layout.alignment: Qt.AlignRight
 
                     StyledButton {
@@ -444,14 +444,14 @@ Item {
 
             background: StyledRect {
                 color: Appearance.m3colors.m3surfaceContainer
-                radius: Appearance.rounding.normal
+                radius: Metrics.radius("normal")
                 border.color: Appearance.colors.colOutline
                 border.width: 1
             }
 
             header: StyledRect {
                 color: Appearance.m3colors.m3surfaceContainer
-                radius: Appearance.rounding.normal
+                radius: Metrics.radius("normal")
                 border.color: Appearance.colors.colOutline
                 border.width: 1
             }
@@ -462,13 +462,13 @@ Item {
             text: "Thinking…"
             visible: Zenith.loading
             color: Appearance.colors.colSubtext
-            font.pixelSize: 14
+            font.pixelSize: Metrics.fontSize(14)
 
             anchors {
                 left: parent.left
                 bottom: parent.bottom
-                leftMargin: 22
-                bottomMargin: 76
+                leftMargin: Metrics.margin(22)
+                bottomMargin: Metrics.margin(76)
             }
 
         }

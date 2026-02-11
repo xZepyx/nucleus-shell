@@ -14,45 +14,44 @@ import "content/"
 
 Item {
     anchors.fill: parent
-    anchors.leftMargin: Appearance.margin.normal
-    anchors.rightMargin: Appearance.margin.normal
-    anchors.topMargin: Appearance.margin.large
-    anchors.bottomMargin: Appearance.margin.large
+    anchors.leftMargin: Metrics.margin("normal")
+    anchors.rightMargin: Metrics.margin("normal")
+    anchors.topMargin: Metrics.margin("large")
+    anchors.bottomMargin: Metrics.margin("large")
 
     ColumnLayout {
         id: mainLayout
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.leftMargin: Appearance.margin.tiny
-        anchors.rightMargin: Appearance.margin.tiny
-        anchors.margins: Appearance.margin.large
-        spacing: Appearance.margin.large
+        anchors.leftMargin: Metrics.margin("tiny")
+        anchors.rightMargin: Metrics.margin("tiny")
+        anchors.margins: Metrics.margin("large")
+        spacing: Metrics.margin("large")
 
-        // --- Top Section ---
         RowLayout {
             id: topSection
             Layout.fillWidth: true
 
             ColumnLayout {
                 Layout.fillWidth: true
-                Layout.leftMargin: 10
+                Layout.leftMargin: Metrics.margin(10)
                 Layout.alignment: Qt.AlignVCenter
-                spacing: 2
+                spacing: Metrics.spacing(2)
 
                 RowLayout {
-                    spacing: 8
+                    spacing: Metrics.spacing(8)
 
                     StyledText {
                         text: SystemDetails.osIcon
-                        font.pixelSize: Appearance.font.size.hugeass + 6
+                        font.pixelSize: Metrics.fontSize("hugeass") + 6
                     }
 
                     StyledText {
                         text: SystemDetails.uptime
-                        font.pixelSize: Appearance.font.size.large
+                        font.pixelSize: Metrics.fontSize("large")
                         Layout.alignment: Qt.AlignBottom
-                        Layout.bottomMargin: 5
+                        Layout.bottomMargin: Metrics.margin(5)
                     }
                 }
             }
@@ -60,25 +59,25 @@ Item {
             Item { Layout.fillWidth: true }
 
             Row {
-                spacing: 6
-                Layout.leftMargin: 25
+                spacing: Metrics.spacing(6)
+                Layout.leftMargin: Metrics.margin(25)
                 Layout.alignment: Qt.AlignVCenter
 
                 StyledRect {
                     id: screenshotbtncontainer
                     color: "transparent"
-                    radius: Appearance.rounding.large
-                    implicitHeight: screenshotButton.height + Appearance.margin.tiny
-                    implicitWidth: screenshotButton.width + Appearance.margin.small
+                    radius: Metrics.radius("large")
+                    implicitHeight: screenshotButton.height + Metrics.margin("tiny")
+                    implicitWidth: screenshotButton.width + Metrics.margin("small")
                     Layout.alignment: Qt.AlignRight | Qt.AlignTop
-                    Layout.topMargin: 10
-                    Layout.leftMargin: 15
+                    Layout.topMargin: Metrics.margin(10)
+                    Layout.leftMargin: Metrics.margin(15)
 
                     MaterialSymbolButton {
                         id: screenshotButton
                         icon: "edit"
                         anchors.centerIn: parent
-                        iconSize: Appearance.font.size.hugeass + 2
+                        iconSize: Metrics.iconSize("hugeass") + 2
                         tooltipText: "Take a screenshot"
 
                         onButtonClicked: {
@@ -91,18 +90,18 @@ Item {
                 StyledRect {
                     id: reloadbtncontainer
                     color: "transparent"
-                    radius: Appearance.rounding.large
-                    implicitHeight: reloadButton.height + Appearance.margin.tiny
-                    implicitWidth: reloadButton.width + Appearance.margin.small
+                    radius: Metrics.radius("large")
+                    implicitHeight: reloadButton.height + Metrics.margin("tiny")
+                    implicitWidth: reloadButton.width + Metrics.margin("small")
                     Layout.alignment: Qt.AlignRight | Qt.AlignTop
-                    Layout.topMargin: 10
-                    Layout.leftMargin: 15
+                    Layout.topMargin: Metrics.margin(10)
+                    Layout.leftMargin: Metrics.margin(15)
 
                     MaterialSymbolButton {
                         id: reloadButton
                         icon: "refresh"
                         anchors.centerIn: parent
-                        iconSize: Appearance.font.size.hugeass + 4
+                        iconSize: Metrics.iconSize("hugeass") + 4
                         tooltipText: "Reload Nucleus Shell"
 
                         onButtonClicked: {
@@ -114,18 +113,18 @@ Item {
                 StyledRect {
                     id: settingsbtncontainer
                     color: "transparent"
-                    radius: Appearance.rounding.large
-                    implicitHeight: settingsButton.height + Appearance.margin.tiny
-                    implicitWidth: settingsButton.width + Appearance.margin.small
+                    radius: Metrics.radius("large")
+                    implicitHeight: settingsButton.height + Metrics.margin("tiny")
+                    implicitWidth: settingsButton.width + Metrics.margin("small")
                     Layout.alignment: Qt.AlignRight | Qt.AlignTop
-                    Layout.topMargin: 10
-                    Layout.leftMargin: 15
+                    Layout.topMargin: Metrics.margin(10)
+                    Layout.leftMargin: Metrics.margin(15)
 
                     MaterialSymbolButton {
                         id: settingsButton
                         icon: "settings"
                         anchors.centerIn: parent
-                        iconSize: Appearance.font.size.hugeass + 2
+                        iconSize: Metrics.iconSize("hugeass") + 2
                         tooltipText: "Open Settings"
                         onButtonClicked: {
                             Globals.visiblility.sidebarRight = false
@@ -137,18 +136,18 @@ Item {
                 StyledRect {
                     id: powerbtncontainer
                     color: "transparent"
-                    radius: Appearance.rounding.large
-                    implicitHeight: settingsButton.height + Appearance.margin.tiny
-                    implicitWidth: settingsButton.width + Appearance.margin.small
+                    radius: Metrics.radius("large")
+                    implicitHeight: settingsButton.height + Metrics.margin("tiny")
+                    implicitWidth: settingsButton.width + Metrics.margin("small")
                     Layout.alignment: Qt.AlignRight | Qt.AlignTop
-                    Layout.topMargin: 10
-                    Layout.leftMargin: 15
+                    Layout.topMargin: Metrics.margin(10)
+                    Layout.leftMargin: Metrics.margin(15)
 
                     MaterialSymbolButton {
                         id: powerButton
                         icon: "power_settings_new"
                         anchors.centerIn: parent
-                        iconSize: Appearance.font.size.hugeass + 2
+                        iconSize: Metrics.iconSize("hugeass") + 2
                         tooltipText: "Open PowerMenu"
 
                         onButtonClicked: {
@@ -164,7 +163,7 @@ Item {
             Layout.fillWidth: true
             height: 1
             color: Appearance.m3colors.m3outlineVariant
-            radius: 1
+            radius: Metrics.radius(1)
         }
 
         ColumnLayout {
@@ -175,7 +174,7 @@ Item {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
                 icon: "volume_up"
-                iconSize: Appearance.font.size.large + 3
+                iconSize: Metrics.iconSize("large") + 3
             }
 
             BrightnessSlider {
@@ -189,15 +188,15 @@ Item {
             Layout.fillWidth: true
             height: 1
             color: Appearance.m3colors.m3outlineVariant
-            radius: 1
+            radius: Metrics.radius(1)
         }
 
         GridLayout {
             id: middleGrid
             Layout.fillWidth: true
             columns: 1
-            columnSpacing: 8
-            rowSpacing: 8
+            columnSpacing: Metrics.spacing(8)
+            rowSpacing: Metrics.spacing(8)
             Layout.preferredWidth: parent.width
 
             RowLayout {
@@ -228,16 +227,16 @@ Item {
         }
 
         ColumnLayout {
-            spacing: Appearance.margin.small
+            spacing: Metrics.margin("small")
             Layout.fillWidth: true
 
             Rectangle {
                 Layout.fillWidth: true
                 height: 1
                 color: Appearance.m3colors.m3outlineVariant
-                radius: 1
-                Layout.topMargin: 5
-                Layout.bottomMargin: 5
+                radius: Metrics.radius(1)
+                Layout.topMargin: Metrics.margin(5)
+                Layout.bottomMargin: Metrics.margin(5)
             }
             
             NotifModal {

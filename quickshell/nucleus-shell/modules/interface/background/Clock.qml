@@ -51,7 +51,7 @@ Scope {
 
                     target: rootContentContainer
                     property: "x"
-                    duration: 400
+                    duration: Metrics.chronoDuration(400)
                     easing.type: Easing.InOutCubic
                 }
 
@@ -60,7 +60,7 @@ Scope {
 
                     target: rootContentContainer
                     property: "y"
-                    duration: 400
+                    duration: Metrics.chronoDuration(400)
                     easing.type: Easing.InOutCubic
                 }
 
@@ -116,23 +116,23 @@ Scope {
                     visible: !Config.runtime.appearance.background.clock.isAnalog
 
                     Column {
-                        spacing: -40
+                        spacing: Metrics.spacing(-40)
 
                         StyledText {
                             animate: false
                             text: Time.format("hh:mm")
-                            font.pixelSize: Appearance.font.size.wildass * 3
-                            font.family: Appearance.font.family.main
+                            font.pixelSize: Metrics.fontSize(Appearance.font.size.wildass * 3)
+                            font.family: Metrics.fontFamily("main")
                             font.bold: true
                         }
 
                         StyledText {
                             anchors.left: parent.left
-                            anchors.leftMargin: 8
+                            anchors.leftMargin: Metrics.margin(8)
                             animate: false
                             text: Time.format("dddd, dd/MM")
-                            font.pixelSize: 32
-                            font.family: Appearance.font.family.main
+                            font.pixelSize: Metrics.fontSize(32)
+                            font.family: Metrics.fontFamily("main")
                             font.bold: true
                         }
 
@@ -176,7 +176,7 @@ Scope {
                         z: 2
                         width: 10
                         height: parent.height * 0.3
-                        radius: Appearance.rounding.full
+                        radius: Metrics.radius("full")
                         color: Qt.darker(Appearance.m3colors.m3secondary, 0.8)
                         x: analogClockContainer.cx - width / 2
                         y: analogClockContainer.cy - height
@@ -208,7 +208,7 @@ Scope {
                     StyledRect {
                         width: 18
                         height: parent.height * 0.35
-                        radius: Appearance.rounding.full
+                        radius: Metrics.radius("full")
                         color: Appearance.m3colors.m3secondary
                         x: analogClockContainer.cx - width / 2
                         y: analogClockContainer.cy - height
@@ -222,7 +222,7 @@ Scope {
                         visible: true
                         width: 4
                         height: parent.height * 0.28
-                        radius: Appearance.rounding.full
+                        radius: Metrics.radius("full")
                         color: Appearance.m3colors.m3error
                         x: analogClockContainer.cx - width / 2
                         y: analogClockContainer.cy - height
@@ -235,8 +235,8 @@ Scope {
                         text: Time.format("hh")
                         anchors.top: parent.top 
                         anchors.horizontalCenter: parent.horizontalCenter
-                        anchors.topMargin: 30
-                        font.pixelSize: 80
+                        anchors.topMargin: Metrics.margin(30)
+                        font.pixelSize: Metrics.fontSize(80)
                         font.bold: true
                         opacity: 0.3
                         animate: false
@@ -246,8 +246,8 @@ Scope {
                         text: Time.format("mm")
                         anchors.top: parent.top 
                         anchors.horizontalCenter: parent.horizontalCenter
-                        anchors.topMargin: 110
-                        font.pixelSize: 80
+                        anchors.topMargin: Metrics.margin(110)
+                        font.pixelSize: Metrics.fontSize(80)
                         font.bold: true
                         opacity: 0.3
                         animate: false

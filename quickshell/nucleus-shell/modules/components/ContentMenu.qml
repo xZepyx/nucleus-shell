@@ -13,14 +13,14 @@ Item {
     Behavior on opacity {
         enabled: Config.runtime.appearance.animations.enabled
         NumberAnimation {
-            duration: Appearance.animation.durations.normal
+            duration: Metrics.chronoDuration("normal")
             easing.type: Appearance.animation.curves.standard[0] // using standard easing
         }
     }
     Behavior on scale {
         enabled: Config.runtime.appearance.animations.enabled
         NumberAnimation {
-            duration: Appearance.animation.durations.normal
+            duration: Metrics.chronoDuration("normal")
             easing.type: Appearance.animation.curves.standard[0]
         }
     }
@@ -34,27 +34,27 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
-        anchors.topMargin: Appearance.margin.verylarge
-        anchors.leftMargin: Appearance.margin.verylarge
-        anchors.rightMargin: Appearance.margin.verylarge
+        anchors.topMargin: Metrics.margin("verylarge")
+        anchors.leftMargin: Metrics.margin("verylarge")
+        anchors.rightMargin: Metrics.margin("verylarge")
         width: parent.width
 
         ColumnLayout {
             id: headerContent
             anchors.left: parent.left
             anchors.right: parent.right
-            spacing: Appearance.margin.small
+            spacing: Metrics.margin("small")
 
             ColumnLayout {
                 StyledText {
                     text: contentMenu.title
-                    font.pixelSize: Appearance.font.size.huge
+                    font.pixelSize: Metrics.fontSize("huge")
                     font.bold: true
-                    font.family: Appearance.font.family.title
+                    font.family: Metrics.fontFamily("title")
                 }
                 StyledText {
                     text: contentMenu.description
-                    font.pixelSize: Appearance.font.size.small
+                    font.pixelSize: Metrics.fontSize("small")
                 }
             }
 
@@ -74,9 +74,9 @@ Item {
         anchors.right: parent.right
         anchors.top: headerArea.bottom
         anchors.bottom: parent.bottom
-        anchors.leftMargin: Appearance.margin.verylarge
-        anchors.rightMargin: Appearance.margin.verylarge
-        anchors.topMargin: Appearance.margin.normal
+        anchors.leftMargin: Metrics.margin("verylarge")
+        anchors.rightMargin: Metrics.margin("verylarge")
+        anchors.topMargin: Metrics.margin("normal")
         clip: true
         interactive: true
         boundsBehavior: Flickable.StopAtBounds

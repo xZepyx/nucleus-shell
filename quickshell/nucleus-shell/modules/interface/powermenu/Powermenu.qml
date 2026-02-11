@@ -41,7 +41,7 @@ PanelWindow {
         id: container
 
         color: Appearance.m3colors.m3background
-        radius: Appearance.rounding.verylarge
+        radius: Metrics.radius("verylarge")
         implicitWidth: powermenu.implicitWidth
         anchors.fill: parent
 
@@ -57,16 +57,16 @@ PanelWindow {
             Item {
                 id: content
 
-                anchors.margins: 12
-                anchors.topMargin: 16
-                anchors.leftMargin: 18
+                anchors.margins: Metrics.radius(12)
+                anchors.topMargin: Metrics.radius(16)
+                anchors.leftMargin: Metrics.radius(18)
                 anchors.fill: parent
 
                 Grid {
                     columns: 3
                     rows: 3
-                    rowSpacing: 10
-                    columnSpacing: 10
+                    rowSpacing: Metrics.spacing(10)
+                    columnSpacing: Metrics.spacing(10)
                     anchors.fill: parent
 
                     PowerMenuButton {
@@ -121,7 +121,7 @@ PanelWindow {
 
                 component Anim: NumberAnimation {
                     running: Config.runtime.appearance.animations.enabled
-                    duration: 400
+                    duration: Metrics.chronoDuration(400)
                     easing.type: Easing.BezierSpline
                     easing.bezierCurve: Appearance.animation.curves.standard
                 }
@@ -144,10 +144,10 @@ PanelWindow {
         property string buttonIcon
 
         icon: buttonIcon
-        iconSize: 50
+        iconSize: Metrics.iconSize(50)
         width: powermenu.implicitWidth / 3.4
         height: powermenu.implicitHeight / 2.3
-        radius: beingHovered ? Appearance.rounding.verylarge * 2 : Appearance.rounding.verylarge
+        radius: beingHovered ? Metrics.radius("verylarge") * 2 : Metrics.radius("large")
     }
 
 }

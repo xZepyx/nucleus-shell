@@ -8,7 +8,6 @@ import qs.modules.components
 import qs.services
 
 ContentMenu {
-    // Interval options: value in minutes, display label
     property var intervalOptions: [{
         "value": 5,
         "label": "5 minutes"
@@ -33,9 +32,8 @@ ContentMenu {
         for (let i = 0; i < intervalOptions.length; i++) {
             if (intervalOptions[i].value === minutes)
                 return i;
-
         }
-        return 0; // default to first option
+        return 0;
     }
 
     title: "Wallpaper"
@@ -48,12 +46,12 @@ ContentMenu {
             Layout.alignment: Qt.AlignHCenter
             width: root.screen.width / 2
             height: width * root.screen.height / root.screen.width
-            radius: Appearance.rounding.unsharpenmore
+            radius: Metrics.radius("unsharpenmore")
             color: Appearance.m3colors.m3surfaceContainer
 
             StyledText {
                 text: "Current Wallpaper:"
-                font.pixelSize: 20
+                font.pixelSize: Metrics.fontSize("big")
                 font.bold: true
             }
 
@@ -62,23 +60,20 @@ ContentMenu {
 
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignCenter
                 anchors.fill: parent
-                radius: Appearance.rounding.unsharpenmore
+                radius: Metrics.radius("unsharpenmore")
                 color: Appearance.m3colors.m3paddingContainer
                 layer.enabled: true
 
                 StyledText {
                     opacity: !Config.runtime.appearance.background.enabled ? 1 : 0
-                    font.pixelSize: Appearance.font.size.title
+                    font.pixelSize: Metrics.fontSize("title")
                     text: "Wallpaper Manager Disabled"
                     anchors.centerIn: parent
 
                     Behavior on opacity {
                         enabled: Config.runtime.appearance.animations.enabled
-                        Anim {
-                        }
-
+                        Anim { }
                     }
-
                 }
 
                 Image {
@@ -90,15 +85,10 @@ ContentMenu {
 
                     Behavior on opacity {
                         enabled: Config.runtime.appearance.animations.enabled
-                        Anim {
-                        }
-
+                        Anim { }
                     }
-
                 }
-
             }
-
         }
 
         StyledButton {
@@ -115,30 +105,33 @@ ContentMenu {
             description: "Enabled or disable built-in wallpaper daemon."
             prefField: "appearance.background.enabled"
         }
-
     }
 
     ContentCard {
         StyledText {
             text: "Parallax Effect"
-            font.pixelSize: 20
+            font.pixelSize: Metrics.fontSize("big")
             font.bold: true
         }
+
         StyledSwitchOption {
             title: "Enabled"
             description: "Enabled or disable wallpaper parallax effect."
             prefField: "appearance.background.parallax.enabled"
         }
+
         StyledSwitchOption {
             title: "Enabled for Sidebar Left"
             description: "Show parralax effect when sidebarLeft is opened."
             prefField: "appearance.background.parallax.enableSidebarLeft"
         }
+
         StyledSwitchOption {
             title: "Enabled for Sidebar Right"
             description: "Show parralax effect when sidebarRight is opened."
             prefField: "appearance.background.parallax.enableSidebarRight"
         }
+
         NumberStepper {
             label: "Zoom Amount"
             description: "Adjust the zoom of the parallax effect."
@@ -152,7 +145,7 @@ ContentMenu {
     ContentCard {
         StyledText {
             text: "Wallpaper Slideshow"
-            font.pixelSize: 20
+            font.pixelSize: Metrics.fontSize("big")
             font.bold: true
         }
 
@@ -168,32 +161,30 @@ ContentMenu {
             prefField: "appearance.background.slideshow.includeSubfolders"
         }
 
-        // Folder selection
         ColumnLayout {
             Layout.fillWidth: true
-            spacing: 8
+            spacing: Metrics.spacing(8)
 
             RowLayout {
                 Layout.fillWidth: true
-                spacing: 12
+                spacing: Metrics.spacing(12)
 
                 ColumnLayout {
                     Layout.fillWidth: true
-                    spacing: 4
+                    spacing: Metrics.spacing(4)
 
                     StyledText {
                         text: "Wallpaper Folder"
-                        font.pixelSize: 16
+                        font.pixelSize: Metrics.fontSize("normal")
                     }
 
                     StyledText {
                         text: Config.runtime.appearance.background.slideshow.folder || "No folder selected"
-                        font.pixelSize: 12
+                        font.pixelSize: Metrics.fontSize("small")
                         color: Appearance.m3colors.m3onSurfaceVariant
                         elide: Text.ElideMiddle
                         Layout.fillWidth: true
                     }
-
                 }
 
                 StyledButton {
@@ -201,9 +192,7 @@ ContentMenu {
                     text: "Browse"
                     onClicked: folderPickerProc.running = true
                 }
-
             }
-
         }
 
         RowLayout {
@@ -216,19 +205,16 @@ ContentMenu {
             ColumnLayout {
                 StyledText {
                     text: skipWallpaper.title
-                    font.pixelSize: 16
+                    font.pixelSize: Metrics.fontSize("normal")
                 }
 
                 StyledText {
                     text: skipWallpaper.description
-                    font.pixelSize: 12
+                    font.pixelSize: Metrics.fontSize("small")
                 }
-
             }
 
-            Item {
-                Layout.fillWidth: true
-            }
+            Item { Layout.fillWidth: true }
 
             StyledButton {
                 icon: "skip_next"
@@ -238,35 +224,29 @@ ContentMenu {
                     Quickshell.execDetached(["nucleus", "ipc", "background", "next"]);
                 }
             }
-
         }
 
-        // Interval selector
         RowLayout {
             Layout.fillWidth: true
-            spacing: 12
+            spacing: Metrics.spacing(12)
 
             ColumnLayout {
                 Layout.fillWidth: true
-                spacing: 4
+                spacing: Metrics.spacing(4)
 
                 StyledText {
                     text: "Change Interval"
-                    font.pixelSize: 16
+                    font.pixelSize: Metrics.fontSize("normal")
                 }
 
                 StyledText {
                     text: "How often to change the wallpaper."
-                    font.pixelSize: 12
+                    font.pixelSize: Metrics.fontSize("small")
                     color: Appearance.m3colors.m3onSurfaceVariant
                 }
-
             }
 
-            // Spacer
-            Item {
-                Layout.fillWidth: true
-            }
+            Item { Layout.fillWidth: true }
 
             StyledDropDown {
                 label: "Interval"
@@ -278,12 +258,9 @@ ContentMenu {
                     Config.updateKey("appearance.background.slideshow.interval", intervalOptions[index].value);
                 }
             }
-
         }
-
     }
 
-    // Folder picker process
     Process {
         id: folderPickerProc
 
@@ -294,16 +271,13 @@ ContentMenu {
                 const out = text.trim();
                 if (out !== "null" && out.length > 0)
                     Config.updateKey("appearance.background.slideshow.folder", out);
-
             }
         }
-
     }
 
     component Anim: NumberAnimation {
-        duration: 400
+        duration: Metrics.chronoDuration(400)
         easing.type: Easing.BezierSpline
         easing.bezierCurve: Appearance.animation.curves.standard
     }
-
 }

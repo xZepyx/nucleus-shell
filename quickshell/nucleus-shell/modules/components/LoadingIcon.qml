@@ -4,7 +4,7 @@ import qs.config
 Item {
     id: root
     property alias icon: mIcon.icon
-    property real size: 28
+    property real size: Metrics.iconSize(28)
     width: size
     height: size
     MaterialSymbol {
@@ -21,6 +21,6 @@ Item {
         loops: Animation.Infinite
         from: 0
         to: 360
-        duration: 1000
+        duration: Metrics.chronoDuration(1000)
     }
 }

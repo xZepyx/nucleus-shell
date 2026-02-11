@@ -11,13 +11,13 @@ ContentMenu {
 
     ContentCard {
         ContentRowCard {
-            cardSpacing: 0
-            verticalPadding: Network.wifiEnabled ? 10 : 0
-            cardMargin: 0
+            cardSpacing: Metrics.spacing(0)
+            verticalPadding: Network.wifiEnabled ? Metrics.padding(10) : Metrics.padding(0)
+            cardMargin: Metrics.margin(0)
 
             StyledText {
                 text: powerSwitch.checked ? "Wi-Fi: On" : "Wi-Fi: Off"
-                font.pixelSize: 16
+                font.pixelSize: Metrics.fontSize(16)
                 font.bold: true
             }
 
@@ -32,21 +32,21 @@ ContentMenu {
 
         ContentRowCard {
             visible: Network.wifiEnabled
-            cardSpacing: 0
-            verticalPadding: 10
-            cardMargin: 0
+            cardSpacing: Metrics.spacing(0)
+            verticalPadding: Metrics.padding(10)
+            cardMargin: Metrics.margin(0)
 
             ColumnLayout {
-                spacing: 2
+                spacing: Metrics.spacing(2)
 
                 StyledText {
                     text: "Scanning"
-                    font.pixelSize: 16
+                    font.pixelSize: Metrics.fontSize(16)
                 }
 
                 StyledText {
                     text: "Search for nearby Wi-Fi networks."
-                    font.pixelSize: 12
+                    font.pixelSize: Metrics.fontSize(12)
                     color: ColorUtils.transparentize(
                         Appearance.m3colors.m3onSurface, 0.4
                     )
@@ -79,7 +79,7 @@ ContentMenu {
 
         StyledText {
             text: "Active Connection"
-            font.pixelSize: 18
+            font.pixelSize: Metrics.fontSize(18)
             font.bold: true
         }
 
@@ -95,7 +95,7 @@ ContentMenu {
 
         StyledText {
             text: "Ethernet"
-            font.pixelSize: 18
+            font.pixelSize: Metrics.fontSize(18)
             font.bold: true
         }
 
@@ -113,19 +113,19 @@ ContentMenu {
 
         StyledText {
             text: "Available Wi-Fi Networks"
-            font.pixelSize: 18
+            font.pixelSize: Metrics.fontSize(18)
             font.bold: true
         }
 
         Item {
             visible: Network.connections.filter(c => c.type === "wifi").length === 0 && !Network.scanning
             width: parent.width
-            height: 40
+            height: Metrics.spacing(40)
 
             StyledText {
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 text: "No networks found"
-                font.pixelSize: 14
+                font.pixelSize: Metrics.fontSize(14)
                 color: ColorUtils.transparentize(Appearance.m3colors.m3onSurface, 0.4)
             }
 
@@ -144,18 +144,18 @@ ContentMenu {
         visible: Network.savedNetworks.length > 0
         StyledText {
             text: "Remembered Networks"
-            font.pixelSize: 18
+            font.pixelSize: Metrics.fontSize(18)
             font.bold: true
         }
 
         Item {
             visible: Network.savedNetworks.length === 0
             width: parent.width
-            height: 40
+            height: Metrics.spacing(40)
             StyledText {
                 anchors.left: parent.left
                 text: "No remembered networks"
-                font.pixelSize: 14
+                font.pixelSize: Metrics.fontSize(14)
                 color: Appearance.colors.colSubtext
             }
         }

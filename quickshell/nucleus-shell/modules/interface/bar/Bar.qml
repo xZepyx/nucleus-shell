@@ -35,7 +35,7 @@ Scope {
             screen: modelData // Show bar on all screens
             visible: Config.runtime.bar.enabled && Config.initialized
             WlrLayershell.namespace: "nucleus:bar"
-            exclusiveZone: Config.runtime.bar.floating ? Config.runtime.bar.density + Appearance.margin.tiny : Config.runtime.bar.density
+            exclusiveZone: Config.runtime.bar.floating ? Config.runtime.bar.density + Metrics.margin("tiny") : Config.runtime.bar.density
             implicitHeight: Config.runtime.bar.density // density === height. (horizontal orientation)
             implicitWidth: Config.runtime.bar.density // density === width. (vertical orientation)
             color: "transparent" // Keep panel window's color transparent, so that it can be modified by background rect

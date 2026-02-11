@@ -10,11 +10,11 @@ Item {
     property color bgColor: Appearance.m3colors.m3secondaryContainer
     property color fgColor: Appearance.m3colors.m3primary
     property string icon: "battery_full"
-    property int iconSize: 20
+    property int iconSize: Metrics.iconSize(20)
     property bool fillIcon: false
 
-    width: 20
-    height: 26
+    width: 22
+    height: 24
     onValueChanged: canvas.requestPaint()
 
     Canvas {

@@ -33,15 +33,15 @@ Item {
         color: "transparent"
         border.color: dropdown.activeFocus ? Appearance.m3colors.m3primary : Appearance.m3colors.m3outline
         border.width: dropdown.activeFocus ? 2 : 1
-        radius: Appearance.rounding.unsharpen
+        radius: Metrics.radius("unsharpen")
 
         Behavior on border.color {
             enabled: Config.runtime.appearance.animations.enabled
-            ColorAnimation { duration: Appearance.animation.durations.small; easing.type: Easing.InOutCubic }
+            ColorAnimation { duration: Metrics.chronoDuration("small") ; easing.type: Easing.InOutCubic }
         }
         Behavior on border.width {
             enabled: Config.runtime.appearance.animations.enabled
-            NumberAnimation { duration: Appearance.animation.durations.small; easing.type: Easing.InOutCubic }
+            NumberAnimation { duration: Metrics.chronoDuration("small") ; easing.type: Easing.InOutCubic }
         }
 
         MouseArea {
@@ -59,16 +59,16 @@ Item {
 
                 Behavior on opacity {
                     enabled: Config.runtime.appearance.animations.enabled
-                    NumberAnimation { duration: Appearance.animation.durations.small; easing.type: Easing.InOutCubic }
+                    NumberAnimation { duration: Metrics.chronoDuration("small") ; easing.type: Easing.InOutCubic }
                 }
             }
         }
 
         RowLayout {
             anchors.fill: parent
-            anchors.leftMargin: 16
-            anchors.rightMargin: 12
-            spacing: 12
+            anchors.leftMargin: Metrics.margin(16)
+            anchors.rightMargin: Metrics.margin(12)
+            spacing: Metrics.spacing(12)
 
             StyledText {
                 id: labelText
@@ -78,7 +78,7 @@ Item {
                 color: root.currentIndex >= 0
                     ? Appearance.m3colors.m3onSurface
                     : ColorUtils.transparentize(Appearance.m3colors.m3onSurfaceVariant, 0.7)
-                font.pixelSize: 16
+                font.pixelSize: Metrics.fontSize(16)
                 elide: Text.ElideRight
                 verticalAlignment: Text.AlignVCenter
             }
@@ -87,7 +87,7 @@ Item {
                 id: dropdownIcon
                 Layout.alignment: Qt.AlignVCenter
                 icon: dropdown.popup.visible ? "arrow_drop_up" : "arrow_drop_down"
-                iconSize: 20
+                iconSize: Metrics.iconSize(20)
                 color: Appearance.m3colors.m3onSurfaceVariant
             }
         }
@@ -115,7 +115,7 @@ Item {
 
             background: Rectangle {
                 color: Appearance.m3colors.m3surfaceContainer
-                radius: 4
+                radius: Metrics.radius(4)
                 border.color: Appearance.m3colors.m3outline
                 border.width: 1
                 layer.enabled: true
@@ -149,16 +149,16 @@ Item {
                             return "transparent"
                         }
                         Behavior on color {
-                            ColorAnimation { duration: Appearance.animation.durations.small; easing.type: Easing.InOutCubic }
+                            ColorAnimation { duration: Metrics.chronoDuration("small") ; easing.type: Easing.InOutCubic }
                         }
                     }
 
                     contentItem: StyledText {
                         text: modelData
                         color: index === root.currentIndex ? Appearance.m3colors.m3primary : Appearance.m3colors.m3onSurface
-                        font.pixelSize: 16
+                        font.pixelSize: Metrics.fontSize(16)
                         verticalAlignment: Text.AlignVCenter
-                        leftPadding: 16
+                        leftPadding: Metrics.fontSize(16)
                     }
 
                     MouseArea {
@@ -175,13 +175,13 @@ Item {
 
             enter: Transition {
                 enabled: Config.runtime.appearance.animations.enabled
-                NumberAnimation {property: "opacity"; from: 0.0; to: 1.0; duration: Appearance.animation.durations.small; easing.type: Easing.InOutCubic }
-                NumberAnimation {property: "scale"; from: 0.9; to: 1.0; duration: Appearance.animation.durations.small; easing.type: Easing.InOutCubic }
+                NumberAnimation {property: "opacity"; from: 0.0; to: 1.0; duration: Metrics.chronoDuration("small") ; easing.type: Easing.InOutCubic }
+                NumberAnimation {property: "scale"; from: 0.9; to: 1.0; duration: Metrics.chronoDuration("small") ; easing.type: Easing.InOutCubic }
             }
 
             exit: Transition {
                 enabled: Config.runtime.appearance.animations.enabled
-                NumberAnimation {property: "opacity"; from: 1.0; to: 0.0; duration: Appearance.animation.fast * 0.67; easing.type: Easing.InOutCubic }
+                NumberAnimation {property: "opacity"; from: 1.0; to: 0.0; duration: Metrics.chronoDuration(Appearance.animation.fast * 0.67); easing.type: Easing.InOutCubic }
             }
         }
     }

@@ -121,23 +121,23 @@ Scope {
 
                     ColumnLayout {
                         anchors.fill: parent
-                        anchors.leftMargin: root.sidebarCollapsed ? 10 : 40
-                        anchors.rightMargin: root.sidebarCollapsed ? 10 : 40
-                        anchors.topMargin: 40
-                        anchors.bottomMargin: 40
-                        spacing: 5
+                        anchors.leftMargin: root.sidebarCollapsed ? Metrics.margin(10) : Metrics.margin(40)
+                        anchors.rightMargin: root.sidebarCollapsed ? Metrics.margin(10) : Metrics.margin(40)
+                        anchors.topMargin: Metrics.margin(40)
+                        anchors.bottomMargin: Metrics.margin(40)
+                        spacing: Metrics.spacing(5)
 
                         RowLayout {
                             Layout.fillWidth: true
                             Layout.alignment: Qt.AlignHCenter
-                            spacing: 10
+                            spacing: Metrics.spacing(10)
 
                             StyledText {
                                 Layout.fillWidth: true
                                 text: "Settings"
                                 color: Appearance.m3colors.m3onSurface
                                 font.family: "Outfit ExtraBold"
-                                font.pixelSize: 28
+                                font.pixelSize: Metrics.fontSize(28)
                                 visible: !root.sidebarCollapsed
                                 opacity: root.sidebarCollapsed ? 0 : 1
 
@@ -145,7 +145,7 @@ Scope {
                                     enabled: Config.runtime.appearance.animations.enabled
 
                                     NumberAnimation {
-                                        duration: Appearance.animation.durations.small
+                                        duration: Metrics.chronoDuration("small")
                                     }
 
                                 }
@@ -165,16 +165,16 @@ Scope {
                         Item {
                             Layout.fillWidth: true
                             Layout.preferredHeight: 48
-                            Layout.bottomMargin: 15
-                            Layout.topMargin: 15
+                            Layout.bottomMargin: Metrics.margin(15)
+                            Layout.topMargin: Metrics.margin(15)
 
                             ContentCard {
                                 id: userCard
 
-                                cardMargin: 8
+                                cardMargin: Metrics.margin(8)
                                 useAnims: false
                                 cardSpacing: 0
-                                verticalPadding: 16
+                                verticalPadding: Metrics.padding(16)
                                 visible: !root.sidebarCollapsed
                                 opacity: root.sidebarCollapsed ? 0 : 1
                                 color: Appearance.m3colors.m3surfaceContainer
@@ -185,10 +185,10 @@ Scope {
 
                                     RowLayout {
                                         Layout.fillWidth: true
-                                        spacing: 8
+                                        spacing: Metrics.spacing(8)
 
                                         ClippingRectangle {
-                                            radius: Appearance.rounding.childish * 2
+                                            radius: Metrics.radius(Appearance.rounding.childish * 2)
                                             color: "transparent"
                                             Layout.preferredWidth: 36
                                             Layout.preferredHeight: 42
@@ -202,7 +202,7 @@ Scope {
 
                                         StyledText {
                                             text: Quickshell.env("USER")
-                                            font.pixelSize: 19
+                                            font.pixelSize: Metrics.fontSize(19)
                                             font.family: "Outfit SemiBold"
                                         }
 
@@ -221,7 +221,7 @@ Scope {
                             Layout.fillHeight: true
                             clip: true
                             model: root.menuModel
-                            spacing: 5
+                            spacing: Metrics.spacing(5)
                             boundsBehavior: Flickable.StopAtBounds
 
                             delegate: Item {
@@ -241,7 +241,7 @@ Scope {
                                         y: (parent.height - height) * 0.5
                                         x: 10
                                         text: modelData.label
-                                        font.pixelSize: 14
+                                        font.pixelSize: Metrics.fontSize(14)
                                         font.bold: true
                                         opacity: modelData.header ? 1 : 0
                                     }
@@ -258,18 +258,18 @@ Scope {
                                     RowLayout {
                                         y: (parent.height - height) * 0.5
                                         x: root.sidebarCollapsed ? (parent.width - width) * 0.5 : 10
-                                        spacing: 10
+                                        spacing: Metrics.spacing(10)
 
                                         MaterialSymbol {
                                             visible: !modelData.header
                                             icon: modelData.icon ? modelData.icon : ""
                                             color: selected ? Appearance.m3colors.m3onPrimary : Appearance.m3colors.m3onSurface
-                                            iconSize: 24
+                                            iconSize: Metrics.iconSize(24)
                                         }
 
                                         StyledText {
                                             text: modelData.label
-                                            font.pixelSize: 16
+                                            font.pixelSize: Metrics.fontSize(16)
                                             color: selected ? Appearance.m3colors.m3onPrimary : Appearance.m3colors.m3onSurface
                                             visible: !root.sidebarCollapsed
                                             opacity: root.sidebarCollapsed ? 0 : 1
@@ -278,7 +278,7 @@ Scope {
                                                 enabled: Config.runtime.appearance.animations.enabled
 
                                                 NumberAnimation {
-                                                    duration: Appearance.animation.durations.small
+                                                    duration: Metrics.chronoDuration("small")
                                                 }
 
                                             }
@@ -311,7 +311,7 @@ Scope {
                         enabled: Config.runtime.appearance.animations.enabled
 
                         NumberAnimation {
-                            duration: Appearance.animation.durations.normal
+                            duration: Metrics.chronoDuration("normal")
                             easing.type: Easing.InOutCubic
                         }
 

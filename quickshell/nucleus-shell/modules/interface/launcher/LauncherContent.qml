@@ -189,14 +189,14 @@ Item {
 
     anchors.fill: parent
     opacity: Globals.visiblility.launcher ? 1 : 0
-    anchors.margins: 10
+    anchors.margins: Metrics.margin(10)
 
     ListModel { id: filteredModel }
 
     ColumnLayout {
         anchors.fill: parent
-        anchors.margins: 16
-        spacing: 12
+        anchors.margins: Metrics.margin(16)
+        spacing: Metrics.spacing(12)
 
         ScrollView {
             Layout.fillWidth: true
@@ -206,7 +206,7 @@ Item {
             ListView {
                 id: listView
                 model: filteredModel
-                spacing: 8
+                spacing: Metrics.spacing(8)
                 clip: true
                 boundsBehavior: Flickable.StopAtBounds
                 highlightRangeMode: ListView.StrictlyEnforceRange
@@ -225,8 +225,8 @@ Item {
 
                     Row {
                         anchors.fill: parent
-                        anchors.margins: 10
-                        spacing: 12
+                        anchors.margins: Metrics.margin(10)
+                        spacing: Metrics.spacing(12)
 
                         Item {
                             width: 32
@@ -248,7 +248,7 @@ Item {
                                 anchors.centerIn: parent
                                 visible: model.isCalc
                                 icon: "calculate"
-                                iconSize: 28
+                                iconSize: Metrics.iconSize(28)
                                 color: Appearance.m3colors.m3onSurfaceVariant
                             }
 
@@ -256,7 +256,7 @@ Item {
                                 anchors.centerIn: parent
                                 visible: model.isWeb
                                 icon: "public"
-                                iconSize: 28
+                                iconSize: Metrics.iconSize(28)
                                 color: Appearance.m3colors.m3onSurfaceVariant
                             }
                         }
@@ -264,11 +264,11 @@ Item {
                         Column {
                             anchors.verticalCenter: parent.verticalCenter
                             width: listView.width - 120
-                            spacing: 4
+                            spacing: Metrics.spacing(4)
 
                             Text {
                                 text: model.displayName
-                                font.pixelSize: 14
+                                font.pixelSize: Metrics.fontSize(14)
                                 font.bold: true
                                 elide: Text.ElideRight
                                 color: Appearance.m3colors.m3onSurface
@@ -276,7 +276,7 @@ Item {
 
                             Text {
                                 text: model.comment
-                                font.pixelSize: 11
+                                font.pixelSize: Metrics.fontSize(11)
                                 elide: Text.ElideRight
                                 color: Appearance.m3colors.m3onSurfaceVariant
                             }
@@ -298,7 +298,7 @@ Item {
     Behavior on opacity {
         enabled: Config.runtime.appearance.animations.enabled
         NumberAnimation {
-            duration: 400
+            duration: Metrics.chronoDuration(400)
             easing.type: Easing.BezierSpline
             easing.bezierCurve: Appearance.animation.curves.standard
         }

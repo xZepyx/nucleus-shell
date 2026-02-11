@@ -14,8 +14,8 @@ ContentMenu {
     ContentCard {
         GridLayout {
             columns: 1
-            columnSpacing: 16
-            rowSpacing: 16
+            columnSpacing: Metrics.spacing(16)
+            rowSpacing: Metrics.spacing(16)
             anchors.fill: parent
 
             Repeater {
@@ -24,12 +24,12 @@ ContentMenu {
                 delegate: StyledRect {
                     Layout.preferredHeight: 90
                     Layout.fillWidth: true
-                    radius: Appearance.rounding.small
+                    radius: Metrics.radius("small")
                     color: Appearance.m3colors.m3surfaceContainer
 
                     RowLayout {
-                        spacing: 8
-                        anchors.margins: 12
+                        spacing: Metrics.spacing(8)
+                        anchors.margins: Metrics.margin("normal")
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
 
@@ -64,30 +64,30 @@ ContentMenu {
 
                     Column {
                         anchors.top: parent.top
-                        spacing: 2
+                        spacing: Metrics.spacing(2)
                         anchors.left: parent.left
-                        anchors.margins: 12
+                        anchors.margins: Metrics.margin("normal")
 
                         StyledText {
-                            font.pixelSize: 19 // Some Good Ass Perfection
+                            font.pixelSize: Metrics.fontSize("large")
                             text: name
                         }
 
                         RowLayout {
                             StyledText {
-                                font.pixelSize: 12
+                                font.pixelSize: Metrics.fontSize("small")
                                 text: author
                                 color: Appearance.colors.colSubtext
                             }
                             StyledText {
-                                font.pixelSize: 12
+                                font.pixelSize: Metrics.fontSize("small")
                                 text: "| Requires Nucleus " + requires_nucleus
                                 color: Appearance.colors.colSubtext
                             }
                         }
 
                         StyledText {
-                            font.pixelSize: 16
+                            font.pixelSize: Metrics.fontSize("normal")
                             text: description
                             color: Appearance.colors.colSubtext
                         }

@@ -68,11 +68,11 @@ Scope {
                     width: promptLayout.width + 40
                     height: promptLayout.height + 40
                     color: Appearance.m3colors.m3surface
-                    radius: 20
+                    radius: Metrics.radius(20)
 
                     Behavior on height {
                         NumberAnimation {
-                            duration: Appearance.animation.durations.small
+                            duration: Metrics.chronoDuration("small")
                             easing.type: Appearance.animation.easing
                         }
                     }
@@ -80,26 +80,26 @@ Scope {
 
                 ColumnLayout {
                     id: promptLayout
-                    spacing: 10
+                    spacing: Metrics.spacing(10)
                     anchors {
                         left: promptBg.left
-                        leftMargin: 20
+                        leftMargin: Metrics.margin(20)
                         top: promptBg.top
-                        topMargin: 20
+                        topMargin: Metrics.margin(20)
                     }
 
                     ColumnLayout {
-                        spacing: 5
+                        spacing: Metrics.spacing(5)
                         MaterialSymbol {
                             icon: "security"
                             color: Appearance.m3colors.m3primary
-                            font.pixelSize: 30
+                            font.pixelSize: Metrics.fontSize(22)
                             Layout.alignment: Qt.AlignHCenter
                         }
                         StyledText {
                             text: "Authentication required"
                             font.family: "Outfit SemiBold"
-                            font.pixelSize: 20
+                            font.pixelSize: Metrics.fontSize(20)
                             Layout.alignment: Qt.AlignHCenter
                         }
                         StyledText {
@@ -109,12 +109,12 @@ Scope {
                     }
 
                     RowLayout {
-                        spacing: 5
+                        spacing: Metrics.spacing(5)
                         StyledTextField {
                             id: textfield
                             Layout.fillWidth: true
                             leftPadding: undefined
-                            padding: 10
+                            padding: Metrics.padding(10)
                             filled: false
                             enabled: !promptContainer.authenticating
                             placeholder: Polkit.flow.inputPrompt.substring(0, Polkit.flow.inputPrompt.length - 2)
@@ -126,9 +126,9 @@ Scope {
                         StyledButton {
                             Layout.fillHeight: true
                             width: height
-                            radius: 10
-                            topLeftRadius: 5
-                            bottomLeftRadius: 5
+                            radius: Metrics.radius(10)
+                            topLeftRadius: Metrics.radius(5)
+                            bottomLeftRadius: Metrics.radius(5)
                             enabled: !promptContainer.authenticating
                             checkable: true
                             checked: promptContainer.showPassword
@@ -144,12 +144,12 @@ Scope {
                             MaterialSymbol {
                                 icon: "warning"
                                 color: Appearance.m3colors.m3error
-                                font.pixelSize: 16
+                                font.pixelSize: Metrics.fontSize(15)
                             }
                             StyledText {
                                 text: "Failed to authenticate, incorrect password."
                                 color: Appearance.m3colors.m3error
-                                font.pixelSize: 12
+                                font.pixelSize: Metrics.fontSize(15)
                             }
                         }
                         LoadingIcon {
@@ -160,9 +160,9 @@ Scope {
                             Layout.fillWidth: true
                         }
                         StyledButton {
-                            radius: 10
-                            topRightRadius: 5
-                            bottomRightRadius: 5
+                            radius: Metrics.radius(10)
+                            topRightRadius: Metrics.radius(5)
+                            bottomRightRadius: Metrics.radius(5)
                             secondary: true
                             text: "Cancel"
                             // enabled: !promptContainer.authenticating (Allows to cancel if stuck in loop)
@@ -170,9 +170,9 @@ Scope {
                         }
                         StyledButton {
                             id: okButton
-                            radius: 10
-                            topLeftRadius: 5
-                            bottomLeftRadius: 5
+                            radius: Metrics.radius(10)
+                            topLeftRadius: Metrics.radius(5)
+                            bottomLeftRadius: Metrics.radius(5)
                             text: promptContainer.authenticating ? "Authenticating..." : "OK"
                             enabled: !promptContainer.authenticating
                             onClicked: {

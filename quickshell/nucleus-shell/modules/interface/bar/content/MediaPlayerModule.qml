@@ -23,7 +23,7 @@ Item {
 
         color: Appearance.m3colors.m3paddingContainer
         radius: Config.runtime.bar.modules.radius * Config.runtime.appearance.rounding.factor
-        implicitWidth: isVertical ? row.implicitWidth + Appearance.margin.large - 10 : row.implicitWidth + Appearance.margin.large
+        implicitWidth: isVertical ? row.implicitWidth + Metrics.margin("large") - 10 : row.implicitWidth + Metrics.margin("large")
         implicitHeight: Config.runtime.bar.modules.height
 
     }
@@ -31,7 +31,7 @@ Item {
     Row {
         id: row
 
-        spacing: Appearance.margin.small
+        spacing: Metrics.margin("small")
         anchors.centerIn: parent
 
         // Icon button with rounded background
@@ -74,7 +74,7 @@ Item {
             RotationAnimation on rotation {
                 from: 0
                 to: 360
-                duration: 4000
+                duration: Metrics.chronoDuration(4000)
                 loops: Animation.Infinite
                 running: Mpris.isPlaying && Config.runtime.appearance.animations.enabled
             }

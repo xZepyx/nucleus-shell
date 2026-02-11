@@ -23,7 +23,7 @@ Item {
     Behavior on thumbSize { 
         enabled: Config.runtime.appearance.animations.enabled
         NumberAnimation {
-            duration: Appearance.animation.durations.normal
+            duration: Metrics.chronoDuration("normal")
             easing.type: Easing.BezierSpline
             easing.bezierCurve: Appearance.animation.curves.expressiveEffects
         } 
@@ -39,7 +39,7 @@ Item {
         Behavior on color {
             enabled: Config.runtime.appearance.animations.enabled
             ColorAnimation { 
-                duration: Appearance.animation.durations.normal
+                duration: Metrics.chronoDuration("normal")
                 easing.type: Easing.BezierSpline
                 easing.bezierCurve: Appearance.animation.curves.expressiveEffects
             } 
@@ -58,7 +58,7 @@ Item {
         Behavior on x {
             enabled: Config.runtime.appearance.animations.enabled
             NumberAnimation { 
-                duration: Appearance.animation.durations.small
+                duration: Metrics.chronoDuration("small")
                 easing.type: Easing.BezierSpline
                 easing.bezierCurve: Appearance.animation.curves.expressiveEffects
             } 
@@ -66,7 +66,7 @@ Item {
         Behavior on color {
             enabled: Config.runtime.appearance.animations.enabled
             ColorAnimation { 
-                duration: Appearance.animation.durations.small
+                duration: Metrics.chronoDuration("small")
                 easing.type: Easing.BezierSpline
                 easing.bezierCurve: Appearance.animation.curves.expressiveEffects
             } 

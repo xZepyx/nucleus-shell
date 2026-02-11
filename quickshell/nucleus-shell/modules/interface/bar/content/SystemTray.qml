@@ -17,7 +17,7 @@ Item {
     Rectangle {
         visible: (items.count > 0) ? 1 : 0
         id: padding
-        width: layout.width + Appearance.margin.verylarge
+        width: layout.width + Metrics.margin("verylarge")
         height: 34
         anchors.fill: parent
         radius: Config.runtime.bar.modules.radius
@@ -29,8 +29,8 @@ Item {
         anchors.centerIn: parent
         rows: root.verticalMode ? 1 : 4
         columns: root.verticalMode ? 1 : 4
-        rowSpacing: 10
-        columnSpacing: 10
+        rowSpacing: Metrics.spacing(10)
+        columnSpacing: Metrics.spacing(10)
 
         Repeater {
             id: items
@@ -72,7 +72,7 @@ Item {
 
                             ColumnLayout {
                                 id: childColumn
-                                spacing: 5
+                                spacing: Metrics.spacing(5)
 
                                 Repeater {
                                     model: menuOpener.children
@@ -132,12 +132,12 @@ Item {
             id: rowLayout
             visible: !itemRoot.modelData.isSeparator
             opacity: itemRoot.modelData.isSeparator ? 0.5 : 1
-            spacing: 5
+            spacing: Metrics.spacing(5)
             anchors {
                 left: itemBg.left
-                leftMargin: 5
+                leftMargin: Metrics.margin(5)
                 top: itemBg.top
-                topMargin: 5
+                topMargin:Metrics.margin(5)
             }
 
             IconImage {
@@ -149,14 +149,14 @@ Item {
 
             StyledText {
                 text: itemRoot.modelData.text
-                font.pixelSize: 14
+                font.pixelSize: Metrics.fontSize(14)
                 color: Appearance.m3colors.m3onSurface
             }
 
             MaterialSymbol {
                 visible: itemRoot.modelData.hasChildren
                 icon: "chevron_right"
-                iconSize: 16
+                iconSize: Metrics.iconSize(16)
                 color: Appearance.m3colors.m3onSurface
             }
         }

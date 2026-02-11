@@ -14,7 +14,7 @@ StyledRect {
     id: root
 
     Layout.fillWidth: true
-    radius: Appearance.rounding.normal
+    radius: Metrics.radius("normal")
     color: Appearance.colors.colLayer1
     property bool dndActive: Config.runtime.notifications.doNotDisturb
 
@@ -26,8 +26,8 @@ StyledRect {
         id: clearButton
         anchors.bottom: parent.bottom
         anchors.right: parent.right
-        anchors.bottomMargin: 10
-        anchors.rightMargin: 10
+        anchors.bottomMargin: Metrics.margin(10)
+        anchors.rightMargin: Metrics.margin(10)
         icon: "clear_all"
         text: "Clear"
         implicitHeight: 40
@@ -46,8 +46,8 @@ StyledRect {
         id: silentButton
         anchors.bottom: parent.bottom
         anchors.right: parent.right
-        anchors.bottomMargin: 10
-        anchors.rightMargin: clearButton.implicitWidth + 15
+        anchors.bottomMargin: Metrics.margin(10)
+        anchors.rightMargin: clearButton.implicitWidth + Metrics.margin(15)
         text: "Silent"
         icon: "do_not_disturb_on"
         implicitHeight: 40
@@ -64,8 +64,8 @@ StyledRect {
     StyledText {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
-        anchors.bottomMargin: 15
-        anchors.leftMargin: 15
+        anchors.bottomMargin: Metrics.margin(15)
+        anchors.leftMargin: Metrics.margin(15)
         text: NotifServer.history.length + " Notifications"
 
     }
@@ -74,7 +74,7 @@ StyledRect {
         anchors.centerIn: parent
         text: "No notifications"
         visible: NotifServer.history.length < 1
-        font.pixelSize: Appearance.font.size.huge
+        font.pixelSize: Metrics.fontSize("huge")
     }
 
     ListView {
@@ -83,10 +83,10 @@ StyledRect {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: clearButton.top
-        anchors.margins: 10
+        anchors.margins: Metrics.margin(10)
 
         clip: true
-        spacing: 8
+        spacing: Metrics.spacing(8)
         boundsBehavior: Flickable.StopAtBounds
         ScrollBar.vertical: ScrollBar { }
 

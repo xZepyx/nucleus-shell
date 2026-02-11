@@ -26,57 +26,52 @@ Rectangle {
     }
 
     RowLayout {
-        spacing: 20
+        spacing: Metrics.spacing(20)
 
         anchors {
             top: parent.top
             right: parent.right
-            topMargin: 20
-            rightMargin: 30
+            topMargin: Metrics.spacing(20)
+            rightMargin: Metrics.spacing(30)
         }
 
         MaterialSymbol {
             id: themeIcon
 
-            visible: Config.runtime.bar.modules.statusIcons.themeStatusEnabled
             fill: 1
             icon: Config.runtime.appearance.theme === "light" ? "light_mode" : "dark_mode"
-            iconSize: Appearance.font.size.hugeass
+            iconSize: Metrics.fontSize("hugeass")
         }
 
         MaterialSymbol {
             id: wifi
 
-            visible: Config.runtime.bar.modules.statusIcons.networkStatusEnabled
             icon: Network.icon
-            iconSize: Appearance.font.size.hugeass
+            iconSize: Metrics.fontSize("hugeass")
         }
 
         MaterialSymbol {
             id: btIcon
 
-            visible: Config.runtime.bar.modules.statusIcons.bluetoothStatusEnabled
             icon: Bluetooth.icon
-            iconSize: Appearance.font.size.hugeass
+            iconSize: Metrics.fontSize("hugeass")
         }
 
         StyledText {
             id: keyboardLayoutIcon
 
-            visible: Config.runtime.bar.modules.statusIcons.keyboardLayoutStatusEnabled
             text: SystemDetails.keyboardLayout
-            font.pixelSize: Appearance.font.size.huge - 4
+            font.pixelSize: Metrics.fontSize(Appearance.font.size.huge - 4)
         }
 
     }
 
     ColumnLayout {
-        spacing: 0
 
         anchors {
             horizontalCenter: parent.horizontalCenter
             top: parent.top
-            topMargin: 150
+            topMargin: Metrics.margin(150)
         }
 
         StyledText {
@@ -86,7 +81,7 @@ Rectangle {
             Layout.alignment: Qt.AlignBottom
             animate: false
             renderType: Text.NativeRendering
-            font.pixelSize: 180
+            font.pixelSize: Metrics.fontSize(180)
             text: Time.format("hh:mm")
         }
 
@@ -97,7 +92,7 @@ Rectangle {
             Layout.alignment: Qt.AlignCenter
             animate: false
             renderType: Text.NativeRendering
-            font.pixelSize: 50
+            font.pixelSize: Metrics.fontSize(50)
             text: Time.format("dddd, dd/MM")
         }
 
@@ -136,7 +131,7 @@ Rectangle {
                 z: 2
                 width: 10
                 height: parent.height * 0.3
-                radius: Appearance.rounding.full
+                radius: Metrics.radius("full")
                 color: Qt.darker(Appearance.m3colors.m3secondary, 0.8)
                 x: analogClockContainer.cx - width / 2
                 y: analogClockContainer.cy - height
@@ -168,7 +163,7 @@ Rectangle {
             StyledRect {
                 width: 14
                 height: parent.height * 0.35
-                radius: Appearance.rounding.full
+                radius: Metrics.radius("full")
                 color: Appearance.m3colors.m3secondary
                 x: analogClockContainer.cx - width / 2
                 y: analogClockContainer.cy - height
@@ -182,7 +177,7 @@ Rectangle {
                 visible: true
                 width: 4
                 height: parent.height * 0.28
-                radius: Appearance.rounding.full
+                radius: Metrics.radius("full")
                 color: Appearance.m3colors.m3error
                 x: analogClockContainer.cx - width / 2
                 y: analogClockContainer.cy - height
@@ -195,8 +190,8 @@ Rectangle {
                 text: Time.format("hh")
                 anchors.top: parent.top
                 anchors.horizontalCenter: parent.horizontalCenter
-                anchors.topMargin: 60
-                font.pixelSize: 100
+                anchors.topMargin: Metrics.margin(60)
+                font.pixelSize: Metrics.fontSize(100)
                 font.bold: true
                 opacity: 0.3
                 animate: false
@@ -206,8 +201,8 @@ Rectangle {
                 text: Time.format("mm")
                 anchors.top: parent.top
                 anchors.horizontalCenter: parent.horizontalCenter
-                anchors.topMargin: 150
-                font.pixelSize: 100
+                anchors.topMargin: Metrics.margin(150)
+                font.pixelSize: Metrics.fontSize(100)
                 font.bold: true
                 opacity: 0.3
                 animate: false
@@ -218,13 +213,13 @@ Rectangle {
     }
 
     ColumnLayout {
-        // Uncommenting this will make the password entry invisible except on the active monitor.
-        // visible: Window.active
+        // Commenting this will make the password entry visible on all monitors.
+        visible: Window.active
 
         anchors {
             horizontalCenter: parent.horizontalCenter
             bottom: parent.bottom
-            bottomMargin: 20
+            bottomMargin: Metrics.margin(20)
         }
 
         RowLayout {
@@ -232,7 +227,7 @@ Rectangle {
                 id: passwordBox
 
                 implicitWidth: 300
-                padding: 10
+                padding: Metrics.padding(10)
                 placeholder: root.context.showFailure ? "Incorrect Password" : "Enter Password"
                 focus: true
                 enabled: !root.context.unlockInProgress
@@ -257,8 +252,8 @@ Rectangle {
 
             StyledButton {
                 icon: "chevron_right"
-                padding: 10
-                radius: Appearance.rounding.unsharpenmore
+                padding: Metrics.padding(10)
+                radius: Metrics.radius("unsharpenmore")
                 // don't steal focus from the text box
                 focusPolicy: Qt.NoFocus
                 enabled: !root.context.unlockInProgress && root.context.currentText !== ""

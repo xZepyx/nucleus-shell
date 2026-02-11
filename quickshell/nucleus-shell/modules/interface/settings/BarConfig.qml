@@ -14,18 +14,18 @@ ContentMenu {
     ContentCard {
         StyledText {
             text: "Bar"
-            font.pixelSize: 20
+            font.pixelSize: Metrics.fontSize(20)
             font.bold: true
         }
 
         ColumnLayout {
             StyledText {
                 text: "Position"
-                font.pixelSize: 16
+                font.pixelSize: Metrics.fontSize(16)
             }
 
             RowLayout {
-                spacing: 8
+                spacing: Metrics.spacing(8)
 
                 Repeater {
                     model: ["Top", "Bottom", "Left", "Right"]
@@ -36,13 +36,11 @@ ContentMenu {
                         text: modelData
                         implicitWidth: 0
                         Layout.fillWidth: true
-                        // checked when this button matches current bar position
                         checked: Config.runtime.bar.position === pos
-                        // keep rounding consistent (no conditional needed here)
-                        topLeftRadius: Appearance.rounding.normal
-                        topRightRadius: Appearance.rounding.normal
-                        bottomLeftRadius: Appearance.rounding.normal
-                        bottomRightRadius: Appearance.rounding.normal
+                        topLeftRadius: Metrics.radius("normal")
+                        topRightRadius: Metrics.radius("normal")
+                        bottomLeftRadius: Metrics.radius("normal")
+                        bottomRightRadius: Metrics.radius("normal")
                         onClicked: Config.updateKey("bar.position", pos)
                     }
 
@@ -81,7 +79,7 @@ ContentMenu {
     ContentCard {
         StyledText {
             text: "Bar Rounding & Size"
-            font.pixelSize: 20
+            font.pixelSize: Metrics.fontSize(20)
             font.bold: true
         }
 
@@ -130,13 +128,13 @@ ContentMenu {
     ContentCard {
         StyledText {
             text: "Bar Modules"
-            font.pixelSize: 20
+            font.pixelSize: Metrics.fontSize(20)
             font.bold: true
         }
 
         StyledText {
             text: "Workspaces"
-            font.pixelSize: 18
+            font.pixelSize: Metrics.fontSize(18)
             font.bold: true
         }
 
@@ -164,7 +162,7 @@ ContentMenu {
 
         StyledText {
             text: "Status Icons"
-            font.pixelSize: 18
+            font.pixelSize: Metrics.fontSize(18)
             font.bold: true
         }
 
@@ -188,7 +186,7 @@ ContentMenu {
 
         StyledText {
             text: "System Stats"
-            font.pixelSize: 18
+            font.pixelSize: Metrics.fontSize(18)
             font.bold: true
         }
 

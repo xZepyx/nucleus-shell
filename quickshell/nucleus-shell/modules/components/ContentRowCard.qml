@@ -12,10 +12,10 @@ Item {
     default property alias content: contentArea.data
     property alias color: wpBG.color
 
-    property int cardMargin: 20
-    property int cardSpacing: 10
-    property int radius: Appearance.rounding.large
-    property int verticalPadding: 40
+    property int cardMargin: Metrics.margin(20)
+    property int cardSpacing: Metrics.spacing(10)
+    property int radius: Metrics.radius("large")
+    property int verticalPadding: Metrics.padding(40)
 
     Rectangle {
         id: wpBG
@@ -25,7 +25,7 @@ Item {
         Behavior on implicitHeight {
             enabled: Config.runtime.appearance.animations.enabled
             NumberAnimation {
-                duration: Appearance.animation.durations.small
+                duration: Metrics.chronoDuration("small")
                 easing.type: Easing.InOutExpo
             }
         }
@@ -33,7 +33,7 @@ Item {
         Behavior on color {
             enabled: Config.runtime.appearance.animations.enabled
             ColorAnimation {
-                duration: Appearance.animation.durations.small
+                duration: Metrics.chronoDuration("small")
                 easing.type: Easing.InOutExpo
             }
         }
