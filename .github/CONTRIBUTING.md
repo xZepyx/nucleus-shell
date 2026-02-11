@@ -21,11 +21,12 @@ Thank you for your interest in contributing. Please follow these guidelines to h
 * Use clear, descriptive variable and function names.
 * Maintain modular, readable configuration files.
 * Comment non-obvious sections.
-* Note that it is requried to use Metrics.function(value) whenever you use properties like (read [docs/shell/config/Metrics.md](../shell/config/Metrics.md) for details):
- - Spacing
- - Margin
- - Radius
- - Duration (Not requried for timers) 
+* Note that it is requried to use `Metrics.function(value)` (read [the metrics docs](../shell/config/Metrics.md) for details) whenever you use properties like:
+    - Spacing
+    - Margin
+    - Radius
+    - Duration (Not requried for timers) 
+* Also prefer using loaders for iniating modules. Especially for the modules which have a enable/disable value in the configuration. Note that this is optional but preferred as it prevents completely crashing the whole shell when one module fails to load and saves ram.
 
 # Collaborating Workflow
 
