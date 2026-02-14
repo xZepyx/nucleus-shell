@@ -48,7 +48,7 @@ Key goals:
 
 <h2 align="center">✦ Related Projects ✦</h2>
 
-* [nucleus-cli](https://github.com/unf6/nucleus): CLI for nucleus-shell
+* [nucleus-cli](https://github.com/xZepyx/nucleus-cli): CLI for nucleus-shell
 * [nucleus-plugins](https://github.com/xZepyx/nucleus-plugins): Plugins for nucleus-shell
 * [nucleus-colorschemes](https://github.com/xZepyx/nucleus-colorschemes): Colorschemes for nucleus-shell
 * [zenith](https://github.com/xZepyx/zenith): Intelligence backend for nucleus-shell (required to use intelligence)
