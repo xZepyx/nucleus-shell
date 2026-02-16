@@ -11,14 +11,13 @@ Item {
     readonly property Repeater items: items
     property bool horizontalMode: (Config.runtime.bar.position === "top" || Config.runtime.bar.position === "bottom")
     clip: true
-    implicitWidth: padding.width
-    implicitHeight: padding.height
+    implicitWidth: layout.implicitWidth + Metrics.margin("verylarge")
+    implicitHeight: 34
 
     Rectangle {
         visible: (items.count > 0) ? 1 : 0
         id: padding
-        width: layout.width + Metrics.margin("verylarge")
-        height: 34
+        implicitHeight: padding.height
         anchors.fill: parent
         radius: Config.runtime.bar.modules.radius
         color: "transparent"
