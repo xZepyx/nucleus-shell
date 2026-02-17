@@ -16,7 +16,7 @@
 ---
 <h2 align="center">✦ Overview ✦ </h2>
 
-#### A shell built to get things done.
+#### Something more than just a shell
 
 Key goals:
 - Prefer Usability
