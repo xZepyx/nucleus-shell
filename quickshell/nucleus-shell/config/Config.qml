@@ -174,7 +174,7 @@ Singleton {
                         property string main: "JetBrains Mono"
                         property string title: "Gabarito"
                         property string materialIcons: "Material Symbols Rounded"
-                        property string nerdIcons: "JetBrains Mono NF"
+                        property string nerdFonts: "JetBrains Mono NF"
                         property string monospace: "JetBrains Mono NF"
                         property string reading: "Readex Pro"
                         property string expressive: "Space Grotesk"

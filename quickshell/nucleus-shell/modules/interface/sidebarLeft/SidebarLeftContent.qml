@@ -18,11 +18,9 @@ Item {
 
         anchors.fill: parent
 
-        IntelligencePanel {
-        }
-
-        SystemOverview {
-        }
+        IntelligencePanel {}
+        SystemOverview {}
+        WallpapersPage {}
 
     }
 
@@ -51,7 +49,7 @@ Item {
 
         anchors {
             top: segmentedIndicator.bottom
-            topMargin: Metrics.margin("verylarge")
+            topMargin: Metrics.margin(8)
         }
 
         Behavior on x {
@@ -86,6 +84,9 @@ Item {
                 }, {
                     "icon": "overview",
                     "text": "Overview"
+                }, {
+                    "icon": "wallpaper",
+                    "text": "Wallpapers"
                 }]
 
                 Item {

@@ -7,11 +7,15 @@ import qs.services
 Item {
     id: systemUsageContainer
     property bool isHorizontal: (Config.runtime.bar.position === "top" || Config.runtime.bar.position === "bottom")
-    visible: Config.runtime.bar.modules.systemUsage.enabled
+    visible: Config.runtime.bar.modules.systemUsage.enabled && haveWidth
     Layout.alignment: Qt.AlignVCenter
     // Let the layout compute size automatically
     implicitWidth: bgRect.implicitWidth
     implicitHeight: bgRect.implicitHeight
+
+
+    // bool to show the prevent a small empty block showing up in the bar if all of the stats are disabled
+    property bool haveWidth: Config.runtime.bar.modules.systemUsage.tempStatsEnabled || Config.runtime.bar.modules.systemUsage.cpuStatsEnabled || Config.runtime.bar.modules.systemUsage.memoryStatsEnabled
 
     Rectangle {
         id: bgRect

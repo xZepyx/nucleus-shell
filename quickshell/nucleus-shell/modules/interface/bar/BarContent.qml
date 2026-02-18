@@ -36,7 +36,7 @@ Item {
             id: hGlyph
             Layout.alignment: Qt.AlignLeft
             Layout.rightMargin: Metrics.margin("small") - 4
-            font.pixelSize: Metrics.fontSize("wildass")
+            font.pixelSize: Metrics.fontSize("huge") * 1.7
             color: Globals.visiblility.sidebarLeft ? Appearance.m3colors.m3error : Appearance.syntaxHighlightingTheme
             text: "✦"
 
@@ -63,7 +63,7 @@ Item {
         SystemTray { id: sysTray }
 
         StyledText {
-            visible: sysTray.items.count > 0
+            visible: (sysTray.items.count > 0) && Config.runtime.bar.modules.statusIcons.enabled
             id: seperator
             Layout.alignment: Qt.AlignLeft
             font.pixelSize: Metrics.fontSize("hugeass")
