@@ -198,6 +198,8 @@ Singleton {
                     property JsonObject clock: JsonObject {
                         property bool enabled: true 
                         property bool isAnalog: true
+                        property bool rotatePolygonBg: false 
+                        property int rotationDuration: 18 // lower the faster
                         property int edgeSpacing: 50
                         property int shape: 1
                         property int xPos: 0

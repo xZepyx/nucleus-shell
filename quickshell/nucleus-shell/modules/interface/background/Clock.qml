@@ -162,9 +162,24 @@ Scope {
                         anchors.fill: parent
                         color: Appearance.m3colors.m3secondaryContainer
                         roundedPolygon: analogClockContainer.shapes[Config.runtime.appearance.background.clock.shape]()
+
+                        transform: Rotation {
+                            origin.x: shapeCanvas.width / 2
+                            origin.y: shapeCanvas.height / 2
+                            angle: shapeCanvas.rotation
+                        }
+
+                        NumberAnimation on rotation {
+                            from: 0
+                            to: 360
+                            running: Config.runtime.appearance.animations.enabled && Config.runtime.appearance.background.clock.rotatePolygonBg
+                            duration: Config.runtime.appearance.background.clock.rotationDuration * 1000
+                            loops: Animation.Infinite
+                        }
                     }
 
                     ClockDial {
+                        id: dial
                         anchors.fill: parent
                         anchors.margins: parent.width * 0.12
                         color: Appearance.colors.colOnSecondaryContainer

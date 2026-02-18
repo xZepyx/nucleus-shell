@@ -238,6 +238,23 @@ ContentMenu {
             prefField: "appearance.background.clock.isAnalog"
         }
 
+        StyledSwitchOption {
+            title: "Rotate Clock Polygon"
+            description: "Rotate the shape polygon of the analog clock."
+            prefField: "appearance.background.clock.rotatePolygonBg"
+            enabled: Config.runtime.appearance.background.clock.isAnalog
+            opacity: enabled ? 1 : 0.8
+        }
+
+        NumberStepper {
+            label: "Rotation Duration"
+            description: "Adjust the duration in which the clock rotates 360* (Seconds)."
+            prefField: "appearance.background.clock.rotationDuration"
+            minimum: 1
+            maximum: 40
+            step: 1
+        }
+        
         RowLayout {
             id: shapeSelector
 
@@ -297,8 +314,8 @@ ContentMenu {
             label: "Scale"
             description: "Adjust the font scale."
             prefField: "appearance.font.scale"
-            minimum: 0.5
-            maximum: 1
+            minimum: 0.1
+            maximum: 2
             step: 0.1
         }
     }
