@@ -61,7 +61,7 @@ Scope {
 
 			mask: Region {}
 
-
+			
 			Rectangle {
 				anchors.fill: parent
 				radius: Appearance.rounding.childish
@@ -97,7 +97,7 @@ Scope {
 						}
 
 						StyledSlider {
-							Layout.fillWidth: 
+							Layout.fillWidth: true 
 							implicitHeight: 35
 							value: (Pipewire.defaultAudioSink?.audio.muted ? 0 : Pipewire.defaultAudioSink?.audio.volume) * 100
 						}
