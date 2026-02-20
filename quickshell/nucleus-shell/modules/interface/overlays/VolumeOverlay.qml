@@ -61,6 +61,7 @@ Scope {
 
 			mask: Region {}
 
+
 			Rectangle {
 				anchors.fill: parent
 				radius: Appearance.rounding.childish
@@ -75,26 +76,30 @@ Scope {
 					}
 
 					MaterialSymbol {
-						property real volume: Pipewire.defaultAudioSink?.audio.muted ? 0 : Pipewire.defaultAudioSink?.audio.volume*100
-													icon: {
-								return volume > 50 ? "volume_up" : volume > 0 ? "volume_down" : 'volume_off'
-							}
+						property real volume: Pipewire.defaultAudioSink?.audio.muted ? 0 : Pipewire.defaultAudioSink?.audio.volume * 100
+						icon: volume > 50 ? "volume_up" : volume > 0 ? "volume_down" : 'volume_off'
 						iconSize: Metrics.iconSize(34);
 					}
 
 					ColumnLayout {
-						implicitHeight: 40
-						spacing: Metrics.spacing(5)
-                        
+						Layout.fillWidth: true 
+						Layout.fillHeight: true 
+						spacing: Metrics.spacing(2)
+						
 						StyledText {
+							Layout.fillWidth: true
+							elide: Text.ElideRight 
+							
 							animate: false
-							text: Pipewire.defaultAudioSink?.description + " - " + (Pipewire.defaultAudioSink?.audio.muted ? 'Muted' : Math.floor(Pipewire.defaultAudioSink?.audio.volume*100) + '%')
+							text: (Pipewire.defaultAudioSink?.description ?? "Unknown") + " - " + 
+								(Pipewire.defaultAudioSink?.audio.muted ? 'Muted' : Math.floor(Pipewire.defaultAudioSink?.audio.volume * 100) + '%')
 							font.pixelSize: Metrics.fontSize(18)
 						}
 
 						StyledSlider {
+							Layout.fillWidth: 
 							implicitHeight: 35
-							value: (Pipewire.defaultAudioSink?.audio.muted ? 0 : Pipewire.defaultAudioSink?.audio.volume)*100
+							value: (Pipewire.defaultAudioSink?.audio.muted ? 0 : Pipewire.defaultAudioSink?.audio.volume) * 100
 						}
 					}
 				}
