@@ -14,7 +14,7 @@ import Qt5Compat.GraphicalEffects
 
 PanelWindow {
     id: sidebarRight
-    WlrLayershell.namespace: "nucleus:sidebarleft"
+    WlrLayershell.namespace: "nucleus:sidebarRight"
     WlrLayershell.layer: WlrLayer.Top
     visible: Config.initialized && Globals.visiblility.sidebarRight && !Globals.visiblility.sidebarLeft
     color: "transparent"

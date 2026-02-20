@@ -20,7 +20,7 @@ PanelWindow {
         Globals.visiblility.sidebarLeft = !Globals.visiblility.sidebarLeft;
     }
 
-    WlrLayershell.namespace: "nucleus:sidebarleft"
+    WlrLayershell.namespace: "nucleus:sidebarLeft"
     WlrLayershell.layer: WlrLayer.Top
     visible: Config.initialized && Globals.visiblility.sidebarLeft && !Globals.visiblility.sidebarRight
     color: "transparent"
