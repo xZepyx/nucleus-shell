@@ -254,6 +254,7 @@ Singleton {
                 property int margins: Appearance.margin.normal
                 property int density: 50
                 property JsonObject modules: JsonObject {
+                    property color paddingColor: Appearance.m3colors.m3surfaceContainer
                     property int radius: Appearance.rounding.normal
                     property int height: 34
                     property JsonObject workspaces: JsonObject {

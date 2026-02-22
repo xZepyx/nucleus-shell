@@ -57,7 +57,7 @@ Singleton {
         }
 
         readonly property color m3background: t(MaterialColors.colors.background)
-        readonly property color m3paddingContainer: m3surfaceContainer
+        readonly property color m3paddingContainer: t(Config.runtime.bar.modules.paddingColor)
         readonly property color m3surface: t(MaterialColors.colors.surface)
         readonly property color m3surfaceDim: t(MaterialColors.colors.surface_dim)
         readonly property color m3surfaceBright: t(MaterialColors.colors.surface_bright)

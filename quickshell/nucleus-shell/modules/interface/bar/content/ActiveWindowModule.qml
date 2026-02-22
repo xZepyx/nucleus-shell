@@ -15,8 +15,8 @@ Item {
         ? Compositor.activeToplevel
         : null
 
-    implicitWidth: col.implicitWidth
-    implicitHeight: col.implicitHeight
+    implicitWidth: row.implicitWidth + 30
+    implicitHeight: Config.runtime.bar.modules.height
 
     function simplifyTitle(title) {
         if (!title)
@@ -79,7 +79,7 @@ Item {
         return parts.join("-");
     }
 
-    Column {
+    /* Column {
         id: col
         anchors.centerIn: parent
 
@@ -103,5 +103,33 @@ Item {
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: Metrics.fontSize("smalle")
         }
+    } */
+
+    Rectangle {
+        visible: (Config.runtime.bar.position === "top" || Config.runtime.bar.position === "bottom")
+        color: Appearance.m3colors.m3paddingContainer
+        anchors.fill: parent
+        height: 34 
+        width: row.height + 30
+        radius: Config.runtime.bar.modules.radius
     }
+
+
+    RowLayout {
+        id: row
+        spacing: 12
+        anchors.centerIn: parent
+
+        MaterialSymbol {
+            icon: "desktop_windows"
+            rotation: (Config.runtime.bar.position === "left" || Config.runtime.bar.position === "right") ? 270 : 0
+        }
+
+        StyledText {
+            text: StringUtils.shortText(simplifyTitle(activeToplevel?.title), 24) || `Workspace ${Hyprland.focusedWorkspaceId}`
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: Appearance.font.size.small
+        }        
+    }
+
 }

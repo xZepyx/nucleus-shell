@@ -15,24 +15,25 @@ Item {
         anchors.centerIn: parent
         spacing: Metrics.spacing(4)
 
-        SystemUsageModule { }
-        MediaPlayerModule { }
-        WorkspaceModule { }
-        ClockModule { }
-        BatteryIndicatorModule { }
+        SystemUsageModule {
+        }
+
+        MediaPlayerModule {
+        }
+
+        ActiveWindowModule {
+        }
+
+        ClockModule {
+        }
+
+        BatteryIndicatorModule {
+        }
+
     }
 
     RowLayout {
-        id: hLeftRow
-
-        visible: isHorizontal
-        anchors.left: parent.left
-        anchors.verticalCenter: parent.verticalCenter
-        spacing: Metrics.spacing(4)
-        anchors.leftMargin: Config.runtime.bar.density * 0.3
-
-        
-        StyledText {
+        /* StyledText {
             id: hGlyph
             Layout.alignment: Qt.AlignLeft
             Layout.rightMargin: Metrics.margin("small") - 4
@@ -45,10 +46,27 @@ Item {
                 anchors.fill: parent
                 onClicked: Globals.visiblility.sidebarLeft = !Globals.visiblility.sidebarLeft
             }
-        }
-        
+        } */
 
-        ActiveWindowModule { }
+        id: hLeftRow
+
+        visible: isHorizontal
+        anchors.left: parent.left
+        anchors.verticalCenter: parent.verticalCenter
+        spacing: Metrics.spacing(4)
+        anchors.leftMargin: Config.runtime.bar.density * 0.3
+
+        ToggleModule {
+            icon: "menu"
+            iconSize: Metrics.iconSize(22)
+            iconColor: Appearance.m3colors.m3error
+            toggle: Globals.visiblility.sidebarLeft
+            onToggled: Globals.visiblility.sidebarLeft = value
+        }
+
+        WorkspaceModule {
+        }
+
     }
 
     RowLayout {
@@ -60,17 +78,37 @@ Item {
         spacing: Metrics.spacing(4)
         anchors.rightMargin: Config.runtime.bar.density * 0.3
 
-        SystemTray { id: sysTray }
+        SystemTray {
+            id: sysTray
+        }
 
         StyledText {
-            visible: (sysTray.items.count > 0) && Config.runtime.bar.modules.statusIcons.enabled
             id: seperator
+
+            visible: (sysTray.items.count > 0) && Config.runtime.bar.modules.statusIcons.enabled
             Layout.alignment: Qt.AlignLeft
             font.pixelSize: Metrics.fontSize("hugeass")
             text: "·"
         }
 
-        StatusIconsModule { }
+        StatusIconsModule {
+        }
+
+        StyledText {
+            id: seperator2
+
+            Layout.alignment: Qt.AlignLeft
+            font.pixelSize: Metrics.fontSize("hugeass")
+            text: "·"
+        }
+
+        ToggleModule {
+            icon: "power_settings_new"
+            iconSize: Metrics.iconSize(22)
+            iconColor: Appearance.m3colors.m3error
+            toggle: Globals.visiblility.powermenu
+            onToggled: Globals.visiblility.powermenu = value
+        }
 
     }
 
@@ -80,7 +118,6 @@ Item {
         anchors.top: parent.top
         anchors.topMargin: Config.runtime.bar.density * 0.1
         anchors.horizontalCenter: parent.horizontalCenter
-
         implicitWidth: vRow.implicitHeight
         implicitHeight: vRow.implicitWidth
 
@@ -91,7 +128,6 @@ Item {
             spacing: Metrics.spacing(8)
             rotation: 90
 
-            
             ToggleModule {
                 icon: "menu"
                 iconSize: Metrics.iconSize(22)
@@ -100,13 +136,19 @@ Item {
                 rotation: 270
                 onToggled: Globals.visiblility.sidebarLeft = value
             }
-            
 
-            SystemUsageModule { }
-            MediaPlayerModule { }
-            SystemTray { rotation: 0 }
+            SystemUsageModule {
+            }
+
+            MediaPlayerModule {
+            }
+
+            SystemTray {
+                rotation: 0
+            }
 
         }
+
     }
 
     Item {
@@ -124,7 +166,9 @@ Item {
             WorkspaceModule {
                 rotation: 90
             }
+
         }
+
     }
 
     Item {
@@ -142,15 +186,16 @@ Item {
             spacing: Metrics.spacing(6)
             rotation: 90
 
-
             ClockModule {
                 rotation: 270
             }
 
-            StatusIconsModule { }
-            BatteryIndicatorModule { }
+            StatusIconsModule {
+            }
 
-            
+            BatteryIndicatorModule {
+            }
+
             ToggleModule {
                 icon: "power_settings_new"
                 iconSize: Metrics.iconSize(22)
@@ -159,7 +204,9 @@ Item {
                 rotation: 270
                 onToggled: Globals.visiblility.powermenu = value
             }
-            
+
         }
+
     }
+
 }
