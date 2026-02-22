@@ -34,8 +34,6 @@ ContentMenu {
                         anchors.margins: Metrics.margin("normal")
                         spacing: Metrics.spacing(12)
 
-                        /* ---------- TEXT AREA ---------- */
-
                         Column {
                             Layout.fillWidth: true
                             spacing: Metrics.spacing(2)
@@ -67,8 +65,6 @@ ContentMenu {
                                 color: Appearance.colors.colSubtext
                             }
                         }
-
-                        /* ---------- BUTTON AREA ---------- */
 
                         RowLayout {
                             spacing: Metrics.spacing(8)
