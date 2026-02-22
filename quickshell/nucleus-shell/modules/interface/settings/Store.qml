@@ -12,11 +12,13 @@ ContentMenu {
     description: "Manage plugins and other stuff for the shell."
 
     ContentCard {
+        Layout.fillWidth: true
+
         GridLayout {
             columns: 1
+            Layout.fillWidth: true
             columnSpacing: Metrics.spacing(16)
             rowSpacing: Metrics.spacing(16)
-            anchors.fill: parent
 
             Repeater {
                 model: PluginParser.model
@@ -28,78 +30,79 @@ ContentMenu {
                     color: Appearance.m3colors.m3surfaceContainer
 
                     RowLayout {
-                        spacing: Metrics.spacing(8)
+                        anchors.fill: parent
                         anchors.margins: Metrics.margin("normal")
-                        anchors.right: parent.right
-                        anchors.verticalCenter: parent.verticalCenter
+                        spacing: Metrics.spacing(12)
 
-                        StyledButton {
-                            icon: "download"
-                            text: "Install"
-                            visible: !installed
-                            secondary: true
-                            onClicked: PluginParser.install(id)
-                            Layout.preferredWidth: 140
+                        /* ---------- TEXT AREA ---------- */
+
+                        Column {
+                            Layout.fillWidth: true
+                            spacing: Metrics.spacing(2)
+
+                            StyledText {
+                                font.pixelSize: Metrics.fontSize("large")
+                                text: name
+                            }
+
+                            RowLayout {
+                                spacing: Metrics.spacing(6)
+
+                                StyledText {
+                                    font.pixelSize: Metrics.fontSize("small")
+                                    text: author
+                                    color: Appearance.colors.colSubtext
+                                }
+
+                                StyledText {
+                                    font.pixelSize: Metrics.fontSize("small")
+                                    text: "| Requires Nucleus " + requires_nucleus
+                                    color: Appearance.colors.colSubtext
+                                }
+                            }
+
+                            StyledText {
+                                font.pixelSize: Metrics.fontSize("normal")
+                                text: description
+                                color: Appearance.colors.colSubtext
+                            }
                         }
 
-                        StyledButton {
-                            icon: "update"
-                            text: "Update"
-                            visible: installed
-                            secondary: true
-                            onClicked: PluginParser.update(id)
-                            Layout.preferredWidth: 140
-                        }
-
-                        StyledButton {
-                            icon: "delete"
-                            text: "Remove"
-                            visible: installed
-                            secondary: true
-                            onClicked: PluginParser.uninstall(id)
-                            Layout.preferredWidth: 140
-                        }
-
-                    }
-
-                    Column {
-                        anchors.top: parent.top
-                        spacing: Metrics.spacing(2)
-                        anchors.left: parent.left
-                        anchors.margins: Metrics.margin("normal")
-
-                        StyledText {
-                            font.pixelSize: Metrics.fontSize("large")
-                            text: name
-                        }
+                        /* ---------- BUTTON AREA ---------- */
 
                         RowLayout {
-                            StyledText {
-                                font.pixelSize: Metrics.fontSize("small")
-                                text: author
-                                color: Appearance.colors.colSubtext
+                            spacing: Metrics.spacing(8)
+
+                            StyledButton {
+                                icon: "download"
+                                text: "Install"
+                                visible: !installed
+                                secondary: true
+                                Layout.preferredWidth: 140
+                                onClicked: PluginParser.install(id)
                             }
-                            StyledText {
-                                font.pixelSize: Metrics.fontSize("small")
-                                text: "| Requires Nucleus " + requires_nucleus
-                                color: Appearance.colors.colSubtext
+
+                            StyledButton {
+                                icon: "update"
+                                text: "Update"
+                                visible: installed
+                                secondary: true
+                                Layout.preferredWidth: 140
+                                onClicked: PluginParser.update(id)
+                            }
+
+                            StyledButton {
+                                icon: "delete"
+                                text: "Remove"
+                                visible: installed
+                                secondary: true
+                                Layout.preferredWidth: 140
+                                onClicked: PluginParser.uninstall(id)
                             }
                         }
-
-                        StyledText {
-                            font.pixelSize: Metrics.fontSize("normal")
-                            text: description
-                            color: Appearance.colors.colSubtext
-                        }
-
                     }
-
                 }
-
             }
-
         }
-
     }
-
 }
