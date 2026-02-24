@@ -1,77 +1,27 @@
 import QtQuick
 import QtQuick.Layouts
+import Quickshell
+import Quickshell.Io
+import Quickshell.Widgets
 import qs.config
-import qs.plugins
 import qs.modules.components
-import qs.modules.functions
+import qs.plugins
 
-Item { // I didn't want the flicable implicitHeight headache
-    id: pluginsPage
-    Layout.fillWidth: true
-    Layout.fillHeight: true
-    opacity: visible ? 1 : 0
-    scale: visible ? 1 : 0.95
+ContentMenu {
+    title: "Plugins"
+    description: "Modify and Customize Installed Plugins."
 
-    Behavior on opacity {
-        enabled: Config.runtime.appearance.animations.enabled
-        NumberAnimation {
-            duration: Metrics.duration("normal")
-            easing.type: Appearance.animation.curves.standard[0] // using standard easing
-        }
-    }
-    Behavior on scale {
-        enabled: Config.runtime.appearance.animations.enabled
-        NumberAnimation {
-            duration: Metrics.duration("normal")
-            easing.type: Appearance.animation.curves.standard[0]
-        }
-    }
-    // Outer margins
-    property int sideMargin: Metrics.margin("verylarge") * 8
-    property int topMargin: Metrics.margin("verylarge")
-    property int contentSpacing: Metrics.margin("normal")
+    ContentCard {
+        Layout.fillWidth: true
+        Layout.preferredHeight: implicitHeight
+        color: "transparent"
 
-    // Header + description
-    ColumnLayout {
-        id: headerColumn
-        anchors.left: parent.left
-        anchors.top: parent.top
-        anchors.leftMargin: Metrics.margin("verylarge") + Metrics.margin("small")
-        anchors.topMargin: topMargin
-        spacing: Metrics.margin("small")
-
-        StyledText {
-            text: "Plugins"
-            font.pixelSize: Metrics.fontSize("huge")
-            font.bold: true
-            font.family: Metrics.fontFamily("title")
-        }
-
-        StyledText {
-            text: "Modify and Customize Installed Plugins."
-            font.pixelSize: Metrics.fontSize("small")
-        }
-
-    }
-
-    // Scrollable plugin list
-    Flickable {
-        id: pluginFlickable
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: headerColumn.bottom
-        anchors.bottom: parent.bottom
-        anchors.leftMargin: sideMargin
-        anchors.rightMargin: sideMargin
-        anchors.topMargin: contentSpacing
-        clip: true
-
-        contentWidth: width
-
-        ColumnLayout {
-            id: pluginColumn
-            width: parent.width
-            spacing: contentSpacing
+        GridLayout {
+            id: grid
+            columns: 1
+            Layout.fillWidth: true
+            columnSpacing: Metrics.spacing(16)
+            rowSpacing: Metrics.spacing(16)
 
             StyledText {
                 text: "Plugins not found!"
@@ -97,8 +47,5 @@ Item { // I didn't want the flicable implicitHeight headache
                 }
             }
         }
-
-        // Update contentHeight dynamically
-        contentHeight: pluginColumn.implicitHeight
     }
 }

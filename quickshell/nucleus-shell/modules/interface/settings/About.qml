@@ -5,22 +5,20 @@ import Quickshell
 import Quickshell.Widgets
 import qs.config
 import qs.modules.components
+import qs.config
 import qs.services
 
 Item {
     id: root
 
+    Layout.fillWidth: true
+    Layout.fillHeight: true
     property int logoOffset: -30
-
-    anchors.fill: parent
-    implicitWidth: 640
-    implicitHeight: 520
 
     Column {
         anchors.centerIn: parent
         width: 460
         spacing: Metrics.spacing(12)
-
         Item {
             width: parent.width
             height: Metrics.fontSize(200)
@@ -31,7 +29,6 @@ Item {
                 x: root.logoOffset
                 font.pixelSize: Metrics.fontSize(200)
             }
-
         }
 
         StyledText {
@@ -81,34 +78,38 @@ Item {
     }
 
     StyledRect {
-        id: updateBtn
-
         width: 52
         height: 52
         radius: Appearance.rounding.small
-        color: updateMA.containsMouse ? Qt.lighter(Appearance.m3colors.m3secondaryContainer, 1.1) : Appearance.m3colors.m3secondaryContainer
+
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         anchors.margins: Metrics.margin(24)
 
-        MaterialSymbol {
-            text: "update"
+        StyledText {
+            text: "↻"
             anchors.centerIn: parent
             font.pixelSize: Metrics.fontSize(22)
         }
 
         MouseArea {
-            id: updateMA
-
             anchors.fill: parent
             hoverEnabled: true
+
             onClicked: {
-                Globals.states.settingsOpen = false;
-                Quickshell.execDetached(["notify-send", "Updating Nucleus Shell"]);
-                Quickshell.execDetached(["kitty", "--hold", "bash", "-c", Directories.scriptsPath + "/system/update.sh"]);
+                Globals.states.settingsOpen = false
+
+                Quickshell.execDetached(["notify-send", "Updating Nucleus Shell"])
+
+                Quickshell.execDetached([
+                    "kitty",
+                    "--hold",
+                    "bash",
+                    "-c",
+                    Directories.scriptsPath + "/system/update.sh"
+                ])
             }
         }
 
     }
-
 }

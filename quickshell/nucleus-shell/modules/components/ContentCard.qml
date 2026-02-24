@@ -4,54 +4,35 @@ import QtQuick.Layouts
 
 Item {
     id: contentCard
-    anchors.left: parent.left
-    anchors.right: parent.right
-    implicitHeight: wpBG.implicitHeight
+    implicitWidth: parent ? parent.width : 600
+    implicitHeight: contentArea.implicitHeight + verticalPadding
 
     default property alias content: contentArea.data
-    property alias color: wpBG.color
-    property alias radius: wpBG.radius
+    property alias color: bg.color
+    property alias radius: bg.radius
     property int cardMargin: Metrics.margin("normal")
     property int cardSpacing: Metrics.margin("small")
     property int verticalPadding: Metrics.margin("verylarge")
     property bool useAnims: true
 
     Rectangle {
-        id: wpBG
-        anchors.left: parent.left
-        anchors.right: parent.right
-        implicitHeight: contentArea.implicitHeight + contentCard.verticalPadding
-
-        // Animate implicitHeight using Appearance animation
-        Behavior on implicitHeight {
-            enabled: Config.runtime.appearance.animations.enabled
-            NumberAnimation {
-                duration: !contentCard.useAnims ? 0 : Metrics.chronoDuration("fast")
-                easing.type: Easing.BezierSpline
-                easing.bezierCurve: Appearance.animation.curves.expressiveEffects
-            }
-        }
-
+        id: bg
+        anchors.fill: parent
+        radius: Metrics.radius("normal")
         color: Appearance.colors.colLayer1
+
         Behavior on color {
             enabled: Config.runtime.appearance.animations.enabled
             ColorAnimation {
                 duration: !contentCard.useAnims ? 0 : Metrics.chronoDuration("fast")
-                easing.type: Easing.BezierSpline
-                easing.bezierCurve: Appearance.animation.curves.expressiveEffects
             }
         }
-
-        radius: Metrics.radius("normal")
     }
 
     ColumnLayout {
         id: contentArea
-        anchors.fill: wpBG
-        anchors.margins: contentCard.cardMargin
-        spacing: contentCard.cardSpacing
-        Layout.preferredWidth: wpBG.width
-        Layout.preferredHeight: wpBG.height
+        anchors.fill: parent
+        anchors.margins: cardMargin
+        spacing: cardSpacing
     }
-
 }
