@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Widgets
+import qs.config
 import qs.modules.components
 import qs.config
 import qs.services
@@ -63,7 +64,9 @@ Item {
                 secondary: true
                 onClicked: Qt.openUrlExternally("https://github.com/xZepyx/nucleus-shell/issues")
             }
+
         }
+
     }
 
     StyledText {
@@ -107,5 +110,6 @@ Item {
                 ])
             }
         }
+
     }
 }
