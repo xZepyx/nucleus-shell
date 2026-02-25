@@ -5,7 +5,7 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Services.Notifications
 import QtQuick
-import "root:/config"
+import qs.config
 
 // from github.com/end-4/dots-hyprland with modifications
 
