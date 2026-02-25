@@ -5,6 +5,7 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Services.Notifications
 import QtQuick
+import qs.config
 
 // from github.com/end-4/dots-hyprland with modifications
 
@@ -15,24 +16,25 @@ Singleton {
     property list<Notif> popups: data.filter(n => n.popup && !n.tracked)
     property list<Notif> history: data
 
-    NotificationServer {
-        id: server
+    Loader {
+        active: Config.initialized && Config.runtime.notifications.enabled
+        sourceComponent: NotificationServer {
+            keepOnReload: false
+            actionsSupported: true
+            bodyHyperlinksSupported: true
+            bodyImagesSupported: true
+            bodyMarkupSupported: true
+            imageSupported: true
 
-        keepOnReload: false
-        actionsSupported: true
-        bodyHyperlinksSupported: true
-        bodyImagesSupported: true
-        bodyMarkupSupported: true
-        imageSupported: true
+            onNotification: notif => {
+                notif.tracked = true;
 
-        onNotification: notif => {
-            notif.tracked = true;
-
-            root.data.push(notifComp.createObject(root, {
-                popup: true,
-                notification: notif,
-                shown: false
-            }));
+                root.data.push(notifComp.createObject(root, {
+                    popup: true,
+                    notification: notif,
+                    shown: false
+                }));
+            }
         }
     }
     function removeById(id) {
