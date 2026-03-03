@@ -184,10 +184,19 @@ Contributions are welcome. When contributing:
 
 <h2 align="center">✦ Thank You ✦</h2>
 
-* [@ivan](https://github.com/SavingFrame): Thanks bro for being our first "actual" contributor.
+* [@ivan](https://github.com/SavingFrame): Thanks bro for being our first "actual" contributor. 8)
+* [@Tanujairamv](https://github.com/Tanujairamv): For being a great friend and supporting the community all along. <3
+* [@Saturno](https://github.com/Saturno-0): For being a great friend and community member. ;)
 * [@end4](https://github.com/end4): For his great projects
 * [@soramanew](https://github.com/soramanew): We haven't talked but I was greatly inspired by his project **caelestia-shell**
 * [@Axenide](https://github.com/axenide): I also haven't talked to him but his project **Ax-Shell** led me into hyprland shells for the first time.
+
+---
+<h2 align="center">✦ Fella Contributors ✦</h2>
+
+<div align="center">
+  <img src="https://contrib.rocks/image?repo=xZepyx/nucleus-shell" alt="Contributors"/>
+</div>
 
 ---
 
@@ -197,3 +206,4 @@ Contributions are welcome. When contributing:
 I would appreciate if you put a notice that some stuff was taken from this repo if you distribute it.
 
 ---
+
