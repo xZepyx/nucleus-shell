@@ -7,6 +7,13 @@ import qs.modules.functions
 import qs.modules.components
 import qs.services
 
+/* 
+
+This LauncherContent has been depricated.
+And yet not used. (4/3/26)
+
+*/
+
 Item {
     id: content
 

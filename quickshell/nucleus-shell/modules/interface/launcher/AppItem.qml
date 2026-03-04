@@ -1,0 +1,121 @@
+import Quickshell
+import Quickshell.Io
+import Quickshell.Widgets
+
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Effects
+import QtQuick.Controls
+
+import qs.config
+import qs.modules.components
+
+StyledRect {
+    id: root
+    property bool hovered: false
+    property bool selected: false
+
+    required property int parentWidth
+
+	width: parentWidth
+    height: 50
+    color: {
+        if (selected || hovered)
+            return Appearance.m3colors.m3surfaceContainerHigh
+        else
+            return Appearance.m3colors.m3surface
+    }
+    radius: Metrics.radius(15)
+
+    Behavior on color {
+		PropertyAnimation {
+			duration: Metrics.chronoDuration(200)
+			easing.type: Easing.InSine
+		}
+	}
+
+    ClippingWrapperRectangle {
+        id: entryIcon
+        anchors.left: parent.left
+        anchors.leftMargin: Metrics.margin(10)
+
+        anchors.top: parent.top
+        anchors.topMargin: (parent.height / 2) - (size / 2)
+
+        property int size: 25
+        height: size
+        width: size
+        radius: Metrics.radius(1000)
+
+        color: "transparent"
+
+        child: Image {
+            source: Quickshell.iconPath(modelData.icon, "application-x-executable")
+            layer.enabled: true
+            layer.effect: MultiEffect {
+                saturation: Config.runtime.appearance.tintIcons ? -1.0 : 1.0
+            }
+        }
+    }
+
+    ColumnLayout {
+        anchors.left: entryIcon.right
+        anchors.leftMargin: Metrics.margin(10)
+        anchors.top: parent.top
+        anchors.topMargin: (parent.height / 2) - (height / 2)
+
+        height: 40
+        spacing: Metrics.spacing(-5)
+
+        StyledText {
+            font.weight: 400
+            text: modelData.name
+            font.pixelSize: Metrics.fontSize(14)
+            color: {
+                if (root.hovered || root.selected)
+                    return Appearance.m3colors.m3onSurface
+                else
+                    return Appearance.colors.colOutline
+            }
+
+            Behavior on color {
+                PropertyAnimation {
+                    duration: Metrics.chronoDuration(200)
+                    easing.type: Easing.InSine
+                }
+            }
+        }
+
+        StyledText {
+            font.weight: 400
+            text: modelData.comment
+            font.pixelSize: Metrics.fontSize(12)
+            color: {
+                if (root.hovered || root.selected)
+                    return Qt.alpha(Appearance.m3colors.m3onSurface, 0.7)
+                else
+                    return Qt.alpha(Appearance.colors.colOutline, 0.7)
+            }
+
+            Behavior on color {
+                PropertyAnimation {
+                    duration: Metrics.chronoDuration(200)
+                    easing.type: Easing.InSine
+                }
+            }
+        }
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        hoverEnabled: true
+        cursorShape: Qt.PointingHandCursor
+
+        onEntered: root.hovered = true
+        onExited: root.hovered = false
+        onClicked: {
+            modelData.execute()
+            IPCLoader.toggleLauncher()
+        }
+    }
+}

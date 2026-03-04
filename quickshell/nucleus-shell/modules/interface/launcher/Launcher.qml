@@ -1,225 +1,161 @@
-import Qt5Compat.GraphicalEffects
-import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
 import Quickshell
 import Quickshell.Io
-import Quickshell.Services.Pipewire
+import Quickshell.Widgets
 import Quickshell.Wayland
-import qs.config
-import qs.modules.functions
+
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Effects
+import QtQuick.Controls
+
 import qs.modules.components
+import qs.modules.functions
+import qs.config
 import qs.services
 
 PanelWindow {
-    id: launcher
+    id: launcherWindow
 
-    function togglelauncher() {
-        Globals.visiblility.launcher = !Globals.visiblility.launcher;
-        if (!Globals.visiblility.launcher) {
-            searchField.text = "";
-            launcherContent.resetSearch();
-        }
-    }
+    readonly property bool launcherOpen: Globals.visiblility.launcher
 
-    WlrLayershell.layer: WlrLayer.Top
-    visible: Config.initialized && Globals.visiblility.launcher
-    WlrLayershell.keyboardFocus: Globals.visiblility.launcher
-    WlrLayershell.namespace: "nucleus:launcher"
+    visible: launcherOpen
+    focusable: true
+    aboveWindows: true // btw I never knew this was a property (read docs)
     color: "transparent"
-    exclusiveZone: 0
-    implicitWidth: DisplayMetrics.scaledWidth(0.28)
-    implicitHeight: DisplayMetrics.scaledHeight(0.7)
-    onVisibleChanged: {
-        if (!Globals.visiblility.launcher) {
-            searchField.text = "";
-            launcherContent.resetSearch();
-        } else {
-            Qt.callLater(() => {
-                return searchField.forceActiveFocus();
-            });
-        }
-    }
 
     anchors {
         top: true
+        bottom: true
         left: true
         right: true
-        bottom: true
     }
 
-    margins {
-        top: Metrics.margin(10)
-        bottom: Metrics.margin(10)
-        left: Metrics.margin(10)
-        right: Metrics.margin(10)
-    }
+    exclusionMode: ExclusionMode.Ignore // why this? idk but it works atleast
+    WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
 
-    Rectangle {
-        id: overlay
-        anchors.fill: parent 
-        color: "transparent"
-        MouseArea {
-            id: ma 
-            anchors.fill: parent
-            onClicked: {
-                Globals.visiblility.launcher = false;
-            }
-        }
-    }
+    ScrollView {
+        id: maskId
 
-    mask: Region {
-        item: overlay
-        intersection: Intersection.Xor
-    }
+        implicitHeight: DisplayMetrics.scaledHeight(0.623)
+        implicitWidth: DisplayMetrics.scaledWidth(0.3)
 
-    FocusScope {
-        id: launcherFocus
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.leftMargin: (parent.width / 2) - (implicitWidth / 2)
+        anchors.topMargin: (parent.height / 2) - (implicitHeight / 2)
 
-        anchors.fill: parent
+        clip: true
         focus: true
-        Keys.onPressed: (event) => {
-            switch (event.key) {
-            case Qt.Key_Down:
-                launcherContent.moveSelection(+1);
-                event.accepted = true;
-                break;
-            case Qt.Key_Up:
-                launcherContent.moveSelection(-1);
-                event.accepted = true;
-                break;
-            case Qt.Key_Return:
-            case Qt.Key_Enter:
-                launcherContent.launchCurrent();
-                event.accepted = true;
-                break;
-            case Qt.Key_Escape:
-                launcherContent.closeLauncher();
-                event.accepted = true;
-                break;
-            }
-        }
 
-        StyledRect {
-            color: Appearance.m3colors.m3background
-            topLeftRadius: Metrics.radius("verylarge")
-            topRightRadius: Metrics.radius("verylarge")
-            bottomLeftRadius: searchField.text !== "" ? 0 : Metrics.radius("verylarge")
-            bottomRightRadius: searchField.text !== "" ? 0 : Metrics.radius("verylarge")
-            implicitWidth: launcher.implicitWidth
-            implicitHeight: 65
-            anchors.top: parent.top
-            anchors.horizontalCenter: parent.horizontalCenter
+        Rectangle {
+            id: launcher
+            property string currentSearch: ""
+            property int entryIndex: 0
+            property list<DesktopEntry> appList: Apps.list
 
-            StyledTextField {
-                id: searchField
-
-                height: 50
-                filled: false
-                radius: Metrics.radius("verylarge")
-                anchors.fill: parent
-                icon: ""
-                highlight: false
-                placeholder: "Search applications..."
-                font.pixelSize: Metrics.fontSize(15)
-                outline: false
-                onTextChanged: {
-                    if (launcherContent.searchQuery === text)
-                        return;
-
-                    launcherContent.searchQuery = text;
-                    launcherContent.updateFilter();
+            Connections {
+                target: launcherWindow
+                function onLauncherOpenChanged() {
+                    if (!launcherWindow.launcherOpen) {
+                        launcher.currentSearch = ""
+                        launcher.entryIndex = 0
+                        launcher.appList = Apps.list
+                    }
                 }
-
             }
 
-            Behavior on bottomLeftRadius {
-                enabled: Config.runtime.appearance.animations.enabled
-                NumberAnimation {
-                    duration: Metrics.chronoDuration(100)
-                    easing.type: Easing.BezierSpline
-                }
+            anchors.fill: parent
+            color: Appearance.m3colors.m3surface
+            radius: Metrics.radius(21)
 
-            }
-
-            Behavior on bottomRightRadius {
-                enabled: Config.runtime.appearance.animations.enabled
-                NumberAnimation {
-                    duration: Metrics.chronoDuration(100)
-                    easing.type: Easing.BezierSpline
-                }
-
-            }
-
-        }
-
-        StyledRect {
-            // padding compensation
-
-            id: container
-
-            readonly property real maxResultsHeight: launcher.implicitHeight - 130
-            readonly property real contentHeightClamped: Math.min(launcherContent.listView.contentHeight + 50, maxResultsHeight)
-
-            color: Appearance.m3colors.m3background
-            topLeftRadius: searchField.text !== "" ? 0 : Metrics.radius("verylarge")
-            topRightRadius: searchField.text !== "" ? 0 : Metrics.radius("verylarge")
-            bottomLeftRadius: Metrics.radius("verylarge") 
-            bottomRightRadius: Metrics.radius("verylarge")
-            opacity: searchField.text !== "" ? 1 : 0
-            anchors.top: parent.top
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.topMargin: Metrics.margin(65)
-            implicitWidth: launcher.implicitWidth
-            implicitHeight: searchField.text !== "" ? contentHeightClamped : 0
-
-            Rectangle {
+            StyledRect {
+                id: searchBox
                 anchors.top: parent.top
-                height: 1
-                width: parent.width
-                color: Appearance.colors.colOutline
-            }
+                anchors.topMargin: Metrics.margin(10)
 
-            LauncherContent {
-                id: launcherContent
+                color: Appearance.m3colors.m3surfaceContainerLow
+                width: parent.width - 20
+                anchors.left: parent.left
+                anchors.leftMargin: (parent.width / 2) - (width / 2)
+                height: 45
+                radius: Metrics.radius(15)
+                z: 2
 
-                searchQuery: searchField.text
-                anchors.fill: parent
-            }
+                focus: true
 
-            Behavior on topLeftRadius {
-                enabled: Config.runtime.appearance.animations.enabled
-                NumberAnimation {
-                    duration: Metrics.chronoDuration(100)
-                    easing.type: Easing.BezierSpline
+                Keys.onDownPressed: launcher.entryIndex += 1
+                Keys.onUpPressed: {
+                    if (launcher.entryIndex != 0)
+                        launcher.entryIndex -= 1
+                }
+                Keys.onEscapePressed: Globals.visiblility.launcher = false
+
+                Keys.onPressed: event => {
+                    if (event.key === Qt.Key_Enter || event.key === Qt.Key_Return) {
+                        launcher.appList[launcher.entryIndex].execute()
+                        Globals.visiblility.launcher = false
+                    } else if (event.key === Qt.Key_Backspace) {
+                        launcher.currentSearch = launcher.currentSearch.slice(0, -1)
+                    } else if (" abcdefghijklmnopqrstuvwxyz1234567890`~!@#$%^&*()-_=+[{]}\\|;:'\",<.>/?".includes(event.text.toLowerCase())) {
+                        launcher.currentSearch += event.text
+                    }
+
+                    launcher.appList = Apps.fuzzyQuery(launcher.currentSearch)
+                    launcher.entryIndex = 0
                 }
 
-            }
-
-            Behavior on topRightRadius {
-                enabled: Config.runtime.appearance.animations.enabled
-                NumberAnimation {
-                    duration: Metrics.chronoDuration(100)
-                    easing.type: Easing.BezierSpline
+                MaterialSymbol {
+                    id: iconText
+                    anchors.left: parent.left
+                    anchors.leftMargin: Metrics.margin(10)
+                    icon: "search"
+                    font.pixelSize: Metrics.fontSize(14)
+                    font.weight: 600
+                    anchors.top: parent.top
+                    anchors.topMargin: (parent.height / 2) - ((font.pixelSize + 5) / 2)
+                    opacity: 0.8
                 }
 
+                StyledText {
+                    id: placeHolderText
+                    anchors.left: iconText.right
+                    anchors.leftMargin: Metrics.margin(10)
+                    color: (launcher.currentSearch != "") ? Appearance.m3colors.m3onSurface : Appearance.colors.colOutline
+                    text: (launcher.currentSearch != "") ? launcher.currentSearch : "Start typing to search ..."
+                    font.pixelSize: Metrics.fontSize(13)
+                    anchors.top: parent.top
+                    anchors.topMargin: (parent.height / 2) - ((font.pixelSize + 5) / 2)
+                    animate: false
+                    opacity: 0.8
+                }
             }
 
-            Behavior on implicitHeight {
-                enabled: Config.runtime.appearance.animations.enabled
-                animation: Appearance.animation.elementMove.numberAnimation.createObject(this)
+            ScrollView {
+                anchors.top: searchBox.bottom
+                anchors.topMargin: Metrics.margin(10)
+
+                anchors.left: parent.left
+                anchors.leftMargin: (parent.width / 2) - (width / 2)
+                width: parent.width - 20
+                height: parent.height - searchBox.height - 20
+
+                ListView {
+                    id: appList
+                    anchors.fill: parent
+                    spacing: Metrics.spacing(10)
+					anchors.bottomMargin: Metrics.margin(4)
+
+                    model: launcher.appList
+                    currentIndex: launcher.entryIndex
+
+                    delegate: AppItem {
+                        required property int index
+                        required property DesktopEntry modelData
+                        selected: index === launcher.entryIndex
+                        parentWidth: appList.width
+                    }
+                }
             }
-
         }
-
     }
-
-    IpcHandler {
-        function toggle() {
-            togglelauncher();
-        }
-
-        target: "launcher"
-    }
-
 }
