@@ -54,14 +54,14 @@ QtObject {
     }
 
     // Right sidebar
-    property url sidebarRight: Qt.resolvedUrl("../modules/interface/sidebarRight/SidebarRight.qml")
+    property url sidebarRight: !overriddenSidebarRight ? Qt.resolvedUrl("../modules/interface/sidebarRight/SidebarRight.qml") : "" // Force override
     property bool overriddenSidebarRight: false
     function overrideSidebarRight() {
         overriddenSidebarRight = true
     }
 
     // Left sidebar
-    property url sidebarLeft: Qt.resolvedUrl("../modules/interface/sidebarLeft/SidebarLeft.qml")
+    property url sidebarLeft: !overriddenSidebarLeft ? Qt.resolvedUrl("../modules/interface/sidebarLeft/SidebarLeft.qml") : "" // Force override
     property bool overriddenSidebarLeft: false
     function overrideSidebarLeft() {
         overriddenSidebarLeft = true
