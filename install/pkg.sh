@@ -7,8 +7,9 @@ ok()   { printf "[✓] %s\n" "$1"; }
 fail() { printf "[✗] %s\n" "$1" >&2; exit 1; }
 
 confirm() {
-    read -rp "[?] $1 [y/N]: " yn
-    [[ "$yn" =~ ^[Yy]$ ]]
+    local ans
+    read -rp "[?] $1 [y/N]: " ans
+    [[ "$ans" =~ ^[Yy]$ ]]
 }
 
 exists() {
@@ -16,52 +17,79 @@ exists() {
 }
 
 installed() {
-    pacman -Qq "$1" &>/dev/null
+    pacman -Qi "$1" &>/dev/null
 }
 
 run() {
-    local desc="$1"
-    shift
+    local desc="$1"; shift
     info "$desc"
-    "$@" &>/dev/null || fail "$desc failed"
+    "$@" &>/dev/null
     ok "$desc"
 }
 
 # Distro check
-[[ -f /etc/arch-release ]] || fail "Unsupported distro (Arch only)"
+[[ -f /etc/arch-release ]] || fail "Arch Linux required"
 
-info "Detected Arch Linux"
+info "Arch Linux detected"
 
 confirm "Install dependencies?" || exit 0
 
-# Git
-exists git || run "Installing git" sudo pacman -S --needed --noconfirm git
+# Ensure git
+if ! exists git; then
+    run "Installing git" sudo pacman -S --needed --noconfirm git
+fi
 
-# AUR helper selection
-echo "Select AUR helper:"
-echo "1. yay"
-echo "2. paru"
-read -rp "[?] Choice: " choice
+# -----------------------------
+# AUR helper detection
+# -----------------------------
+detect_helper() {
+    if exists yay; then
+        echo yay
+        return
+    fi
 
-case "$choice" in
-    1) helper="yay" ;;
-    2) helper="paru" ;;
-    *) fail "Invalid choice" ;;
-esac
+    if exists paru; then
+        echo paru
+        return
+    fi
 
-# Install helper if missing
-if ! exists "$helper"; then
-    confirm "Install $helper?" || fail "$helper is required"
-    run "Installing base-devel" sudo pacman -S --needed --noconfirm base-devel
-    tmp="$(mktemp -d)"
+    echo ""
+}
+
+helper="$(detect_helper)"
+
+# If helper already exists
+if [[ -n "$helper" ]]; then
+    ok "Detected AUR helper: $helper"
+else
+    info "No AUR helper detected"
+
+    echo
+    echo "Select AUR helper"
+    echo "1) yay"
+    echo "2) paru"
+    read -rp "[?] Choice: " choice
+
+    case "$choice" in
+        1) helper="yay" ;;
+        2) helper="paru" ;;
+        *) fail "Invalid selection" ;;
+    esac
+
+    confirm "Install $helper?" || fail "$helper required"
+
+    run "Installing build dependencies" \
+        sudo pacman -S --needed --noconfirm base-devel
+
+    tmpdir="$(mktemp -d)"
 
     run "Cloning $helper" \
-        git clone "https://aur.archlinux.org/$helper.git" "$tmp/$helper"
+        git clone "https://aur.archlinux.org/${helper}.git" "$tmpdir/$helper"
 
     run "Building $helper" \
-        bash -c "cd '$tmp/$helper' && makepkg -si --noconfirm"
+        bash -c "cd '$tmpdir/$helper' && makepkg -si --noconfirm"
 
-    rm -rf "$tmp"
+    rm -rf "$tmpdir"
 fi
 
 installer="$helper -S --needed --noconfirm"
@@ -71,7 +99,7 @@ packages=(
     hyprland hyprpaper hyprlock hyprpicker
     wf-recorder wl-clipboard grim slurp
     qt6ct qt5ct kvantum kvantum-qt5
-    kitty fish starship 
+    kitty fish starship
     firefox nautilus network-manager-applet
     wl-color-picker imagemagick qt6-svg
     networkmanager wireplumber bluez-utils
@@ -87,14 +115,22 @@ packages=(
     zenity jq ddcutil flatpak nucleus-shell
 )
 
-# Install loop
+info "Checking packages"
+
+missing=()
+
 for pkg in "${packages[@]}"; do
     if installed "$pkg"; then
         info "$pkg already installed"
     else
-        run "Installing $pkg" $installer "$pkg"
+        missing+=("$pkg")
     fi
 done
 
-ok "Done"
+if (( ${#missing[@]} > 0 )); then
+    run "Installing packages" $installer "${missing[@]}"
+else
+    info "All packages already installed"
+fi
 
+ok "Setup complete"
