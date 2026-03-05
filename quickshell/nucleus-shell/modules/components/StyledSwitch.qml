@@ -19,7 +19,7 @@ Item {
     property color thumbOff: Appearance.colors.colOnLayer2
 
     property color iconOn: Appearance.colors.colPrimary
-    property color iconOff: Appearance.colors.colOnLayer2
+    property color iconOff: Appearance.colors.colLayer2
 
     // Dimensions
     property int trackRadius: (height / 2) * Config.runtime.appearance.rounding.factor
