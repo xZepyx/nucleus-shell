@@ -29,6 +29,10 @@ Singleton {
     property string cpuTemp: "—"
     property string keyboardLayout: "none"
     property real cpuTempPercent: 0
+    property int prevIdle: -1
+    property int prevTotal: -1
+
+
     readonly property var osIcons: ({
         "almalinux": "",
         "alpine": "",
@@ -72,333 +76,319 @@ Singleton {
         "vanilla": "",
         "void": "",
         "zorin": ""
+        "opensuse": "",
+
     })
 
-    Process {
-        id: usernameProc
 
-        running: true
-        command: ["whoami"]
+    FileView { id: cpuStat; path: "/proc/stat" }
+    FileView { id: memInfo; path: "/proc/meminfo" }
+    FileView { id: uptimeFile; path: "/proc/uptime" }
 
-        stdout: StdioCollector {
-            onStreamFinished: {
-                var clean = text.trim();
-                if (clean !== root.username)
-                    root.username = clean;
-
-            }
-        }
-
-    }
-
-    Process {
-        id: hostnameProc
-
-        command: ["hostname"]
-        running: true
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                var cleanH = text.trim();
-                root.hostname = cleanH !== "" ? cleanH : "aelyx";
-            }
-        }
-
-    }
-
-    Process {
-        running: true
-        command: ["sh", "-c", "source /etc/os-release && echo \"$NAME|$VERSION|$PRETTY_NAME|$LOGO|$ID\""]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                var parts = text.trim().split("|");
-                if (parts.length >= 5) {
-                    root.osName = parts[2]; // prettyName as osName
-                    var osId = parts[4];
-                    root.osIcon = root.osIcons[osId] || "";
-                }
-            }
-        }
-
-    }
-
-    FileView {
-        path: '/proc/uptime'
-        watchChanges: true
-        onFileChanged: {
-            const seconds = parseFloat(text().trim().split(" ")[0]);
-            const d = Math.floor(seconds / 86400);
-            const h = Math.floor((seconds % 86400) / 3600);
-            const m = Math.floor((seconds % 3600) / 60);
-            var out = "Up ";
-            if (d > 0)
-                out += d + "d, ";
-
-            if (h > 0)
-                out += h + "h, ";
-
-            out += m + "m";
-            root.uptime = out;
-        }
-        onLoaded: {
-            const seconds = parseFloat(text().trim().split(" ")[0]);
-            const d = Math.floor(seconds / 86400);
-            const h = Math.floor((seconds % 86400) / 3600);
-            const m = Math.floor((seconds % 3600) / 60);
-            var out = "Up ";
-            if (d > 0)
-                out += d + "d, ";
-
-            if (h > 0)
-                out += h + "h, ";
-
-            out += m + "m";
-            root.uptime = out;
-        }
-    }
-
-    Process {
-        running: true
-        command: ['qs', '--version']
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                root.qsVersion = text.trim().split(',')[0].trim().replace("quickshell ", "");
-                Config.updateKey("shell.qsVersion", text.trim().split(',')[0].trim().replace("quickshell ", ""));
-            }
-        }
-
-    }
-
-    Process {
-        id: kernelProc
-
-        running: true
-        command: ["uname", "-r"]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                root.kernelVersion = text.trim();
-            }
-        }
-
-    }
-
-    Process {
-        id: archProc
-
-        running: true
-        command: ["uname", "-m"]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                root.architecture = text.trim();
-            }
-        }
-
-    }
 
     Timer {
-        interval: 5000
+        interval: 1000
         running: true
         repeat: true
+
         onTriggered: {
-            ramProc.running = true;
-            cpuProc.running = true;
-            cpuTempProc.running = true;
-            diskProc.running = true;
-        }
-    }
 
-    Process {
-        id: ramProc
+            cpuStat.reload()
+            memInfo.reload()
+            uptimeFile.reload()
 
-        running: true
-        command: ["free", "-m"]
+            /* CPU */
 
-        stdout: StdioCollector {
-            onStreamFinished: {
-                const line = text.split("\n").find((l) => {
-                    return l.startsWith("Mem:");
-                });
-                if (!line)
-                    return ;
+            const cpuLine = cpuStat.text().split("\n")[0].trim().split(/\s+/)
 
-                const p = line.split(/\s+/);
-                const total = parseInt(p[1]);
-                const used = parseInt(p[2]);
-                ramPercent = used / total;
-                ramUsage = `${used}/${total} MB`;
+            const cpuUser = parseInt(cpuLine[1])
+            const cpuNice = parseInt(cpuLine[2])
+            const cpuSystem = parseInt(cpuLine[3])
+            const cpuIdle = parseInt(cpuLine[4])
+            const cpuIowait = parseInt(cpuLine[5])
+            const cpuIrq = parseInt(cpuLine[6])
+            const cpuSoftirq = parseInt(cpuLine[7])
+
+            const cpuIdleAll = cpuIdle + cpuIowait
+            const cpuTotal =
+                cpuUser + cpuNice + cpuSystem + cpuIrq + cpuSoftirq + cpuIdleAll
+
+            if (root.prevTotal >= 0) {
+
+                const totalDiff = cpuTotal - root.prevTotal
+                const idleDiff = cpuIdleAll - root.prevIdle
+
+                if (totalDiff > 0)
+                    root.cpuPercent = (totalDiff - idleDiff) / totalDiff
             }
-        }
 
-    }
+            root.prevTotal = cpuTotal
+            root.prevIdle = cpuIdleAll
 
-    Process {
-        id: cpuProc
+            root.cpuLoad = Math.round(root.cpuPercent * 100) + "%"
 
-        running: true
-        command: ["uptime"]
 
-        stdout: StdioCollector {
-            onStreamFinished: {
-                const match = text.match(/load average: ([0-9.]+)/);
-                if (!match)
-                    return ;
+            /* RAM */
 
-                const load = parseFloat(match[1]);
-                cpuPercent = Math.min(load / 4, 1);
-                cpuLoad = load.toFixed(2);
+            const memLines = memInfo.text().split("\n")
+
+            let memTotal = 0
+            let memAvailable = 0
+
+            for (let line of memLines) {
+
+                if (line.startsWith("MemTotal"))
+                    memTotal = parseInt(line.match(/\d+/)[0])
+
+                if (line.startsWith("MemAvailable"))
+                    memAvailable = parseInt(line.match(/\d+/)[0])
             }
-        }
 
+            if (memTotal > 0) {
+
+                const memUsed = memTotal - memAvailable
+
+                root.ramPercent = memUsed / memTotal
+                root.ramUsage =
+                    `${Math.round(memUsed/1024)}/${Math.round(memTotal/1024)} MB`
+            }
+
+
+            /* Uptime */
+
+            const uptimeSeconds =
+                parseFloat(uptimeFile.text().split(" ")[0])
+
+            const d = Math.floor(uptimeSeconds / 86400)
+            const h = Math.floor((uptimeSeconds % 86400) / 3600)
+            const m = Math.floor((uptimeSeconds % 3600) / 60)
+
+            let upString = "Up "
+
+            if (d > 0) upString += d + "d "
+            if (h > 0) upString += h + "h "
+
+            upString += m + "m"
+
+            root.uptime = upString
+
+
+            cpuTempProc.running = true
+            diskProc.running = true
+            ipProc.running = true
+            procCountProc.running = true
+            swapProc.running = true
+            keyboardLayoutProc.running = true
+            loggedUsersProc.running = true
+        }
     }
+
+
+    /* CPU Temperature */
 
     Process {
         id: cpuTempProc
-
-        running: true
-        command: ["sh", "-c", `
-        for f in /sys/class/hwmon/hwmon*/temp*_input; do
-            name=$(cat $(dirname "$f")/name 2>/dev/null)
-            case "$name" in
-                coretemp|k10temp|cpu_thermal)
-                    cat "$f"
-                    exit
-                    ;;
-            esac
-        done
-        `]
+        command: [
+            "sh","-c",
+            "for f in /sys/class/hwmon/hwmon*/temp*_input; do cat $f && exit; done"
+        ]
 
         stdout: StdioCollector {
             onStreamFinished: {
-                const raw = parseInt(text.trim());
-                if (isNaN(raw))
-                    return ;
+                const raw = parseInt(text.trim())
+                if (isNaN(raw)) return
 
-                const c = raw / 1000; // millideg → deg C
-                root.cpuTemp = `${Math.round(c)}°C`;
-                // normalize: 30°C → 0%, 95°C → 100%
-                const min = 30;
-                const max = 95;
-                root.cpuTempPercent = Math.max(0, Math.min(1, (c - min) / (max - min)));
+                const c = raw / 1000
+                root.cpuTemp = `${Math.round(c)}°C`
+
+                const min = 30
+                const max = 95
+
+                root.cpuTempPercent =
+                    Math.max(0, Math.min(1,(c-min)/(max-min)))
             }
         }
-
     }
+
+
+    /* Disk */
 
     Process {
         id: diskProc
-
-        running: true
-        command: ["df", "-h", "/"]
+        command: ["df","-h","/"]
 
         stdout: StdioCollector {
             onStreamFinished: {
-                const lines = text.trim().split("\n");
-                if (lines.length < 2)
-                    return ;
 
-                const p = lines[1].split(/\s+/);
-                const used = p[2];
-                const total = p[1];
-                const percent = parseInt(p[4]) / 100;
-                diskPercent = percent;
-                diskUsage = `${used}/${total}`;
+                const lines = text.trim().split("\n")
+                if (lines.length < 2) return
+
+                const parts = lines[1].split(/\s+/)
+
+                const used = parts[2]
+                const total = parts[1]
+                const percent = parseInt(parts[4]) / 100
+
+                root.diskPercent = percent
+                root.diskUsage = `${used}/${total}`
             }
         }
-
     }
+
+
+    /* Swap */
+
+    Process {
+        id: swapProc
+        command: ["sh","-c","free -m | grep Swap"]
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+
+                const parts = text.trim().split(/\s+/)
+                if (parts.length < 3) return
+
+                const total = parseInt(parts[1])
+                const used = parseInt(parts[2])
+
+                root.swapPercent = used / total
+                root.swapUsage = `${used}/${total} MB`
+            }
+        }
+    }
+
+
+    /* IP */
+
+    Process {
+        id: ipProc
+        command: ["sh","-c","hostname -I | awk '{print $1}'"]
+
+        stdout: StdioCollector {
+            onStreamFinished: root.ipAddress = text.trim()
+        }
+    }
+
+
+    /* Process Count */
+
+    Process {
+        id: procCountProc
+        command: ["sh","-c","ps -e --no-headers | wc -l"]
+
+        stdout: StdioCollector {
+            onStreamFinished: root.runningProcesses = parseInt(text.trim())
+        }
+    }
+
+
+    /* Logged Users */
+
+    Process {
+        id: loggedUsersProc
+        command: ["who","-q"]
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                const lines = text.trim().split("\n")
+                if (lines.length > 0)
+                    root.loggedInUsers =
+                        parseInt(lines[lines.length-1].replace("# users=",""))
+            }
+        }
+    }
+
+
+    /* Keyboard Layout */
 
     Process {
         id: keyboardLayoutProc
-        running: true
-
         command: [
-            "sh", "-c",
-            "hyprctl devices -j | jq -r '.keyboards[] | select(.name == \"at-translated-set-2-keyboard\") | .layout'"
+            "sh","-c",
+            "hyprctl devices -j | jq -r '.keyboards[] | .layout' | head -n1"
         ]
 
         stdout: StdioCollector {
             onStreamFinished: {
                 const layout = text.trim()
-                if (!layout)
-                    return
-
-                root.keyboardLayout = layout
+                if (layout)
+                    root.keyboardLayout = layout
             }
         }
     }
 
-    Process {
-        id: swapProc
 
+    /* OS Info */
+
+    Process {
         running: true
-        command: ["sh", "-c", "free -m | grep Swap"]
+        command: [
+            "sh","-c",
+            "source /etc/os-release && echo \"$PRETTY_NAME|$ID\""
+        ]
 
         stdout: StdioCollector {
             onStreamFinished: {
-                const line = text.trim();
-                if (!line)
-                    return ;
-
-                const parts = line.split(/\s+/);
-                const total = parseInt(parts[1]);
-                const used = parseInt(parts[2]);
-                root.swapPercent = used / total;
-                root.swapUsage = `${used} / ${total} MB`;
+                const parts = text.trim().split("|")
+                root.osName = parts[0]
+                root.osIcon = root.osIcons[parts[1]] || ""
             }
         }
+    }
 
+
+    /* Quickshell Version */
+
+    Process {
+        running: true
+        command: ["qs","--version"]
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                root.qsVersion =
+                    text.trim().split(',')[0]
+                    .replace("quickshell ","")
+            }
+        }
+    }
+
+
+    /* Static system info */
+
+    Process {
+        running: true
+        command: ["whoami"]
+
+        stdout: StdioCollector {
+            onStreamFinished: root.username = text.trim()
+        }
     }
 
     Process {
-        id: ipProc
-
         running: true
-        command: ["sh", "-c", "hostname -I | awk '{print $1}'"]
+        command: ["hostname"]
 
         stdout: StdioCollector {
-            onStreamFinished: {
-                const ip = text.trim();
-                if (ip)
-                    root.ipAddress = ip;
-
-            }
+            onStreamFinished: root.hostname = text.trim()
         }
-
     }
 
     Process {
-        id: runningProcCount
-
         running: true
-        command: ["sh", "-c", "ps -e --no-headers | wc -l"]
+        command: ["uname","-r"]
 
         stdout: StdioCollector {
-            onStreamFinished: {
-                SystemDetails.runningProcesses = parseInt(text.trim());
-            }
+            onStreamFinished: root.kernelVersion = text.trim()
         }
-
     }
 
     Process {
-        id: loggedInUsers
-
         running: true
-        command: ["who", "-q"]
+        command: ["uname","-m"]
 
         stdout: StdioCollector {
-            onStreamFinished: {
-                const lines = text.trim().split("\n");
-                if (lines.length > 0)
-                    SystemDetails.loggedInUsers = lines[lines.length - 1].replace("# users=", "").trim();
-
-            }
+            onStreamFinished: root.architecture = text.trim()
         }
-
     }
 
 }
