@@ -10,8 +10,8 @@ import qs.services
 
 Item {
     id: workspaceContainer
-
-    property int numWorkspaces: Config.runtime.bar.modules.workspaces.workspaceIndicators
+    property string displayName: screen?.name ?? ""
+    property int numWorkspaces: ConfigResolver.bar(displayName).modules.workspaces.workspaceIndicators
     property var workspaceOccupied: []
     property var occupiedRanges: []
 
@@ -63,9 +63,9 @@ Item {
         occupiedRanges = ranges;
     }
 
-    visible: Config.runtime.bar.modules.workspaces.enabled
+    visible: ConfigResolver.bar(displayName).modules.workspaces.enabled
     implicitWidth: bg.implicitWidth
-    implicitHeight: Config.runtime.bar.modules.height
+    implicitHeight: ConfigResolver.bar(displayName).modules.height
     Component.onCompleted: updateWorkspaceOccupied()
 
     Connections {
@@ -80,9 +80,9 @@ Item {
         id: bg
 
         color: Appearance.m3colors.m3paddingContainer
-        radius: Config.runtime.bar.modules.radius * Config.runtime.appearance.rounding.factor
+        radius: ConfigResolver.bar(displayName).modules.radius * Config.runtime.appearance.rounding.factor
         implicitWidth: workspaceRow.implicitWidth + Metrics.margin("large") - 8
-        implicitHeight: Config.runtime.bar.modules.height
+        implicitHeight: ConfigResolver.bar(displayName).modules.height
 
         // occupied background highlight
         Item {
@@ -99,7 +99,7 @@ Item {
 
                 Rectangle {
                     height: 26
-                    radius: Config.runtime.bar.modules.radius * Config.runtime.appearance.rounding.factor
+                    radius: ConfigResolver.bar(displayName).modules.radius * Config.runtime.appearance.rounding.factor
                     color: ColorUtils.mix(Appearance.m3colors.m3tertiary, Appearance.m3colors.m3surfaceContainerLowest)
                     opacity: 0.8
                     x: modelData.start * (26 + workspaceRow.spacing)
@@ -135,7 +135,7 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             width: Math.abs(animatedX2 - animatedX1) + itemWidth - 1
             height: 24
-            radius: Config.runtime.bar.modules.radius * Config.runtime.appearance.rounding.factor
+            radius: ConfigResolver.bar(displayName).modules.radius * Config.runtime.appearance.rounding.factor
             color: Appearance.m3colors.m3tertiary
             onTargetXChanged: {
                 animatedX1 = targetX;
@@ -196,8 +196,8 @@ Item {
                             id: appIcon
 
                             anchors.fill: parent
-                            visible: Compositor.require("hyprland") && Config.runtime.bar.modules.workspaces.showAppIcons && occupied
-                            rotation: (Config.runtime.bar.position === "left" || Config.runtime.bar.position === "right") ? 270 : 0
+                            visible: Compositor.require("hyprland") && ConfigResolver.bar(displayName).modules.workspaces.showAppIcons && occupied
+                            rotation: (ConfigResolver.bar(displayName).position === "left" || ConfigResolver.bar(displayName).position === "right") ? 270 : 0
                             source: {
                                 const win = Compositor.focusedWindowForWorkspace(wsIndex);
                                 return win ? AppRegistry.iconForClass(win.class) : "";
@@ -213,17 +213,17 @@ Item {
                     // Kanji mode — only if not Hyprland
                     StyledText {
                         anchors.centerIn: parent
-                        visible: Config.runtime.bar.modules.workspaces.showJapaneseNumbers && !Config.runtime.bar.modules.workspaces.showAppIcons
+                        visible: ConfigResolver.bar(displayName).modules.workspaces.showJapaneseNumbers && !ConfigResolver.bar(displayName).modules.workspaces.showAppIcons
                         text: japaneseNumber(index + 1)
-                        rotation: (Config.runtime.bar.position === "left" || Config.runtime.bar.position === "right") ? 270 : 0
+                        rotation: (ConfigResolver.bar(displayName).position === "left" || ConfigResolver.bar(displayName).position === "right") ? 270 : 0
                     }
 
                     // Numbers mode — only if not Hyprland
                     StyledText {
                         anchors.centerIn: parent
-                        visible: !Config.runtime.bar.modules.workspaces.showJapaneseNumbers && !Config.runtime.bar.modules.workspaces.showAppIcons
+                        visible: !ConfigResolver.bar(displayName).modules.workspaces.showJapaneseNumbers && !ConfigResolver.bar(displayName).modules.workspaces.showAppIcons
                         text: index + 1
-                        rotation: (Config.runtime.bar.position === "left" || Config.runtime.bar.position === "right") ? 270 : 0
+                        rotation: (ConfigResolver.bar(displayName).position === "left" || ConfigResolver.bar(displayName).position === "right") ? 270 : 0
                     }
 
                     // Symbols for unoccupied workspaces — only for Hyprland icons
@@ -231,9 +231,9 @@ Item {
                         property string displayText: Config.runtime.appearance.rounding.factor === 0 ? "crop_square" : "fiber_manual_record"
 
                         anchors.centerIn: parent
-                        visible: Compositor.require("hyprland") && Config.runtime.bar.modules.workspaces.showAppIcons && !occupied
+                        visible: Compositor.require("hyprland") && ConfigResolver.bar(displayName).modules.workspaces.showAppIcons && !occupied
                         text: displayText
-                        rotation: (Config.runtime.bar.position === "left" || Config.runtime.bar.position === "right") ? 270 : 0
+                        rotation: (ConfigResolver.bar(displayName).position === "left" || ConfigResolver.bar(displayName).position === "right") ? 270 : 0
                         font.pixelSize: Metrics.iconSize(10)
                         fill: 1
                     }

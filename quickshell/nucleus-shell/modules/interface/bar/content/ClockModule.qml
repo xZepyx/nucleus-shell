@@ -8,7 +8,7 @@ Item {
     id: clockContainer
 
     property string format: isVertical ? "hh\nmm\nAP" : "hh:mm • dd/MM"
-    property bool isVertical: (Config.runtime.bar.position === "left" || Config.runtime.bar.position === "right")
+    property bool isVertical: (ConfigResolver.bar(screen?.name ?? "").position === "left" || ConfigResolver.bar(screen?.name ?? "").position === "right")
 
     Layout.alignment: Qt.AlignVCenter
     implicitWidth: bgRect.implicitWidth
@@ -20,10 +20,10 @@ Item {
         id: bgRect
 
         color: isVertical ? "transparent" : Appearance.m3colors.m3paddingContainer
-        radius: Config.runtime.bar.modules.radius * Config.runtime.appearance.rounding.factor
+        radius: ConfigResolver.bar(screen?.name ?? "").modules.radius * Config.runtime.appearance.rounding.factor
         // Padding around the text
         implicitWidth: isVertical ? textItem.implicitWidth + 40 : textItem.implicitWidth + Metrics.margin("large")
-        implicitHeight: Config.runtime.bar.modules.height
+        implicitHeight: ConfigResolver.bar(screen?.name ?? "").modules.height
     }
 
     StyledText {

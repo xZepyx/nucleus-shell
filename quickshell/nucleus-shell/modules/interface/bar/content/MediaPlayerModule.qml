@@ -13,8 +13,8 @@ Item {
     id: mediaPlayer
 
     property bool isVertical: (
-        Config.runtime.bar.position === "left" ||
-        Config.runtime.bar.position === "right"
+        ConfigResolver.bar(screen?.name ?? "").position === "left" ||
+        ConfigResolver.bar(screen?.name ?? "").position === "right"
     )
 
     Layout.alignment: Qt.AlignCenter | Qt.AlignVCenter
@@ -27,14 +27,14 @@ Item {
         id: bgRect
 
         color: Appearance.m3colors.m3paddingContainer
-        radius: Config.runtime.bar.modules.radius *
+        radius: ConfigResolver.bar(screen?.name ?? "").modules.radius *
                 Config.runtime.appearance.rounding.factor
 
         implicitWidth: isVertical
             ? row.implicitWidth + Metrics.margin("large") - 10
             : row.implicitWidth + Metrics.margin("large")
 
-        implicitHeight: Config.runtime.bar.modules.height
+        implicitHeight: ConfigResolver.bar(screen?.name ?? "").modules.height
     }
 
 
@@ -50,7 +50,7 @@ Item {
 
             width: 24
             height: 24
-            radius: Config.runtime.bar.modules.radius / 1.2
+            radius: ConfigResolver.bar(screen?.name ?? "").modules.radius / 1.2
 
             color: Appearance.colors.colLayer1Hover
             opacity: 0.9

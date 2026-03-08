@@ -2,13 +2,14 @@ import QtQuick
 import Quickshell
 import Quickshell.Wayland
 import qs.config
+import qs.services
 import qs.modules.components
 
 Scope {
     id: root
 
     GothCorners {
-        opacity: Config.runtime.bar.gothCorners && !Config.runtime.bar.floating && Config.runtime.bar.enabled && !Config.runtime.bar.merged ? 1 : 0
+        opacity: ConfigResolver.bar(bar.displayName).gothCorners && !ConfigResolver.bar(bar.displayName).floating && ConfigResolver.bar(bar.displayName).enabled && !ConfigResolver.bar(bar.displayName).merged ? 1 : 0
     }
 
     Variants {
@@ -20,11 +21,12 @@ Scope {
             id: bar
 
             required property var modelData
-            property int rd: Config.runtime.bar.radius * Config.runtime.appearance.rounding.factor // So it won't be modified when factor is 0
-            property int margin: Config.runtime.bar.margins
-            property bool floating: Config.runtime.bar.floating
-            property bool merged: Config.runtime.bar.merged
-            property string pos: Config.runtime.bar.position
+            property string displayName: modelData.name
+            property int rd: ConfigResolver.bar(displayName).radius * Config.runtime.appearance.rounding.factor // So it won't be modified when factor is 0
+            property int margin: ConfigResolver.bar(displayName).margins
+            property bool floating: ConfigResolver.bar(displayName).floating
+            property bool merged: ConfigResolver.bar(displayName).merged
+            property string pos: ConfigResolver.bar(displayName).position
             property bool vertical: pos === "left" || pos === "right"
             // Simple position properties
             property bool attachedTop: pos === "top"
@@ -33,19 +35,19 @@ Scope {
             property bool attachedRight: pos === "right"
 
             screen: modelData // Show bar on all screens
-            visible: Config.runtime.bar.enabled && Config.initialized
+            visible: ConfigResolver.bar(displayName).enabled && Config.initialized
             WlrLayershell.namespace: "nucleus:bar"
-            exclusiveZone: Config.runtime.bar.floating ? Config.runtime.bar.density + Metrics.margin("tiny") : Config.runtime.bar.density
-            implicitHeight: Config.runtime.bar.density // density === height. (horizontal orientation)
-            implicitWidth: Config.runtime.bar.density // density === width. (vertical orientation)
+            exclusiveZone: ConfigResolver.bar(displayName).floating ? ConfigResolver.bar(displayName).density + Metrics.margin("tiny") : ConfigResolver.bar(displayName).density
+            implicitHeight: ConfigResolver.bar(displayName).density // density === height. (horizontal orientation)
+            implicitWidth: ConfigResolver.bar(displayName).density // density === width. (vertical orientation)
             color: "transparent" // Keep panel window's color transparent, so that it can be modified by background rect
 
             // This is probably a little weird way to set anchors but I think it's the best way. (and it works)
             anchors {
-                top: Config.runtime.bar.position === "top" || Config.runtime.bar.position === "left" || Config.runtime.bar.position === "right"
-                bottom: Config.runtime.bar.position === "bottom" || Config.runtime.bar.position === "left" || Config.runtime.bar.position === "right"
-                left: Config.runtime.bar.position === "left" || Config.runtime.bar.position === "top" || Config.runtime.bar.position === "bottom"
-                right: Config.runtime.bar.position === "right" || Config.runtime.bar.position === "top" || Config.runtime.bar.position === "bottom"
+                top: ConfigResolver.bar(displayName).position === "top" || ConfigResolver.bar(displayName).position === "left" || ConfigResolver.bar(displayName).position === "right"
+                bottom: ConfigResolver.bar(displayName).position === "bottom" || ConfigResolver.bar(displayName).position === "left" || ConfigResolver.bar(displayName).position === "right"
+                left: ConfigResolver.bar(displayName).position === "left" || ConfigResolver.bar(displayName).position === "top" || ConfigResolver.bar(displayName).position === "bottom"
+                right: ConfigResolver.bar(displayName).position === "right" || ConfigResolver.bar(displayName).position === "top" || ConfigResolver.bar(displayName).position === "bottom"
             }
 
             margins {

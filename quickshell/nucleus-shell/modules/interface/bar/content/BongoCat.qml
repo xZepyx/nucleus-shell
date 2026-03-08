@@ -8,7 +8,7 @@ Item {
     id: clockContainer
 
     property string format: isVertical ? "hh\nmm\nAP" : "hh:mm • dd/MM"
-    property bool isVertical: (Config.runtime.bar.position === "left" || Config.runtime.bar.position === "right")
+    property bool isVertical: (ConfigResolver.bar(screen?.name ?? "").position === "left" || ConfigResolver.bar(screen?.name ?? "").position === "right")
 
     Layout.alignment: Qt.AlignVCenter
     implicitWidth: 37

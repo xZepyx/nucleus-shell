@@ -3,10 +3,12 @@ import QtQuick.Layouts
 import Quickshell
 import "content/"
 import qs.config
+import qs.services
 import qs.modules.components
 
 Item {
-    property bool isHorizontal: (Config.runtime.bar.position === "top" || Config.runtime.bar.position === "bottom")
+    property string displayName: screen?.name ?? ""
+    property bool isHorizontal: (ConfigResolver.bar(displayName).position === "top" || ConfigResolver.bar(displayName).position === "bottom")
 
     Row {
         id: hCenterRow
@@ -28,7 +30,7 @@ Item {
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
         spacing: Metrics.spacing(4)
-        anchors.leftMargin: Config.runtime.bar.density * 0.3
+        anchors.leftMargin: ConfigResolver.bar(displayName).density * 0.3
 
         ToggleModule {
             icon: "menu"
@@ -51,7 +53,7 @@ Item {
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
         spacing: Metrics.spacing(4)
-        anchors.rightMargin: Config.runtime.bar.density * 0.3
+        anchors.rightMargin: ConfigResolver.bar(displayName).density * 0.3
 
         SystemTray {
             id: sysTray
@@ -59,7 +61,7 @@ Item {
 
         StyledText {
             id: seperator
-            visible: (sysTray.items.count > 0) && Config.runtime.bar.modules.statusIcons.enabled
+            visible: (sysTray.items.count > 0) && ConfigResolver.bar(displayName).modules.statusIcons.enabled
             Layout.alignment: Qt.AlignLeft
             font.pixelSize: Metrics.fontSize("hugeass")
             text: "·"
@@ -90,7 +92,7 @@ Item {
     Item {
         visible: !isHorizontal
         anchors.top: parent.top
-        anchors.topMargin: Config.runtime.bar.density * 0.1
+        anchors.topMargin: ConfigResolver.bar(displayName).density * 0.1
         anchors.horizontalCenter: parent.horizontalCenter
         implicitWidth: vRow.implicitHeight
         implicitHeight: vRow.implicitWidth
@@ -142,7 +144,7 @@ Item {
     Item {
         visible: !isHorizontal
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: Config.runtime.bar.density * 0.1
+        anchors.bottomMargin: ConfigResolver.bar(displayName).density * 0.1
         anchors.horizontalCenter: parent.horizontalCenter
         implicitWidth: row.implicitHeight
         implicitHeight: row.implicitWidth

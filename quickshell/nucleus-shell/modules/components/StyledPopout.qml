@@ -9,6 +9,7 @@ import Quickshell.Wayland
 LazyLoader {
     id: root
 
+    property string displayName: screen?.name ?? ""
     property PanelWindow instance: null
     property HoverHandler hoverTarget
     property real margin: Metrics.margin(10)
@@ -191,7 +192,7 @@ LazyLoader {
                                 centeredX = 10;
                             xValue = centeredX;
                         } else {
-                            let xPos = baseX - ((Config.runtime.bar.position === "top" || Config.runtime.bar.position === "top") ? 20 : -40);
+                            let xPos = baseX - ((ConfigResolver.bar(root.displayName).position === "top" || ConfigResolver.bar(root.displayName).position === "top") ? 20 : -40);
                             if (xPos + popupWidth > screen.width) {
                                 exceedingHalf = true;
                                 xValue = baseX - popupWidth;
@@ -223,7 +224,7 @@ LazyLoader {
                         let targetHeight = targetItem.height;
                         let popupHeight = container.implicitHeight;
 
-                        let yPos = baseY + ((Config.runtime.bar.position === "top" || Config.runtime.bar.position === "top") ? targetHeight : 0);
+                        let yPos = baseY + ((ConfigResolver.bar(root.displayName).position === "top" || ConfigResolver.bar(root.displayName).position === "top") ? targetHeight : 0);
 
                         if (yPos > screen.height / 2)
                             yPos = baseY - popupHeight;

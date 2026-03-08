@@ -9,6 +9,7 @@ import QtQuick.Layouts
 
 Item {
     id: container
+    property string displayName: screen?.name ?? ""
     Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
 
     property Toplevel activeToplevel: Compositor.isWorkspaceOccupied(Compositor.focusedWorkspaceId)
@@ -16,7 +17,7 @@ Item {
         : null
 
     implicitWidth: row.implicitWidth + 30
-    implicitHeight: Config.runtime.bar.modules.height
+    implicitHeight: ConfigResolver.bar(displayName).modules.height
 
     function simplifyTitle(title) {
         if (!title)
@@ -106,12 +107,12 @@ Item {
     } */
 
     Rectangle {
-        visible: (Config.runtime.bar.position === "top" || Config.runtime.bar.position === "bottom")
+        visible: (ConfigResolver.bar(displayName).position === "top" || ConfigResolver.bar(displayName).position === "bottom")
         color: Appearance.m3colors.m3paddingContainer
         anchors.fill: parent
         height: 34 
         width: row.height + 30
-        radius: Config.runtime.bar.modules.radius
+        radius: ConfigResolver.bar(displayName).modules.radius
     }
 
 
@@ -122,7 +123,7 @@ Item {
 
         MaterialSymbol {
             icon: "desktop_windows"
-            rotation: (Config.runtime.bar.position === "left" || Config.runtime.bar.position === "right") ? 270 : 0
+            rotation: (ConfigResolver.bar(displayName).position === "left" || ConfigResolver.bar(displayName).position === "right") ? 270 : 0
         }
 
         StyledText {

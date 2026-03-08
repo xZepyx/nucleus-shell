@@ -8,10 +8,10 @@ import qs.services
 Item {
     id: statusIconsContainer
 
-    property bool isVertical: (Config.runtime.bar.position === "left" || Config.runtime.bar.position === "right")
+    property bool isVertical: (ConfigResolver.bar(screen?.name ?? "").position === "left" || ConfigResolver.bar(screen?.name ?? "").position === "right")
 
     Layout.alignment: Qt.AlignVCenter
-    visible: Config.runtime.bar.modules.statusIcons.enabled
+    visible: ConfigResolver.bar(screen?.name ?? "").modules.statusIcons.enabled
     implicitWidth: bgRect.implicitWidth
     implicitHeight: bgRect.implicitHeight
 
@@ -19,9 +19,9 @@ Item {
         id: bgRect
 
         color: Globals.visiblility.sidebarRight ? Appearance.m3colors.m3paddingContainer : "transparent"
-        radius: Config.runtime.bar.modules.radius * Config.runtime.appearance.rounding.factor
+        radius: ConfigResolver.bar(screen?.name ?? "").modules.radius * Config.runtime.appearance.rounding.factor
         implicitWidth: isVertical ? contentRow.implicitWidth + Metrics.margin("large") - 8 : contentRow.implicitWidth + Metrics.margin("large")
-        implicitHeight: Config.runtime.bar.modules.height
+        implicitHeight: ConfigResolver.bar(screen?.name ?? "").modules.height
 
         RowLayout {
             id: contentRow
@@ -33,7 +33,7 @@ Item {
             MaterialSymbol {
                 id: wifi
                 animate: false
-                visible: Config.runtime.bar.modules.statusIcons.networkStatusEnabled
+                visible: ConfigResolver.bar(screen?.name ?? "").modules.statusIcons.networkStatusEnabled
                 rotation: isVertical ? 270 : 0
                 icon: Network.icon
                 iconSize: Metrics.fontSize("huge")
@@ -42,7 +42,7 @@ Item {
             MaterialSymbol {
                 id: btIcon
                 animate: false
-                visible: Config.runtime.bar.modules.statusIcons.bluetoothStatusEnabled
+                visible: ConfigResolver.bar(screen?.name ?? "").modules.statusIcons.bluetoothStatusEnabled
                 rotation: isVertical ? 270 : 0
                 icon: Bluetooth.icon
                 iconSize: Metrics.fontSize("huge")

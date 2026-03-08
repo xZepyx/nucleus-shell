@@ -11,7 +11,7 @@ Item {
     Layout.alignment: Qt.AlignVCenter
 
     // Determine if bar is isVertical
-    property bool isVertical: Config.runtime.bar.position === "left" || Config.runtime.bar.position === "right"
+    property bool isVertical: ConfigResolver.bar(screen?.name ?? "").position === "left" || ConfigResolver.bar(screen?.name ?? "").position === "right"
 
     implicitWidth: bgRect.implicitWidth
     implicitHeight: bgRect.implicitHeight
@@ -19,10 +19,10 @@ Item {
     Rectangle {
         id: bgRect
         color: isVertical ? Appearance.m3colors.m3primary : Appearance.m3colors.m3paddingContainer
-        radius: Config.runtime.bar.modules.radius * Config.runtime.appearance.rounding.factor // No need to use metrics here...
+        radius: ConfigResolver.bar(screen?.name ?? "").modules.radius * Config.runtime.appearance.rounding.factor // No need to use metrics here...
 
         implicitWidth: child.implicitWidth + Appearance.margin.large - (isVertical ? 10 : 0)
-        implicitHeight: Config.runtime.bar.modules.height
+        implicitHeight: ConfigResolver.bar(screen?.name ?? "").modules.height
     }
 
     RowLayout {

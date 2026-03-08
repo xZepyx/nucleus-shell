@@ -1,5 +1,6 @@
 import qs.modules.components
 import qs.config
+import qs.services
 import Quickshell.Services.SystemTray
 import QtQuick
 import Quickshell
@@ -9,7 +10,7 @@ import QtQuick.Layouts
 Item {
     id: root
     readonly property Repeater items: items
-    property bool horizontalMode: (Config.runtime.bar.position === "top" || Config.runtime.bar.position === "bottom")
+    property bool horizontalMode: (ConfigResolver.bar(screen?.name ?? "").position === "top" || ConfigResolver.bar(screen?.name ?? "").position === "bottom")
     clip: true
     implicitWidth: layout.implicitWidth + Metrics.margin("verylarge")
     implicitHeight: 34
@@ -19,7 +20,7 @@ Item {
         id: padding
         implicitHeight: padding.height
         anchors.fill: parent
-        radius: Config.runtime.bar.modules.radius
+        radius: ConfigResolver.bar(screen?.name ?? "").modules.radius
         color: "transparent"
     }
 
