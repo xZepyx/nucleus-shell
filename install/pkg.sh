@@ -111,7 +111,7 @@ packages=(
     ttf-font-awesome ttf-fira-sans
     quickshell-git matugen-bin ffmpeg
     qt5-wayland qt6-wayland qt5-graphicaleffects qt6-5compat
-    xdg-desktop-portal-hyprland
+    xdg-desktop-portal-hyprland xorg-xrandr
     zenity jq ddcutil flatpak nucleus-shell
 )
 
