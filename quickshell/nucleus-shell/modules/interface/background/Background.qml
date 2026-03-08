@@ -161,8 +161,8 @@ Scope {
                     smooth: false
                     cache: false
                     fillMode: Image.PreserveAspectCrop
-                    source: wallpaperPath
-
+                    source: wallpaperPath + "?t=" + Date.now()
+                    
                     width: wallpaperWidth / wallpaperToScreenRatio * effectiveScale
                     height: wallpaperHeight / wallpaperToScreenRatio * effectiveScale
 
@@ -262,7 +262,6 @@ Scope {
 
     Clock {
         id: clock
-        imageFailed: bgImg.status === Image.Error
     }
 
 }

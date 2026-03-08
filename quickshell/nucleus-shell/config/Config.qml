@@ -161,7 +161,7 @@ Singleton {
             id: configOptionsJsonAdapter
             
             property var plugins: ({}) // dynamic plugins config variable
-            property var monitors: ({})
+            property var monitors: ({}) // per-monitor configuration for bars and wallpapers
 
             property JsonObject appearance: JsonObject {
                 property string theme: "dark"

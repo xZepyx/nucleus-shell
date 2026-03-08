@@ -80,7 +80,8 @@ ContentMenu {
                 Image {
                     opacity: Config.runtime.appearance.background.enabled ? 1 : 0
                     anchors.fill: parent
-                    source: {
+                    source: previewImg + "?t=" + Date.now()
+                    property string previewImg: {
                         const displays = Config.runtime.monitors
                         const fallback = Config.runtime.appearance.background.defaultPath
 
