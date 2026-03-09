@@ -123,7 +123,13 @@ Notes:
   - Inspect existing profile files (`~/.bashrc`, `~.zshrc`, `~/.profile`, `~/.config`) before applying changes.
 - Installer failures:
   - Re-run the installer with verbose output or check `install/` scripts for dependency checks.
-
+- Cli Commands
+  - To update: `nucleus update` The cli will guide you through the update.
+  - To uninstall: `nucleus uninstall` The cli will automaticly uninstall the shell.
+  - To stop/kill the shell: `nucleus kill` or `nucleus stop`
+  - To switch themes: `nucleus switch theme <themename>`
+  - More at: [cli-documentation](https://github.com/xZepyx/nucleus-cli)
+ 
 ---
 
 <h2 align="center">✦ To-Do ✦</h2>
