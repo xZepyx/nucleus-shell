@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import qs.config
 import qs.modules.components
 
 StyledRect {
