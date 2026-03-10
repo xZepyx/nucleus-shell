@@ -27,72 +27,61 @@ StyledRect {
             id: chatView
 
             model: root.model
-            spacing: Metrics.spacing(8)
+            spacing: Metrics.spacing(10)
             anchors.fill: parent
             anchors.margins: Metrics.margin(12)
             clip: true
 
             delegate: Item {
-                property bool isCodeBlock: message.split("\n").length > 2 && message.includes("import ")
-
                 width: chatView.width
-                height: bubble.implicitHeight + 6
+                height: bubble.implicitHeight + Metrics.margin(4)
 
-                Row {
-                    width: parent.width
-                    spacing: Metrics.spacing(8)
+                StyledRect {
+                    id: bubble
 
-                    Item {
-                        width: sender === "AI" ? 0 : parent.width * 0.2
+                    radius: Metrics.radius("normal")
+
+                    color: sender === "You"
+                           ? Appearance.m3colors.m3primaryContainer
+                           : Appearance.m3colors.m3surfaceContainerHigh
+
+                    anchors {
+                        right: sender === "You" ? parent.right : undefined
+                        left: sender === "AI" ? parent.left : undefined
+                        top: parent.top
                     }
 
-                    StyledRect {
-                        id: bubble
+                    width: Math.min(textItem.implicitWidth + Metrics.padding(20),
+                                    chatView.width * 0.8)
 
-                        radius: Metrics.radius("normal")
-                        color: sender === "You"
-                               ? Appearance.m3colors.m3primaryContainer
-                               : Appearance.m3colors.m3surfaceContainerHigh
+                    implicitHeight: textItem.implicitHeight + Metrics.padding(16)
 
-                        implicitWidth: Math.min(textItem.implicitWidth + 20, chatView.width * 0.8)
-                        implicitHeight: textItem.implicitHeight
+                    TextEdit {
+                        id: textItem
 
-                        anchors.right: sender === "You" ? parent.right : undefined
-                        anchors.left: sender === "AI" ? parent.left : undefined
-                        anchors.topMargin: Metrics.margin(2)
+                        text: StringUtils.markdownToHtml(message)
+                        textFormat: TextEdit.RichText
+                        wrapMode: TextEdit.Wrap
+                        readOnly: true
 
-                        TextEdit {
-                            id: textItem
+                        color: "white"
+                        font.pixelSize: Metrics.fontSize(16)
 
-                            text: StringUtils.markdownToHtml(message)
-                            wrapMode: TextEdit.Wrap
-                            textFormat: TextEdit.RichText
-                            readOnly: true
-                            font.pixelSize: Metrics.fontSize(16)
-
-                            color: "white"
-
-                            anchors.fill: parent
-                            anchors.leftMargin: Metrics.margin(12)
-                            padding: Metrics.padding(8)
-                        }
-
-                        MouseArea {
-                            anchors.fill: parent
-                            acceptedButtons: Qt.RightButton
-
-                            onClicked: {
-                                let p = Qt.createQmlObject(
-                                    'import Quickshell; import Quickshell.Io; Process { command: ["wl-copy", "' + message + '"] }',
-                                    parent
-                                )
-                                p.running = true
-                            }
-                        }
+                        anchors.fill: parent
+                        padding: Metrics.padding(8)
                     }
 
-                    Item {
-                        width: sender === "You" ? 0 : parent.width * 0.2
+                    MouseArea {
+                        anchors.fill: parent
+                        acceptedButtons: Qt.RightButton
+
+                        onClicked: {
+                            let p = Qt.createQmlObject(
+                                'import Quickshell; import Quickshell.Io; Process { command: ["wl-copy", "' + message + '"] }',
+                                parent
+                            )
+                            p.running = true
+                        }
                     }
                 }
             }
