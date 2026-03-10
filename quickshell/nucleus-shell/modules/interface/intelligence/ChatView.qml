@@ -1,6 +1,9 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
+import qs.config
 import qs.modules.components
+import qs.modules.functions
 
 StyledRect {
     property var messageModel
@@ -14,7 +17,6 @@ StyledRect {
         ListView {
             id: chatView
             anchors.fill: parent
-
             model: messageModel
             spacing: Metrics.spacing(8)
 
@@ -28,25 +30,23 @@ StyledRect {
                 height: bubble.implicitHeight + 6
 
                 Row {
+                    width: parent.width
 
                     StyledRect {
                         id: bubble
-
                         radius: Metrics.radius("normal")
                         color: sender === "You"
                                ? Appearance.m3colors.m3primaryContainer
                                : Appearance.m3colors.m3surfaceContainerHigh
 
-                        implicitWidth: Math.min(textItem.implicitWidth+20, chatView.width*0.8)
+                        implicitWidth: Math.min(textItem.implicitWidth + 20, chatView.width * 0.8)
 
                         TextEdit {
                             id: textItem
                             text: StringUtils.markdownToHtml(message)
-
                             wrapMode: TextEdit.Wrap
                             readOnly: true
                             textFormat: TextEdit.RichText
-
                             padding: Metrics.padding(8)
                         }
                     }
