@@ -1,30 +1,41 @@
 import QtQuick
+import QtQuick.Controls
 import QtQuick.Layouts
 import qs.config
 import qs.modules.components
 
 StyledRect {
+    id: root
 
-    signal send(string text)
+    signal sendMessage(string text)
 
+    Layout.fillWidth: true
     height: 50
     radius: Metrics.radius("normal")
     color: Appearance.m3colors.m3surfaceContainer
 
     RowLayout {
         anchors.fill: parent
-        anchors.margins: Metrics.margin(6)
+        anchors.margins: 6
+        spacing: 10
 
         StyledTextField {
             id: userInput
 
             Layout.fillWidth: true
             placeholderText: "Type your message..."
+            font.pixelSize: Metrics.fontSize(14)
+            padding: Metrics.padding(8)
 
             Keys.onPressed: {
                 if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
-                    send(userInput.text)
-                    userInput.text = ""
+
+                    if (event.modifiers & Qt.ShiftModifier) {
+                        insert("\n")
+                    } else {
+                        root.sendMessage(userInput.text)
+                    }
+
                     event.accepted = true
                 }
             }
@@ -32,11 +43,14 @@ StyledRect {
 
         StyledButton {
             text: "Send"
+            enabled: userInput.text.trim().length > 0
+            opacity: enabled ? 1 : 0.5
 
-            onClicked: {
-                send(userInput.text)
-                userInput.text = ""
-            }
+            onClicked: root.sendMessage(userInput.text)
         }
+    }
+
+    function clear() {
+        userInput.text = ""
     }
 }
