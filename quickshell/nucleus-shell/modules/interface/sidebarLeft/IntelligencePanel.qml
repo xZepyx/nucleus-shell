@@ -24,7 +24,7 @@ Item {
     }
 
     function scrollToBottom() {
-        chatView.positionViewAtEnd()
+        chatView.scrollToBottom()
     }
 
     function updateChatsList(files) {
@@ -69,15 +69,17 @@ Item {
         }
     }
 
-    function sendMessage() {
-        if (userInput.text === "" || Zenith.loading)
+    function handleSendMessage(text) {
+        if (text === "" || Zenith.loading)
             return
 
-        Zenith.pendingInput = userInput.text
-        appendMessage("You", userInput.text)
-        userInput.text = ""
+        Zenith.pendingInput = text
+        appendMessage("You", text)
+
         Zenith.loading = true
         Zenith.send()
+
+        chatInput.clear()
     }
 
     function loadChatHistory(chatName) {
@@ -154,9 +156,9 @@ Item {
             }
 
             ChatInput {
-                id: userInputContainer
+                id: chatInput
                 Layout.fillWidth: true
-                onSend: sendMessage()
+                onSendMessage: handleSendMessage(text)
             }
         }
     }
@@ -200,6 +202,7 @@ Item {
             }
 
             messageModel.clear()
+
             for (let m of batch)
                 messageModel.append(m)
 
