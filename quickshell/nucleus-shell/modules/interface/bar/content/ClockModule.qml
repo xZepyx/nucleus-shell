@@ -84,7 +84,7 @@ Item {
         StyledText {
             text: " • " + Time.format("dd MMM")
             font.pixelSize: Appearance.font.size.small
-            opacity: 0.75
+            opacity: 1 // keep one for clearer appearance.
         }
     }
 
