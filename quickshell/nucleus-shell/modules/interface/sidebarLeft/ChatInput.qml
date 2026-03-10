@@ -5,8 +5,9 @@ import qs.config
 import qs.modules.components
 
 StyledRect {
+    id: root
 
-    signal send()
+    signal sendMessage(string text)
 
     Layout.fillWidth: true
     height: 50
@@ -28,10 +29,12 @@ StyledRect {
 
             Keys.onPressed: {
                 if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
-                    if (event.modifiers & Qt.ShiftModifier)
+
+                    if (event.modifiers & Qt.ShiftModifier) {
                         insert("\n")
-                    else
-                        send()
+                    } else {
+                        root.sendMessage(userInput.text)
+                    }
 
                     event.accepted = true
                 }
@@ -42,7 +45,12 @@ StyledRect {
             text: "Send"
             enabled: userInput.text.trim().length > 0
             opacity: enabled ? 1 : 0.5
-            onClicked: send()
+
+            onClicked: root.sendMessage(userInput.text)
         }
+    }
+
+    function clear() {
+        userInput.text = ""
     }
 }
