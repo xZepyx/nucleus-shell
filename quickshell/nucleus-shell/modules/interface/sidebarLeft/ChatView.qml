@@ -12,6 +12,7 @@ StyledRect {
 
     Layout.fillWidth: true
     Layout.fillHeight: true
+
     radius: Metrics.radius("normal")
     color: Appearance.m3colors.m3surfaceContainerLow
 
@@ -33,11 +34,16 @@ StyledRect {
                 .replace(/>/g,"&gt;")
 
             let html =
-                "<div style='background:#1e1e1e;border-radius:10px;margin:8px 0;'>"+
-                "<div style='color:#aaa;font-size:12px;padding:6px 10px;border-bottom:1px solid #333;'>"+language+"</div>"+
-                "<pre style='margin:0;padding:10px;font-family:monospace;white-space:pre-wrap;color:#e6e6e6;'>"
-                + escaped +
-                "</pre></div>"
+                "<div style='margin:8px 0;border-radius:16px;background:#1e1e1e;'>"+
+                    "<div style='background:#2b2b2b;color:#b0b0b0;font-size:12px;padding:6px 12px;border-top-left-radius:16px;border-top-right-radius:16px;'>"+
+                    language+
+                    "</div>"+
+                    "<div style='background:#1e1e1e;border-bottom-left-radius:16px;border-bottom-right-radius:16px;'>"+
+                        "<pre style='margin:0;padding:12px;font-family:monospace;white-space:pre-wrap;color:#e6e6e6;'>"+
+                        escaped+
+                        "</pre>"+
+                    "</div>"+
+                "</div>"
 
             codeBlocks.push(html)
 
@@ -46,9 +52,8 @@ StyledRect {
 
         let html = StringUtils.markdownToHtml(msg)
 
-        for (let i = 0; i < codeBlocks.length; i++) {
+        for (let i = 0; i < codeBlocks.length; i++)
             html = html.replace("CODEBLOCK_" + i, codeBlocks[i])
-        }
 
         return html
     }
@@ -62,89 +67,17 @@ StyledRect {
 
             model: root.model
             spacing: Metrics.spacing(10)
+
             anchors.fill: parent
             anchors.margins: Metrics.margin(12)
+
             clip: true
 
-            delegate: Item {
-                width: chatView.width
-                height: bubble.implicitHeight + Metrics.margin(4)
-
-                StyledRect {
-                    id: bubble
-
-                    radius: Metrics.radius("normal")
-
-                    color: sender === "You"
-                           ? Appearance.m3colors.m3primaryContainer
-                           : Appearance.m3colors.m3surfaceContainerHigh
-
-                    anchors {
-                        right: sender === "You" ? parent.right : undefined
-                        left: sender === "AI" ? parent.left : undefined
-                        top: parent.top
-                    }
-
-                    width: Math.min(textItem.implicitWidth + Metrics.padding(20),
-                                    chatView.width * 0.8)
-
-                    implicitHeight: textItem.implicitHeight + Metrics.padding(16)
-
-                    TextEdit {
-                        id: textItem
-
-                        text: formatMessage(message)
-                        textFormat: TextEdit.RichText
-                        wrapMode: TextEdit.Wrap
-                        readOnly: true
-
-                        color: "white"
-                        font.pixelSize: Metrics.fontSize(16)
-
-                        anchors.fill: parent
-                        padding: Metrics.padding(8)
-                    }
-
-                    StyledButton {
-                        icon: "content_copy"
-                        visible: message.includes("```")
-
-                        anchors {
-                            right: parent.right
-                            top: parent.top
-                            rightMargin: 10
-                            topMargin: 10
-                        }
-
-                        implicitWidth: 28
-                        implicitHeight: 28
-
-                        onClicked: {
-                            let code = message
-                                .replace(/```(\w+)?\n/,"")
-                                .replace(/```$/,"")
-
-                            let p = Qt.createQmlObject(
-                                'import Quickshell; import Quickshell.Io; Process { command: ["wl-copy", "' + code + '"] }',
-                                parent
-                            )
-                            p.running = true
-                        }
-                    }
-
-                    MouseArea {
-                        anchors.fill: parent
-                        acceptedButtons: Qt.RightButton
-
-                        onClicked: {
-                            let p = Qt.createQmlObject(
-                                'import Quickshell; import Quickshell.Io; Process { command: ["wl-copy", "' + message + '"] }',
-                                parent
-                            )
-                            p.running = true
-                        }
-                    }
-                }
+            delegate: ChatBubble {
+                sender: model.sender
+                message: model.message
+                chatView: chatView
+                formatMessage: root.formatMessage
             }
         }
     }
