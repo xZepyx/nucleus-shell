@@ -19,6 +19,40 @@ StyledRect {
         chatView.positionViewAtEnd()
     }
 
+    function formatMessage(msg) {
+
+        let codeBlocks = []
+        let index = 0
+
+        msg = msg.replace(/```(\w+)?\n([\s\S]*?)```/g, function(_, lang, code) {
+
+            let language = lang ? lang : "code"
+
+            let escaped = code
+                .replace(/</g,"&lt;")
+                .replace(/>/g,"&gt;")
+
+            let html =
+                "<div style='background:#1e1e1e;border-radius:10px;margin:8px 0;'>"+
+                "<div style='color:#aaa;font-size:12px;padding:6px 10px;border-bottom:1px solid #333;'>"+language+"</div>"+
+                "<pre style='margin:0;padding:10px;font-family:monospace;white-space:pre-wrap;color:#e6e6e6;'>"
+                + escaped +
+                "</pre></div>"
+
+            codeBlocks.push(html)
+
+            return "CODEBLOCK_" + (index++)
+        })
+
+        let html = StringUtils.markdownToHtml(msg)
+
+        for (let i = 0; i < codeBlocks.length; i++) {
+            html = html.replace("CODEBLOCK_" + i, codeBlocks[i])
+        }
+
+        return html
+    }
+
     ScrollView {
         anchors.fill: parent
         clip: true
@@ -59,7 +93,7 @@ StyledRect {
                     TextEdit {
                         id: textItem
 
-                        text: StringUtils.markdownToHtml(message)
+                        text: formatMessage(message)
                         textFormat: TextEdit.RichText
                         wrapMode: TextEdit.Wrap
                         readOnly: true
@@ -69,6 +103,33 @@ StyledRect {
 
                         anchors.fill: parent
                         padding: Metrics.padding(8)
+                    }
+
+                    StyledButton {
+                        icon: "content_copy"
+                        visible: message.includes("```")
+
+                        anchors {
+                            right: parent.right
+                            top: parent.top
+                            rightMargin: 10
+                            topMargin: 10
+                        }
+
+                        implicitWidth: 28
+                        implicitHeight: 28
+
+                        onClicked: {
+                            let code = message
+                                .replace(/```(\w+)?\n/,"")
+                                .replace(/```$/,"")
+
+                            let p = Qt.createQmlObject(
+                                'import Quickshell; import Quickshell.Io; Process { command: ["wl-copy", "' + code + '"] }',
+                                parent
+                            )
+                            p.running = true
+                        }
                     }
 
                     MouseArea {
