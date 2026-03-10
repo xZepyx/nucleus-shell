@@ -17,27 +17,34 @@ PanelWindow {
     property real sidebarLeftWidth: 500
 
     function togglesidebarLeft() {
-        Globals.visiblility.sidebarLeft = !Globals.visiblility.sidebarLeft;
+        Globals.visiblility.sidebarLeft = !Globals.visiblility.sidebarLeft
     }
 
     WlrLayershell.namespace: "nucleus:sidebarLeft"
     WlrLayershell.layer: WlrLayer.Top
-    visible: Config.initialized && Globals.visiblility.sidebarLeft && !Globals.visiblility.sidebarRight
+
+    visible: Config.initialized
+             && Globals.visiblility.sidebarLeft
+             && !Globals.visiblility.sidebarRight
+
     color: "transparent"
     exclusiveZone: 0
+
     implicitWidth: sidebarLeftWidth
-    WlrLayershell.keyboardFocus: Compositor.require("niri") && Globals.visiblility.sidebarLeft
+
+    WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
 
     HyprlandFocusGrab {
         id: grab
-
         active: Compositor.require("hyprland")
         windows: [sidebarLeft]
     }
 
     anchors {
         top: true
-        left: (Config.runtime.bar.position === "left" || Config.runtime.bar.position === "bottom" || Config.runtime.bar.position === "top")
+        left: (Config.runtime.bar.position === "left"
+               || Config.runtime.bar.position === "bottom"
+               || Config.runtime.bar.position === "top")
         bottom: true
         right: (Config.runtime.bar.position === "right")
     }
@@ -58,23 +65,27 @@ PanelWindow {
         anchors.fill: parent
 
         FocusScope {
-            focus: true 
+            id: focusRoot
+            focus: true
             anchors.fill: parent
 
-            Keys.onPressed: {
-                if (event.key === Qt.Key_Escape) {
-                    Globals.visiblility.sidebarLeft = false;
-                }
+            onActiveFocusChanged: {
+                if (!activeFocus)
+                    Globals.visiblility.sidebarLeft = false
             }
 
-            SidebarLeftContent {
+            Keys.onPressed: {
+                if (event.key === Qt.Key_Escape)
+                    Globals.visiblility.sidebarLeft = false
             }
+
+            SidebarLeftContent { }
         }
     }
 
     IpcHandler {
         function toggle() {
-            togglesidebarLeft();
+            togglesidebarLeft()
         }
 
         target: "sidebarLeft"
