@@ -3,27 +3,35 @@ import qs.modules.components
 import qs.modules.functions
 import qs.services
 import QtQuick
-import Quickshell
 import QtQuick.Layouts
+import Quickshell
 import Quickshell.Wayland
 import Quickshell.Io
 import Quickshell.Hyprland
-import QtQuick.Controls
 import Quickshell.Services.Pipewire
-import Qt5Compat.GraphicalEffects
 
 PanelWindow {
     id: sidebarRight
+
     WlrLayershell.namespace: "nucleus:sidebarRight"
     WlrLayershell.layer: WlrLayer.Top
-    visible: Config.initialized && Globals.visiblility.sidebarRight && !Globals.visiblility.sidebarLeft
+
     color: "transparent"
     exclusiveZone: 0
-    WlrLayershell.keyboardFocus: Compositor.require("niri") && Globals.visiblility.sidebarRight
-    
+
+    visible: Config.initialized
+             && Globals.visiblility.sidebarRight
+             && !Globals.visiblility.sidebarLeft
+
+    WlrLayershell.keyboardFocus:
+        Compositor.require("niri") && Globals.visiblility.sidebarRight
+
+
     property real sidebarRightWidth: 500
 
+
     implicitWidth: Compositor.screenW
+
 
     HyprlandFocusGrab {
         id: grab
@@ -31,12 +39,15 @@ PanelWindow {
         windows: [sidebarRight]
     }
 
+
     anchors {
         top: true
-        right: (Config.runtime.bar.position === "top" || Config.runtime.bar.position === "bottom" || Config.runtime.bar.position === "right")
         bottom: true
-        left: (Config.runtime.bar.position === "left")
+
+        right: Config.runtime.bar.position !== "left"
+        left: Config.runtime.bar.position === "left"
     }
+
 
     margins {
         top: Config.runtime.bar.margins
@@ -44,6 +55,7 @@ PanelWindow {
         left: Metrics.margin("small")
         right: Metrics.margin("small")
     }
+
 
     PwObjectTracker {
         objects: [Pipewire.defaultAudioSink]
@@ -55,15 +67,21 @@ PanelWindow {
     MouseArea {
         anchors.fill: parent
         z: 0
-        onPressed: Globals.visiblility.sidebarRight = false
+
+        onPressed: {
+            Globals.visiblility.sidebarRight = false
+        }
     }
+
 
     StyledRect {
         id: container
+
         z: 1
+        width: sidebarRight.sidebarRightWidth
+
         color: Appearance.m3colors.m3background
         radius: Metrics.radius("large")
-        width: sidebarRight.sidebarRightWidth
 
         anchors {
             top: parent.top
@@ -71,14 +89,17 @@ PanelWindow {
             right: parent.right
         }
 
+
         MouseArea {
             anchors.fill: parent
             onPressed: mouse.accepted = true
         }
 
+
         FocusScope {
-            focus: true 
             anchors.fill: parent
+            focus: true
+
 
             Keys.onPressed: {
                 if (event.key === Qt.Key_Escape) {
@@ -86,18 +107,23 @@ PanelWindow {
                 }
             }
 
-            SidebarRightContent { }
+
+            SidebarRightContent {}
         }
     }
 
-    function togglesidebarRight() {
-        Globals.visiblility.sidebarRight = !Globals.visiblility.sidebarRight
+
+    function toggleSidebarRight() {
+        Globals.visiblility.sidebarRight =
+            !Globals.visiblility.sidebarRight
     }
+
 
     IpcHandler {
         target: "sidebarRight"
+
         function toggle() {
-            togglesidebarRight()
+            toggleSidebarRight()
         }
     }
 }
