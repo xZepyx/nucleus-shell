@@ -8,156 +8,118 @@ import qs.modules.components
 Scope {
     id: root
 
-    GothCorners {
-        opacity: ConfigResolver.bar(bar.displayName).gothCorners && !ConfigResolver.bar(bar.displayName).floating && ConfigResolver.bar(bar.displayName).enabled && !ConfigResolver.bar(bar.displayName).merged ? 1 : 0
-    }
-
     Variants {
         model: Quickshell.screens
 
         PanelWindow {
-            // some exclusiveSpacing so it won't look like its sticking into the window when floating
-
             id: bar
-
             required property var modelData
+
+            screen: modelData
             property string displayName: modelData.name
-            property int rd: ConfigResolver.bar(displayName).radius * Config.runtime.appearance.rounding.factor // So it won't be modified when factor is 0
-            property int margin: ConfigResolver.bar(displayName).margins
-            property bool floating: ConfigResolver.bar(displayName).floating
-            property bool merged: ConfigResolver.bar(displayName).merged
-            property string pos: ConfigResolver.bar(displayName).position
+
+            property var barConfig: ConfigResolver.bar(displayName)
+
+            property int rd: barConfig.radius * Config.runtime.appearance.rounding.factor
+            property int margin: barConfig.margins
+            property bool floating: barConfig.floating
+            property bool merged: barConfig.merged
+            property string pos: barConfig.position
+
             property bool vertical: pos === "left" || pos === "right"
-            // Simple position properties
+
             property bool attachedTop: pos === "top"
             property bool attachedBottom: pos === "bottom"
             property bool attachedLeft: pos === "left"
             property bool attachedRight: pos === "right"
 
-            screen: modelData // Show bar on all screens
-            visible: ConfigResolver.bar(displayName).enabled && Config.initialized
-            WlrLayershell.namespace: "nucleus:bar"
-            exclusiveZone: ConfigResolver.bar(displayName).floating ? ConfigResolver.bar(displayName).density + Metrics.margin("tiny") : ConfigResolver.bar(displayName).density
-            implicitHeight: ConfigResolver.bar(displayName).density // density === height. (horizontal orientation)
-            implicitWidth: ConfigResolver.bar(displayName).density // density === width. (vertical orientation)
-            color: "transparent" // Keep panel window's color transparent, so that it can be modified by background rect
+            visible: barConfig.enabled && Config.initialized
 
-            // This is probably a little weird way to set anchors but I think it's the best way. (and it works)
+            WlrLayershell.namespace: "nucleus:bar"
+
+            exclusiveZone: floating
+                ? barConfig.density + Metrics.margin("tiny")
+                : barConfig.density
+
+            implicitHeight: barConfig.density
+            implicitWidth: barConfig.density
+
+            color: "transparent"
+
             anchors {
-                top: ConfigResolver.bar(displayName).position === "top" || ConfigResolver.bar(displayName).position === "left" || ConfigResolver.bar(displayName).position === "right"
-                bottom: ConfigResolver.bar(displayName).position === "bottom" || ConfigResolver.bar(displayName).position === "left" || ConfigResolver.bar(displayName).position === "right"
-                left: ConfigResolver.bar(displayName).position === "left" || ConfigResolver.bar(displayName).position === "top" || ConfigResolver.bar(displayName).position === "bottom"
-                right: ConfigResolver.bar(displayName).position === "right" || ConfigResolver.bar(displayName).position === "top" || ConfigResolver.bar(displayName).position === "bottom"
+                top: pos === "top" || vertical
+                bottom: pos === "bottom" || vertical
+                left: pos === "left" || !vertical
+                right: pos === "right" || !vertical
             }
 
             margins {
-                top: {
-                    if (floating)
-                        return margin;
+                top: floating || (merged && vertical) ? margin : 0
+                bottom: floating || (merged && vertical) ? margin : 0
+                left: floating || (merged && !vertical) ? margin : 0
+                right: floating || (merged && !vertical) ? margin : 0
+            }
 
-                    if (merged && vertical)
-                        return margin;
-
-                    return 0;
-                }
-                bottom: {
-                    if (floating)
-                        return margin;
-
-                    if (merged && vertical)
-                        return margin;
-
-                    return 0;
-                }
-                left: {
-                    if (floating)
-                        return margin;
-
-                    if (merged && !vertical)
-                        return margin;
-
-                    return 0;
-                }
-                right: {
-                    if (floating)
-                        return margin;
-
-                    if (merged && !vertical)
-                        return margin;
-
-                    return 0;
-                }
+            GothCorners {
+                opacity: barConfig.gothCorners
+                         && !barConfig.floating
+                         && barConfig.enabled
+                         && !barConfig.merged ? 1 : 0
             }
 
             StyledRect {
                 id: background
-                color: Appearance.m3colors.m3background
                 anchors.fill: parent
+                color: Appearance.m3colors.m3background
+
                 topLeftRadius: {
-                    if (floating)
-                        return rd;
-
-                    if (!merged)
-                        return 0;
-
-                    return attachedBottom || attachedRight ? rd : 0;
+                    if (floating) return rd
+                    if (!merged) return 0
+                    return attachedBottom || attachedRight ? rd : 0
                 }
+
                 topRightRadius: {
-                    if (floating)
-                        return rd;
-
-                    if (!merged)
-                        return 0;
-
-                    return attachedBottom || attachedLeft ? rd : 0;
+                    if (floating) return rd
+                    if (!merged) return 0
+                    return attachedBottom || attachedLeft ? rd : 0
                 }
+
                 bottomLeftRadius: {
-                    if (floating)
-                        return rd;
-
-                    if (!merged)
-                        return 0;
-
-                    return attachedTop || attachedRight ? rd : 0;
+                    if (floating) return rd
+                    if (!merged) return 0
+                    return attachedTop || attachedRight ? rd : 0
                 }
+
                 bottomRightRadius: {
-                    if (floating)
-                        return rd;
-
-                    if (!merged)
-                        return 0;
-
-                    return attachedTop || attachedLeft ? rd : 0;
+                    if (floating) return rd
+                    if (!merged) return 0
+                    return attachedTop || attachedLeft ? rd : 0
                 }
 
                 BarContent {
                     anchors.fill: parent
                 }
 
-                Behavior on bottomLeftRadius {
-                    enabled: Config.runtime.appearance.animations.enabled
-                    animation: Appearance.animation.elementMove.numberAnimation.createObject(this)
-                }
-
                 Behavior on topLeftRadius {
                     enabled: Config.runtime.appearance.animations.enabled
-                    animation: Appearance.animation.elementMove.numberAnimation.createObject(this)
-                }
-
-                Behavior on bottomRightRadius {
-                    enabled: Config.runtime.appearance.animations.enabled
-                    animation: Appearance.animation.elementMove.numberAnimation.createObject(this)
+                    animation: Appearance.animation.elementMove.numberAnimation.createObject(background)
                 }
 
                 Behavior on topRightRadius {
                     enabled: Config.runtime.appearance.animations.enabled
-                    animation: Appearance.animation.elementMove.numberAnimation.createObject(this)
+                    animation: Appearance.animation.elementMove.numberAnimation.createObject(background)
                 }
 
+                Behavior on bottomLeftRadius {
+                    enabled: Config.runtime.appearance.animations.enabled
+                    animation: Appearance.animation.elementMove.numberAnimation.createObject(background)
+                }
+
+                Behavior on bottomRightRadius {
+                    enabled: Config.runtime.appearance.animations.enabled
+                    animation: Appearance.animation.elementMove.numberAnimation.createObject(background)
+                }
             }
-
         }
-
     }
-
 }
