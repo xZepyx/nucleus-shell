@@ -8,11 +8,13 @@ Item {
     id: clockContainer
 
     property string displayName: screen?.name ?? ""
+    property var barConfig: ConfigResolver.bar(displayName)
 
     property bool isVertical:
-        ConfigResolver.bar(displayName).position === "left"
-        || ConfigResolver.bar(displayName).position === "right"
+        barConfig.position === "left"
+        || barConfig.position === "right"
 
+    property bool use24h: barConfig.modules.clock?.use24h ?? true
     property bool blink: true
 
     Layout.alignment: Qt.AlignVCenter
@@ -38,9 +40,9 @@ Item {
             ? verticalClock.implicitWidth + 12
             : horizontalClock.implicitWidth + Metrics.margin("large")
 
-        implicitHeight: ConfigResolver.bar(displayName).modules.height
+        implicitHeight: barConfig.modules.height
 
-        radius: ConfigResolver.bar(displayName).modules.radius
+        radius: barConfig.modules.radius
                 * Config.runtime.appearance.rounding.factor
 
         color: isVertical
@@ -54,19 +56,19 @@ Item {
 
         visible: !isVertical
         anchors.centerIn: parent
-        spacing: 2
+        spacing: 3
 
         StyledText {
-            text: Time.format("hh")
+            text: use24h ? Time.format("HH") : Time.format("hh")
             font.pixelSize: Appearance.font.size.small
+            Layout.alignment: Qt.AlignVCenter
         }
 
         StyledText {
             id: colon
             text: ":"
-
             font.pixelSize: Appearance.font.size.small
-
+            Layout.alignment: Qt.AlignVCenter
             opacity: clockContainer.blink ? 1 : 0
 
             Layout.preferredWidth: implicitWidth
@@ -79,12 +81,21 @@ Item {
         StyledText {
             text: Time.format("mm")
             font.pixelSize: Appearance.font.size.small
+            Layout.alignment: Qt.AlignVCenter
+        }
+
+        StyledText {
+            visible: !use24h
+            text: Time.format("AP").toLowerCase()
+            font.pixelSize: Appearance.font.size.small * 0.9
+            opacity: 0.8
+            Layout.alignment: Qt.AlignVCenter
         }
 
         StyledText {
             text: " • " + Time.format("dd MMM")
             font.pixelSize: Appearance.font.size.small
-            opacity: 1 // keep one for clearer appearance.
+            Layout.alignment: Qt.AlignVCenter
         }
     }
 
@@ -97,7 +108,7 @@ Item {
         spacing: 0
 
         StyledText {
-            text: Time.format("hh")
+            text: use24h ? Time.format("HH") : Time.format("hh")
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: Appearance.font.size.small
         }
@@ -109,7 +120,8 @@ Item {
         }
 
         StyledText {
-            text: Time.format("AP")
+            visible: !use24h
+            text: Time.format("AP").toLowerCase()
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: Appearance.font.size.small * 0.8
             opacity: 0.7

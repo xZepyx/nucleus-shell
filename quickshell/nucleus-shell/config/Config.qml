@@ -278,6 +278,9 @@ Singleton {
                         property bool memoryStatsEnabled: true 
                         property bool tempStatsEnabled: true
                     }
+                    property JsonObject clock: JsonObject {
+                        property bool use24h: false
+                    }
                 }
             }
         }

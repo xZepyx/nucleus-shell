@@ -66,22 +66,30 @@ ContentCard {
                         height: 34,
                         paddingColor: "#1f1f1f",
                         radius: 17,
+
+                        clock: {
+                            use24h: true
+                        },
+
                         statusIcons: { 
                             bluetoothStatusEnabled: true, 
                             enabled: true, 
                             networkStatusEnabled: true 
                         },
+
                         systemUsage: { 
                             cpuStatsEnabled: true, 
                             enabled: true, 
                             memoryStatsEnabled: true, 
                             tempStatsEnabled: true 
                         },
+
                         workspaces: { 
                             enabled: true, 
                             showAppIcons: true, 
                             showJapaneseNumbers: false, 
-                            workspaceIndicators: 8 
+                            workspaceIndicators: 8,
+                            dynamic: false
                         }
                     },
                     position: "top",
@@ -259,6 +267,14 @@ ContentCard {
         title: "Dynamic Workspaces"
         description: "Hide empty workspaces and only show occupied ones"
         prefField: barKey + ".modules.workspaces.dynamic"
+    }
+
+    StyledText { text: "Clock"; font.pixelSize: Metrics.fontSize(18); font.bold: true }
+
+    StyledSwitchOption {
+        title: "Use 24 Hour Clock"
+        description: "Toggle between 24h and am/pm format"
+        prefField: barKey + ".modules.clock.use24h"
     }
 
     StyledText { text: "Status Icons"; font.pixelSize: Metrics.fontSize(18); font.bold: true }
