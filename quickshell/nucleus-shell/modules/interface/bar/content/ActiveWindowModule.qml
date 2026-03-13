@@ -11,6 +11,7 @@ Item {
     id: container
 
     property string displayName: screen?.name ?? ""
+    property var barConfig: ConfigResolver.bar(displayName)
 
     Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
 
@@ -21,7 +22,7 @@ Item {
     readonly property string appId: activeToplevel?.appId ?? ""
     readonly property string windowTitle: activeToplevel?.title ?? ""
 
-    implicitHeight: ConfigResolver.bar(displayName).modules.height
+    implicitHeight: barConfig.modules.height
     implicitWidth: row.implicitWidth + 24
 
     function cleanTitle(title) {
@@ -68,6 +69,7 @@ Item {
                     return `${left}${s}${right}`
 
                 const rmax = Math.floor(max * 0.55)
+
                 if (right.length > rmax)
                     return `${left}${s}${right.slice(0, rmax)}…`
 
@@ -83,36 +85,50 @@ Item {
     }
 
     function resolveIcon(appId) {
+
         if (!appId)
             return "application-x-executable"
 
-        const id = appId.toLowerCase()
+        let id = appId.toLowerCase()
 
         const map = {
             "org.mozilla.firefox": "firefox",
             "firefox": "firefox",
+
+            "org.gnome.nautilus": "nautilus",
+            "nautilus": "nautilus",
+
             "chromium": "chromium",
             "google-chrome": "google-chrome",
-            "code": "vscode",
-            "code-oss": "vscode",
+            "code": "code",
+            "code-oss": "code",
             "kitty": "kitty",
             "alacritty": "alacritty",
             "discord": "discord",
             "spotify": "spotify",
-            "steam": "steam"
+            "steam": "steam",
+            "zen": "zen-browser",
+            "zen-browser": "zen-browser"
         }
 
-        return map[id] || id
+        if (map[id])
+            return map[id]
+
+        if (id.includes(".")) {
+            const parts = id.split(".")
+            return parts[parts.length - 1]
+        }
+
+        return id
     }
 
     Rectangle {
         anchors.fill: parent
 
-        visible: ConfigResolver.bar(displayName).position === "top"
-              || ConfigResolver.bar(displayName).position === "bottom"
+        visible: barConfig.position === "top"
+              || barConfig.position === "bottom"
 
-        radius: ConfigResolver.bar(displayName).modules.radius
-
+        radius: barConfig.modules.radius
         color: Appearance.m3colors.m3surfaceContainerLow
     }
 
@@ -128,17 +144,30 @@ Item {
             Layout.preferredWidth: Math.min(container.implicitHeight * 0.55, 20)
             Layout.preferredHeight: Layout.preferredWidth
 
-            Image {
+            Item {
                 anchors.fill: parent
 
-                source: activeToplevel
-                    ? "image://icon/" + resolveIcon(appId)
-                    : "image://icon/user-desktop"
+                Image {
+                    id: appIcon
+                    anchors.fill: parent
 
-                fillMode: Image.PreserveAspectFit
-                smooth: true
-                mipmap: true
-                antialiasing: true
+                    visible: activeToplevel
+
+                    source: "image://icon/" + resolveIcon(appId)
+
+                    fillMode: Image.PreserveAspectFit
+                    smooth: true
+                    mipmap: true
+                    antialiasing: true
+                }
+
+                MaterialSymbol {
+                    anchors.centerIn: parent
+                    visible: !activeToplevel
+
+                    text: "desktop_windows"
+                    font.pixelSize: Metrics.iconSize(18)
+                }
             }
         }
 
