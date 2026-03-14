@@ -40,7 +40,7 @@ Item {
             text: Time.format("dddd, dd MMM")
 
             font.pixelSize: Metrics.fontSize(24)
-            font.family: Appearance.font.families.expressive
+            font.family: Metrics.fontFamily("expressive")
             font.weight: Font.DemiBold
             font.letterSpacing: 1
             renderType: Text.NativeRendering
@@ -80,7 +80,7 @@ Item {
                 text: ":"
 
                 font.pixelSize: Metrics.fontSize(92)
-                font.family: Appearance.font.families.expressive
+                font.family: Metrics.fontFamily("expressive")
                 font.weight: Font.Medium
                 font.letterSpacing: 1
                 renderType: Text.NativeRendering
@@ -105,7 +105,7 @@ Item {
                 text: Time.format("AP")
 
                 font.pixelSize: Metrics.fontSize(20)
-                font.family: Appearance.font.families.expressive
+                font.family: Metrics.fontFamily("expressive")
                 font.weight: Font.DemiBold
                 renderType: Text.NativeRendering
 
