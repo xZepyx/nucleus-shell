@@ -14,6 +14,7 @@ Rectangle {
     property string body: "No content"
     property var rawNotif: null
     property bool tracked: false
+    property bool isHistory: false
     property string image: ""
     property string appName: "notify-send"
     property string timestamp: Qt.formatTime(new Date(), "hh:mm")
@@ -167,8 +168,11 @@ Rectangle {
                     cursorShape: Qt.PointingHandCursor
                     onClicked: (mouse) => {
                         mouse.accepted = true
-                        if (root.rawNotif)
+                        if (root.rawNotif) {
                             root.rawNotif.popup = false
+                            if (root.isHistory)
+                                root.rawNotif.notification.dismiss()
+                        }
                     }
                 }
             }
@@ -235,8 +239,11 @@ Rectangle {
             if (root.buttons.length === 1 && root.buttons[0].onClick) {
                 root.buttons[0].onClick()
             }
-            if (root.rawNotif)
+            if (root.rawNotif) {
                 root.rawNotif.popup = false
+                if (root.isHistory)
+                    root.rawNotif.notification.dismiss()
+            }
         }
     }
 
