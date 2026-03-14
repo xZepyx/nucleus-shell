@@ -251,6 +251,7 @@ Singleton {
                 property bool merged: false
                 property bool floating: false
                 property bool gothCorners: true
+                property bool pill: true
                 property int radius: Appearance.rounding.large
                 property int margins: Appearance.margin.normal
                 property int density: 50
@@ -263,6 +264,8 @@ Singleton {
                         property int workspaceIndicators: 8
                         property bool showAppIcons: true 
                         property bool showJapaneseNumbers: false
+                        property bool dynamic: false
+
                     }
                     property JsonObject statusIcons: JsonObject {
                         property bool enabled: true
@@ -274,6 +277,9 @@ Singleton {
                         property bool cpuStatsEnabled: true 
                         property bool memoryStatsEnabled: true 
                         property bool tempStatsEnabled: true
+                    }
+                    property JsonObject clock: JsonObject {
+                        property bool use24h: false
                     }
                 }
             }
