@@ -234,8 +234,24 @@ ContentMenu {
 
         StyledSwitchOption {
             title: "Analog Variant"
-            description: "Whether to use analog clock or not."
+            description: "Whether to use analog clock."
             prefField: "appearance.background.clock.isAnalog"
+        }
+
+        StyledSwitchOption {
+            title: "Vertical Variant"
+            description: "Whether to use digital clock."
+            prefField: "appearance.background.clock.vertical"
+            enabled: !Config.runtime.appearance.background.clock.isAnalog
+            opacity: enabled ? 1 : 0.8
+        }
+
+        StyledSwitchOption {
+            title: "12 Hours Clock"
+            description: "Whether to use 12hrs clock."
+            prefField: "appearance.background.clock.use12Hour"
+            enabled: !Config.runtime.appearance.background.clock.isAnalog
+            opacity: enabled ? 1 : 0.8
         }
 
         StyledSwitchOption {
