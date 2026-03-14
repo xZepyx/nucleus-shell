@@ -33,7 +33,7 @@ Item {
         color: "transparent"
         border.color: dropdown.activeFocus ? Appearance.m3colors.m3primary : Appearance.m3colors.m3outline
         border.width: dropdown.activeFocus ? 2 : 1
-        radius: Metrics.radius("unsharpen")
+        radius: Metrics.radius("normal")
 
         Behavior on border.color {
             enabled: Config.runtime.appearance.animations.enabled
@@ -115,7 +115,7 @@ Item {
 
             background: Rectangle {
                 color: Appearance.m3colors.m3surfaceContainer
-                radius: Metrics.radius(4)
+                radius: Metrics.radius("normal")
                 border.color: Appearance.m3colors.m3outline
                 border.width: 1
                 layer.enabled: true
@@ -148,6 +148,7 @@ Item {
                             if (index === root.currentIndex) return ColorUtils.transparentize(Appearance.m3colors.m3primaryContainer, 0.08)
                             return "transparent"
                         }
+                        radius: Metrics.radius("normal")
                         Behavior on color {
                             ColorAnimation { duration: Metrics.chronoDuration("small") ; easing.type: Easing.InOutCubic }
                         }

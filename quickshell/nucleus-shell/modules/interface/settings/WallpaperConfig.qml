@@ -42,12 +42,6 @@ ContentMenu {
             Layout.fillWidth: true
             spacing: Metrics.spacing(16)
 
-            StyledText {
-                text: "Current Wallpaper"
-                font.pixelSize: Metrics.fontSize("big")
-                font.bold: true
-            }
-
             ClippingRectangle {
                 id: wpContainer
 
