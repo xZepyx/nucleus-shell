@@ -30,7 +30,7 @@ Item {
         anchors.centerIn: parent
 
         font.pixelSize: root.size
-        font.family: Appearance.font.families.expressive
+        font.family: Metrics.fontFamily("expressive")
         font.weight: Font.Medium
         font.letterSpacing: 1
 
@@ -48,7 +48,7 @@ Item {
         anchors.centerIn: parent
 
         font.pixelSize: root.size
-        font.family: Appearance.font.families.expressive
+        font.family: Metrics.fontFamily("expressive")
         font.weight: Font.Medium
         font.letterSpacing: 1
 
