@@ -23,7 +23,7 @@ PanelWindow {
     
     property real sidebarRightWidth: 500
 
-    implicitWidth: Compositor.screenW
+    implicitWidth: sidebarRightWidth
 
     HyprlandFocusGrab {
         id: grab
@@ -33,9 +33,9 @@ PanelWindow {
 
     anchors {
         top: true
-        right: (Config.runtime.bar.position === "top" || Config.runtime.bar.position === "bottom" || Config.runtime.bar.position === "right")
+        right: true
         bottom: true
-        left: (Config.runtime.bar.position === "left")
+        left: true
     }
 
     margins {
