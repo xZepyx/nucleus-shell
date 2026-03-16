@@ -17,7 +17,6 @@ Item {
 
     property var workspaceOccupied: []
     property var occupiedRanges: []
-    property var visibleWorkspaces: []
 
     function japaneseNumber(num) {
         var kanjiMap = {
@@ -37,7 +36,6 @@ Item {
     }
 
     function updateWorkspaceOccupied() {
-
         workspaceOccupied = Array.from(
             { length: numWorkspaces },
             (_, i) => Compositor.isWorkspaceOccupied(i + 1)
@@ -59,17 +57,6 @@ Item {
         if (start !== -1)
             ranges.push({ start: start, end: workspaceOccupied.length - 1 })
 
-        const visible = []
-
-        for (let i = 0; i < workspaceOccupied.length; i++) {
-            const ws = i + 1
-            const occupied = workspaceOccupied[i]
-
-            if (!dynamicWorkspaces || occupied)
-                visible.push(ws)
-        }
-
-        visibleWorkspaces = visible
         occupiedRanges = ranges
     }
 
@@ -94,7 +81,6 @@ Item {
 
         implicitWidth: workspaceRow.implicitWidth + Metrics.margin("large") - 8
         implicitHeight: ConfigResolver.bar(displayName).modules.height
-
 
         Item {
             id: occupiedStretchLayer
@@ -129,7 +115,6 @@ Item {
             }
         }
 
-
         Rectangle {
             id: highlight
 
@@ -137,19 +122,25 @@ Item {
             property real spacing: workspaceRow.spacing
 
             property int highlightIndex: {
-
                 if (!Compositor.focusedWorkspaceId)
                     return -1
 
                 if (dynamicWorkspaces) {
-                    const idx = visibleWorkspaces.indexOf(
-                        Compositor.focusedWorkspaceId
-                    )
-                    return idx
+                    let idx = 0
+                    const focused = Compositor.focusedWorkspaceId
+                    for (let i = 1; i <= numWorkspaces; i++) {
+                        const occupied = Compositor.isWorkspaceOccupied(i)
+                        const visible = occupied || i === focused
+                        if (visible) {
+                            if (i === focused)
+                                return idx
+                            idx++
+                        }
+                    }
+                    return -1
                 }
 
                 let idx
-
                 if (Compositor.require("hyprland"))
                     idx = Compositor.focusedWorkspaceId - 1
                 else
@@ -205,7 +196,6 @@ Item {
             }
         }
 
-
         RowLayout {
             id: workspaceRow
 
@@ -213,27 +203,16 @@ Item {
             spacing: Metrics.spacing(10)
 
             Repeater {
-
-                model: dynamicWorkspaces
-                       ? visibleWorkspaces
-                       : numWorkspaces
+                model: numWorkspaces
 
                 Item {
+                    property int wsIndex: index + 1
+                    property bool occupied: Compositor.isWorkspaceOccupied(wsIndex)
+                    property bool focused: wsIndex === Compositor.focusedWorkspaceId
 
-                    property int wsIndex:
-                        dynamicWorkspaces
-                        ? visibleWorkspaces[index]
-                        : index + 1
-
-                    property bool occupied:
-                        Compositor.isWorkspaceOccupied(wsIndex)
-
-                    property bool focused:
-                        wsIndex === Compositor.focusedWorkspaceId
-
-                    width: 26
+                    visible: !dynamicWorkspaces || occupied || focused
+                    width: visible ? 26 : 0
                     height: 26
-
 
                     ClippingRectangle {
                         id: iconContainer
@@ -286,7 +265,6 @@ Item {
                         }
                     }
 
-
                     StyledText {
                         anchors.centerIn: parent
 
@@ -304,7 +282,6 @@ Item {
                             ? 270
                             : 0
                     }
-
 
                     StyledText {
                         anchors.centerIn: parent
@@ -324,9 +301,7 @@ Item {
                             : 0
                     }
 
-
                     MaterialSymbol {
-
                         property string displayText:
                             Config.runtime.appearance.rounding.factor === 0
                             ? "crop_square"
@@ -352,7 +327,6 @@ Item {
 
                         fill: 1
                     }
-
 
                     MouseArea {
                         anchors.fill: parent
