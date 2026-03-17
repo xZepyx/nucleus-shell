@@ -24,6 +24,13 @@ Scope {
         }
     }
 
+    IpcHandler {
+        target: "powermenu"
+        function toggle() {
+            Globals.visiblility.powermenu = !Globals.visiblility.powermenu;
+        }
+    }
+
     // Handle Global IPCs
     IpcHandler {
         target: "global"

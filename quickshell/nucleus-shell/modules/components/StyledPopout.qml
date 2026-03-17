@@ -1,7 +1,6 @@
 import qs.config
 import qs.services
 import QtQuick
-import QtQuick.Effects
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Widgets
@@ -62,7 +61,7 @@ LazyLoader {
     }
 
     property Timer cleanupTimer: Timer {
-        interval: Metrics.chronoDuration("small") 
+        interval: Metrics.chronoDuration("small")
         repeat: false
         onTriggered: {
             root.isVisible = false;
@@ -119,7 +118,7 @@ LazyLoader {
         color: "transparent"
         visible: root.isVisible
 
-        WlrLayershell.namespace: "whisker:popout"
+        WlrLayershell.namespace: "nucleus:popout"
         WlrLayershell.layer: WlrLayer.Overlay
         exclusionMode: ExclusionMode.Ignore
         exclusiveZone: 0
@@ -150,6 +149,7 @@ LazyLoader {
             width: !root.hasHitbox ? 0 : !requiresHover ? popoutWindow.width : container.implicitWidth
             height: !root.hasHitbox ? 0 : !requiresHover ? popoutWindow.height : container.implicitHeight
         }
+
         MouseArea {
             id: mouseArea
             anchors.fill: parent
@@ -162,6 +162,7 @@ LazyLoader {
                 }
             }
         }
+
         Item {
             id: container
 
@@ -185,22 +186,35 @@ LazyLoader {
                         let targetWidth = targetItem.width;
                         let popupWidth = container.implicitWidth;
 
-                        if (root.hCenterOnItem) {
-                            let centeredX = baseX + (targetWidth - popupWidth) / 2;
-                            if (centeredX + popupWidth > screen.width)
-                                centeredX = screen.width - popupWidth - 10;
-                            if (centeredX < 10)
-                                centeredX = 10;
-                            xValue = centeredX;
+                        const barPosX = ConfigResolver.bar(root.displayName).position;
+                        const densityX = ConfigResolver.bar(root.displayName).density;
+                        const floatingX = ConfigResolver.bar(root.displayName).floating;
+                        const barMarginX = ConfigResolver.bar(root.displayName).margins;
+
+                        // Same issue as bottom: mapToGlobal returns window-local X for right bars.
+                        if (barPosX === "right")
+                            baseX += (screen?.width ?? 0) - densityX - (floatingX ? barMarginX : 0);
+
+                        let xPos;
+                        if (barPosX === "left") {
+                            xPos = baseX + targetWidth;
+                        } else if (barPosX === "right") {
+                            xPos = baseX - popupWidth;
+                        } else if (root.hCenterOnItem) {
+                            xPos = baseX + (targetWidth - popupWidth) / 2;
                         } else {
-                            let xPos = baseX - ((ConfigResolver.bar(root.displayName).position === "top" || ConfigResolver.bar(root.displayName).position === "top") ? 20 : -40);
-                            if (xPos + popupWidth > screen.width) {
-                                exceedingHalf = true;
-                                xValue = baseX - popupWidth;
-                            } else {
-                                exceedingHalf = false;
-                                xValue = xPos;
-                            }
+                            xPos = baseX - 20;
+                        }
+
+                        if (xPos + popupWidth > (screen?.width ?? 0)) {
+                            exceedingHalf = true;
+                            xValue = (screen?.width ?? 0) - popupWidth - 10;
+                        } else if (xPos < 10) {
+                            exceedingHalf = false;
+                            xValue = 10;
+                        } else {
+                            exceedingHalf = false;
+                            xValue = xPos;
                         }
                     }
                 }
@@ -225,13 +239,27 @@ LazyLoader {
                         let targetHeight = targetItem.height;
                         let popupHeight = container.implicitHeight;
 
-                        let yPos = baseY + ((ConfigResolver.bar(root.displayName).position === "top" || ConfigResolver.bar(root.displayName).position === "top") ? targetHeight : 0);
+                        const barPos = ConfigResolver.bar(root.displayName).position;
+                        const density = ConfigResolver.bar(root.displayName).density;
+                        const floating = ConfigResolver.bar(root.displayName).floating;
+                        const barMargin = ConfigResolver.bar(root.displayName).margins;
 
-                        if (yPos > screen.height / 2)
+                        // mapToGlobal returns window-local coords for bottom bars because
+                        // Quickshell doesn't report the bar window's Y to Qt for bottom-anchored windows.
+                        // Add the bar's expected screen offset to convert to screen-global.
+                        if (barPos === "bottom")
+                            baseY += (screen?.height ?? 0) - density - (floating ? barMargin : 0);
+
+                        let yPos;
+                        if (barPos === "top")
+                            yPos = baseY + targetHeight;
+                        else if (barPos === "bottom")
                             yPos = baseY - popupHeight;
+                        else
+                            yPos = baseY + (targetHeight - popupHeight) / 2;
 
-                        if (yPos + popupHeight > screen.height)
-                            yPos = screen.height - popupHeight - 10;
+                        if (yPos + popupHeight > (screen?.height ?? 0))
+                            yPos = (screen?.height ?? 0) - popupHeight - 10;
                         if (yPos < 10)
                             yPos = 10;
 
@@ -242,44 +270,34 @@ LazyLoader {
                 return root.cleanupTimer.running ? yValue : Math.round(yValue);
             }
 
-
-
             opacity: root.startAnim ? 1 : 0
             scale: root.interactable ? 1 : root.startAnim ? 1 : 0.9
 
-            layer.enabled: true
-            layer.effect: MultiEffect {
-                shadowEnabled: true
-                shadowOpacity: 1
-                shadowColor: Appearance.m3colors.m3shadow
-                shadowBlur: 1
-                shadowScale: 1
-            }
 
             Behavior on opacity {
                 NumberAnimation {
-                    duration: Metrics.chronoDuration("small") 
+                    duration: Metrics.chronoDuration("small")
                     easing.type: Appearance.animation.easing
                 }
             }
             Behavior on scale {
                 enabled: !root.interactable
                 NumberAnimation {
-                    duration: Metrics.chronoDuration("small") 
+                    duration: Metrics.chronoDuration("small")
                     easing.type: Appearance.animation.easing
                 }
             }
             Behavior on implicitWidth {
                 enabled: root.interactable
                 NumberAnimation {
-                    duration: Metrics.chronoDuration("small") 
+                    duration: Metrics.chronoDuration("small")
                     easing.type: Appearance.animation.easing
                 }
             }
             Behavior on implicitHeight {
                 enabled: root.interactable
                 NumberAnimation {
-                    duration: Metrics.chronoDuration("small") 
+                    duration: Metrics.chronoDuration("small")
                     easing.type: Appearance.animation.easing
                 }
             }
@@ -314,12 +332,13 @@ LazyLoader {
                 }
             }
 
+
             let parentPopout = root.parent;
             while (parentPopout && !parentPopout.childPopouts)
                 parentPopout = parentPopout.parent;
 
             if (parentPopout) {
-                parentPopout.childPopouts.push(root);
+                parentPopout.childPopouts = [...parentPopout.childPopouts, root];
                 if (parentPopout.item)
                     popoutWindow.parentPopoutWindow = parentPopout.item;
             }
