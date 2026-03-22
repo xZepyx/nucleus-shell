@@ -4,11 +4,12 @@
 # ✦ nucleus-shell ✦
 
 <p>
-  <img src="https://img.shields.io/github/last-commit/xzepyx/nucleus-shell?style=for-the-badge&color=8ad7eb&logo=git&logoColor=D9E0EE&labelColor=1E202B" alt="Last Commit" />
-  <img src="https://img.shields.io/github/stars/xZepyx/nucleus-shell?style=for-the-badge&logo=andela&color=86dbd7&logoColor=D9E0EE&labelColor=1E202B" alt="Stars" />
-  <img src="https://img.shields.io/github/repo-size/xZepyx/nucleus-shell?color=86dbce&label=SIZE&logo=protondrive&style=for-the-badge&logoColor=D9E0EE&labelColor=1E202B" alt="Repo Size" />
+  <img src="https://img.shields.io/github/last-commit/xzepyx/nucleus-shell?style=for-the-badge&color=a78bfa&logo=git&logoColor=EDE9FE&labelColor=1E1B2E" alt="Last Commit" />
+  <img src="https://img.shields.io/github/stars/xZepyx/nucleus-shell?style=for-the-badge&logo=andela&color=c4b5fd&logoColor=EDE9FE&labelColor=1E1B2E" alt="Stars" />
+  <img src="https://img.shields.io/github/repo-size/xZepyx/nucleus-shell?color=c4b5fd&label=SIZE&logo=protondrive&style=for-the-badge&logoColor=EDE9FE&labelColor=1E1B2E" alt="Repo Size" />
   &nbsp;
-  <img src="https://img.shields.io/badge/Maintenance-Active%20-6BCB77?style=for-the-badge&logo=vercel&logoColor=D9E0EE&labelColor=1E202B" alt="Maintenance" />
+  <img src="https://img.shields.io/badge/Maintenance-Active-8b5cf6?style=for-the-badge&logo=vercel&logoColor=EDE9FE&labelColor=1E1B2E" alt="Maintenance" />
+  <img src="https://img.shields.io/badge/dynamic/json?url=https://api.counterapi.dev/v1/xzepyx/nucleus-shell/up&query=$.count&label=Installs&style=for-the-badge&color=a78bfa&logo=download&logoColor=EDE9FE&labelColor=1E1B2E" alt="Installs" />
 </p>
 
 </div>
