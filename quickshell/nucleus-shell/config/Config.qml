@@ -207,6 +207,8 @@ Singleton {
                         property int xPos: 0
                         property int yPos: 0
                         property bool animateHands: false
+                        property bool use12Hour: true
+                        property bool vertical: false
                     }
                     property JsonObject slideshow: JsonObject {
                         property bool enabled: false

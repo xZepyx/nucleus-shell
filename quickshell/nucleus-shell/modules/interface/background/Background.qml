@@ -1,12 +1,8 @@
 import QtQuick
-import QtQuick.Layouts
 import Quickshell
-import Quickshell.Io
 import Quickshell.Wayland
 import Quickshell.Hyprland
 import qs.config
-import qs.modules.functions
-import qs.modules.components
 import qs.services
 
 Scope {
@@ -16,6 +12,8 @@ Scope {
     Variants {
         model: Quickshell.screens
 
+        WallpaperLayer {
+            modelData: modelData
         PanelWindow {
             id: backgroundContainer
 
@@ -265,6 +263,5 @@ Scope {
     Clock {
         imageFailed: root.wallpaperFailed
         id: clock
-    }   
-
+    }
 }
