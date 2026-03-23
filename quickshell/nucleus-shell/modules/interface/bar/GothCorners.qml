@@ -4,6 +4,7 @@ import Quickshell
 import Quickshell.Hyprland
 import Quickshell.Io
 import Quickshell.Wayland
+import qs.services
 import qs.config
 import qs.modules.components
 
@@ -15,6 +16,7 @@ PanelWindow {
     color: "transparent"
     visible: Config.initialized
     WlrLayershell.layer: WlrLayer.Top
+    exclusionMode: ExclusionMode.Ignore
 
     anchors {
         top: true
@@ -22,6 +24,14 @@ PanelWindow {
         bottom: true
         right: true
     }
+
+    margins {
+        bottom: ConfigResolver.bar(screen.name).position === "bottom" ? ConfigResolver.bar(screen.name).density : 0
+        top: ConfigResolver.bar(screen.name).position === "top" ? ConfigResolver.bar(screen.name).density : 0
+        left: ConfigResolver.bar(screen.name).position === "left" ? ConfigResolver.bar(screen.name).density : 0
+        right: ConfigResolver.bar(screen.name).position === "right" ? ConfigResolver.bar(screen.name).density : 0
+    }
+
 
     Item {
         id: container
@@ -63,10 +73,10 @@ PanelWindow {
 
             StyledRect {
                 anchors.fill: parent
-                anchors.topMargin: Config.runtime.bar.position === "bottom" ? -15 : 0
-                anchors.bottomMargin: Config.runtime.bar.position === "top" ? -15 : 0
-                anchors.leftMargin: Config.runtime.bar.position === "right" ? -15 : 0
-                anchors.rightMargin: Config.runtime.bar.position === "left" ? -15 : 0
+                anchors.topMargin: ConfigResolver.bar(screen.name).position === "bottom" ? -15 : 0
+                anchors.bottomMargin: ConfigResolver.bar(screen.name).position === "top" ? -15 : 0
+                anchors.leftMargin: ConfigResolver.bar(screen.name).position === "right" ? -15 : 0
+                anchors.rightMargin: ConfigResolver.bar(screen.name).position === "left" ? -15 : 0
                 radius: Metrics.radius("normal")
             }
 

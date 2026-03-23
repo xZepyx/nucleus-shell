@@ -41,7 +41,6 @@ Scope {
             WlrLayershell.namespace: "nucleus:dock"
             WlrLayershell.layer: WlrLayer.Overlay
             color: "transparent"
-            exclusionMode: ExclusionMode.Ignore
 
             mask: Region {
                 item: dockContent.dockHitbox

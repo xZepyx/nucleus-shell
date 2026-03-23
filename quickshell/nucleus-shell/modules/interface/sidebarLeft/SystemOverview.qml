@@ -11,8 +11,6 @@ import qs.modules.components
 Item {
     id: root
 
-    implicitWidth: 300
-    implicitHeight: parent ? parent.height : 500
 
     ColumnLayout {
         anchors.topMargin: Metrics.margin(90)
@@ -62,7 +60,7 @@ Item {
                 Layout.alignment: Qt.AlignRight
 
                 StyledText {
-                    text: `qs ${SystemDetails.qsVersion}`
+                    text: StringUtils.shortText(SystemDetails.qsVersion, 16)
                     font.pixelSize: Metrics.fontSize("small")
                     color: Appearance.colors.colSubtext
                 }

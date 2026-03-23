@@ -239,8 +239,9 @@ Item {
                 Layout.bottomMargin: Metrics.margin(5)
             }
             
+                
             NotifModal {
-                Layout.preferredHeight: (Config.runtime.bar.position === "left" || Config.runtime.bar.position === "right") ? 480 : 470
+                Layout.preferredHeight: 450
             }
         }
     }

@@ -15,7 +15,8 @@ import Qt5Compat.GraphicalEffects
 PanelWindow {
     id: sidebarRight
     WlrLayershell.namespace: "nucleus:sidebarRight"
-    WlrLayershell.layer: WlrLayer.Top
+    WlrLayershell.layer: WlrLayer.Overlay
+    exclusionMode: ExclusionMode.Ignore
     visible: Config.initialized
     color: "transparent"
     exclusiveZone: 0
@@ -44,11 +45,28 @@ PanelWindow {
         left: true
     }
 
+    property var barConfig: ConfigResolver.bar(screen.name)
+    property string barPosition: barConfig.position
+    property int barSize: barConfig.density
+    property int floatingMargin: Config.runtime.bar.margins
+    property int sideMargin: Metrics.margin("small")
+
     margins {
-        top: floatingLayout ? Config.runtime.bar.margins : 0
-        bottom: floatingLayout ? Config.runtime.bar.margins : 0
-        left: floatingLayout ? Metrics.margin("small") : 0
-        right: floatingLayout ? Metrics.margin("small") : 0
+        top:
+            (floatingLayout ? floatingMargin : 0) +
+            (barPosition === "top" ? barSize : 0)
+
+        bottom:
+            (floatingLayout ? floatingMargin : 0) +
+            (barPosition === "bottom" ? barSize : 0)
+
+        left:
+            (floatingLayout ? sideMargin : 0) +
+            (barPosition === "left" ? barSize : 0)
+
+        right:
+            (floatingLayout ? sideMargin : 0) +
+            (barPosition === "right" ? barSize : 0)
     }
 
     PwObjectTracker {

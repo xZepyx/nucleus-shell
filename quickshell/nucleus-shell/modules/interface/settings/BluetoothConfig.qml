@@ -168,6 +168,7 @@ ContentMenu {
 
             StyledText {
                 anchors.horizontalCenter: parent.horizontalCenter
+                anchors.left: parent.left
                 text: "No new devices found"
                 font.pixelSize: Metrics.fontSize(14)
                 color: Appearance.m3colors.m3onSurfaceVariant

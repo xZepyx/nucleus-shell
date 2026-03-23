@@ -14,6 +14,7 @@ StyledRect {
     id: root
 
     Layout.fillWidth: true
+    Layout.fillHeight: true
     radius: Metrics.radius("normal")
     color: Appearance.colors.colLayer1
     property bool dndActive: Config.runtime.notifications.doNotDisturb
@@ -68,7 +69,6 @@ StyledRect {
         anchors.bottomMargin: Metrics.margin(15)
         anchors.leftMargin: Metrics.margin(15)
         text: NotifServer.data.length + " Notifications"
-
     }
 
     StyledText {
