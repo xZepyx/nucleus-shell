@@ -47,6 +47,9 @@ Scope {
             }
 
             exclusiveZone: {
+                // Wait for config to load — defaults may differ from saved values and would
+                // cause Hyprland to tile windows in the wrong size before config is applied
+                if (!Config.initialized) return 0
                 // Never reserve space when sidebars are animating/open
                 if (targetMarginLeft !== 0 || targetMarginRight !== 0) return 0
                 // Never reserve space when fullscreen
