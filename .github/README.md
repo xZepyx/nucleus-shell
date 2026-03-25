@@ -221,8 +221,7 @@ Contributions are welcome. When contributing:
 
 <h2 align="center">✦ License ✦</h2>
 
-© 2025 xZepyx — Licensed under the MIT License. See `license/` for details.
-I would appreciate if you put a notice that some stuff was taken from this repo if you distribute it.
+© 2025-PRESENT xZepyx — Licensed under the GNU GPL v3
 
 ---
 
