@@ -4,11 +4,11 @@
 # ✦ nucleus-shell ✦
 
 <p align="center">
-  <img src="https://img.shields.io/github/last-commit/xzepyx/nucleus-shell?style=for-the-badge&color=8b5cf6&logo=git&logoColor=EDE9FE&labelColor=1E1B2E" />
+  <img src="https://img.shields.io/github/last-commit/nuclues-hq/nucleus-shell?style=for-the-badge&color=8b5cf6&logo=git&logoColor=EDE9FE&labelColor=1E1B2E" />
   &nbsp;&nbsp;
-  <img src="https://img.shields.io/github/stars/xZepyx/nucleus-shell?style=for-the-badge&logo=andela&color=8b5cf6&logoColor=EDE9FE&labelColor=1E1B2E" />
+  <img src="https://img.shields.io/github/stars/nuclues-hq/nucleus-shell?style=for-the-badge&logo=andela&color=8b5cf6&logoColor=EDE9FE&labelColor=1E1B2E" />
   &nbsp;&nbsp;
-  <img src="https://img.shields.io/github/repo-size/xZepyx/nucleus-shell?style=for-the-badge&color=8b5cf6&logo=protondrive&logoColor=EDE9FE&labelColor=1E1B2E" />
+  <img src="https://img.shields.io/github/repo-size/nuclues-hq/nucleus-shell?style=for-the-badge&color=8b5cf6&logo=protondrive&logoColor=EDE9FE&labelColor=1E1B2E" />
   &nbsp;&nbsp;
   <img src="https://img.shields.io/badge/Maintenance-Active-8b5cf6?style=for-the-badge&logo=vercel&logoColor=EDE9FE&labelColor=1E1B2E" />
 </p>
@@ -25,7 +25,7 @@ Key goals:
 - Composable modules, design and appearance
 
 > [!IMPORTANT]
-> * If you want to access the older releases refer to the [archive branch](https://github.com/xZepyx/nucleus-shell/tree/archive)
+> * If you want to access the older releases refer to the [archive branch](https://github.com/nuclues-hq/nucleus-shell/tree/archive)
 > * You can also join the [discord server](https://discord.gg/FcvT2VabEM) for help.
 > * **Before reporting an issue:**
   If you encounter a problem in the current release, please first test against the latest source code by cloning the repository (`git clone ...`). This ensures you are not reporting an issue that has already been fixed.
@@ -54,9 +54,9 @@ Key goals:
 
 <h2 align="center">✦ Related Projects ✦</h2>
 
-* [nucleus-cli](https://github.com/xZepyx/nucleus-cli): CLI for nucleus-shell
-* [nucleus-plugins](https://github.com/xZepyx/nucleus-plugins): Plugins for nucleus-shell
-* [nucleus-colorschemes](https://github.com/xZepyx/nucleus-colorschemes): Colorschemes for nucleus-shell
+* [nucleus-cli](https://github.com/nuclues-hq/nucleus-cli): CLI for nucleus-shell
+* [nucleus-plugins](https://github.com/nuclues-hq/nucleus-plugins): Plugins for nucleus-shell
+* [nucleus-colorschemes](https://github.com/nuclues-hq/nucleus-colorschemes): Colorschemes for nucleus-shell
 * [zenith](https://github.com/xZepyx/zenith): Intelligence backend for nucleus-shell (required to use intelligence)
 
 > [!CAUTION]
@@ -88,7 +88,7 @@ nucleus install
 
 ### Using the install script
 ```bash
-git clone https://github.com/xZepyx/nucleus-shell
+git clone https://github.com/nuclues-hq/nucleus-shell
 cd nucleus-shell/install
 ./unified.sh
 ```
@@ -134,7 +134,7 @@ Notes:
   - To uninstall: `nucleus uninstall` The cli will automaticly uninstall the shell.
   - To stop/kill the shell: `nucleus kill` or `nucleus stop`
   - To switch themes: `nucleus switch theme <themename>`
-  - More at: [cli-documentation](https://github.com/xZepyx/nucleus-cli)
+  - More at: [cli-documentation](https://github.com/nuclues-hq/nucleus-cli)
  
 ---
 
@@ -146,11 +146,11 @@ Notes:
 <div align="center">
   
 ## ✦ Weird Tentacles ✦
-<a href="https://www.star-history.com/#xZepyx/nucleus-shell&type=date&legend=top-left">
+<a href="https://www.star-history.com/#nuclues-hq/nucleus-shell&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=xZepyx/nucleus-shell&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=xZepyx/nucleus-shell&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=xZepyx/nucleus-shell&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=nuclues-hq/nucleus-shell&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=nuclues-hq/nucleus-shell&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=nuclues-hq/nucleus-shell&type=date&legend=top-left" />
  </picture>
 </a>
 
