@@ -247,6 +247,7 @@ Singleton {
             property JsonObject launcher: JsonObject {
                 property bool fuzzySearchEnabled: true
                 property string webSearchEngine: "google"
+                property string layout: "grid"
             }
             property JsonObject dock: JsonObject {
                 property bool enabled: true

@@ -25,7 +25,7 @@ ContentMenu {
         }
 
         RowLayout {
-            id: webEngineSelector
+            id: webSearchEngineSelector
 
             property string title: "Web Search Engine"
             property string description: "Choose the web search engine for web searches."
@@ -33,12 +33,12 @@ ContentMenu {
 
             ColumnLayout {
                 StyledText {
-                    text: webEngineSelector.title
+                    text: webSearchEngineSelector.title
                     font.pixelSize: Metrics.fontSize(16)
                 }
 
                 StyledText {
-                    text: webEngineSelector.description
+                    text: webSearchEngineSelector.description
                     font.pixelSize: Metrics.fontSize(12)
                 }
 
@@ -69,6 +69,52 @@ ContentMenu {
                 onSelectedIndexChanged: (index) => {
                     // Update Config with lowercase version of selected model
                     Config.updateKey("launcher.webSearchEngine", model[index].toLowerCase());
+                }
+            }
+
+        }
+
+        RowLayout {
+            id: layoutSelector
+
+            property string title: "Launcher Layout"
+            property string description: "Choose the layout for the launcher."
+            property string prefField: ''
+
+            ColumnLayout {
+                StyledText {
+                    text: layoutSelector.title
+                    font.pixelSize: Metrics.fontSize(16)
+                }
+
+                StyledText {
+                    text: layoutSelector.description
+                    font.pixelSize: Metrics.fontSize(12)
+                }
+
+            }
+
+            Item {
+                Layout.fillWidth: true
+            }
+
+            StyledDropDown {
+                label: "Layout"
+                model: ["Grid", "List"]
+                // Set the initial index based on the lowercase value in Config
+                currentIndex: {
+                    switch (Config.runtime.launcher.layout.toLowerCase()) {
+                    case "grid":
+                        return 0;
+                    case "list":
+                        return 1;
+                    default:
+                        return 0;
+                    }
+                }
+                onSelectedIndexChanged: (index) => {
+                    // Update Config with lowercase version of selected model
+                    Config.updateKey("launcher.layout", model[index].toLowerCase());
                 }
             }
 
