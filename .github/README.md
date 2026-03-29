@@ -45,7 +45,7 @@ Key goals:
 | Built with love                                  | Forests                                            |
 |--------------------------------------------------|----------------------------------------------------|
 | ![](/previews/Love.png)                          | ![](/previews/Forests.png)                         |
-| **Amazing Passion**                              | **Metallic**                                       |
+| **Passion**                                      | **Metallic**                                       |
 | ![](/previews/Passion.png)                       | ![](/previews/Metallic.png)                        |
 
 </div>
@@ -206,7 +206,7 @@ Contributions are welcome. When contributing:
 
 <h2 align="center">✦ Collaborators ✦</h2>
 
-* [@Tanujairamv](https://github.com/Tanujairmv): Material UI Developer
+* [@TanujairamV](https://github.com/TanujairamV): Material UI Developer
 * [@Saturno](https://github.com/Saturno-0): Logical Developer
 
 ---
