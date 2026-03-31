@@ -56,12 +56,12 @@ ShellRoot {
     LazyLoader {
         id: sidebarRightLoader
         source: Contracts.sidebarRight.source
-        active: Contracts.sidebarRight.active && Globals.visiblility.sidebarRight
+        active: Contracts.sidebarRight.active
     }
     LazyLoader {
         id: sidebarLeftLoader
         source: Contracts.sidebarLeft.source
-        active: Contracts.sidebarLeft.active && Globals.visiblility.sidebarLeft
+        active: Contracts.sidebarLeft.active
     }
     LazyLoader {
         id: lockScreenLoader
