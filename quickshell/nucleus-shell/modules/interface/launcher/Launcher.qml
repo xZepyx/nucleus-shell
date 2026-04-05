@@ -76,7 +76,7 @@ PanelWindow {
         color:   "#000000"
         opacity: launcher.visible ? 0.45 : 0
         z: 0
-        Behavior on opacity {^\s*//\s*[-─=]{2,}.*
+        Behavior on opacity {
             NumberAnimation {
                 duration: Appearance.animation.durations.normal
                 easing.type: Easing.OutCubic
@@ -599,7 +599,7 @@ PanelWindow {
                     model: [
                         { icon: "keyboard_return", label: "Launch" },
                         { icon: "keyboard_tab",    label: "Navigate" },
-                        { icon: "escape",          label: "Close" },
+                        { icon: "backspace", label: "Close" },
                     ]
 
                     RowLayout {
