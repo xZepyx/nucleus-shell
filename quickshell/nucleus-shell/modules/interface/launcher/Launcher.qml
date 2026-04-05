@@ -567,11 +567,10 @@ PanelWindow {
                                 cursorShape:  Qt.PointingHandCursor
                                 onEntered: appGrid.currentIndex = appDelegate.index
                                 onClicked: {
-                                    console.log("TYPE:", typeof appDelegate.modelData)
-                                    console.log("EXEC:", appDelegate.modelData.execString)
-                                    console.log("ID:", appDelegate.modelData.id)
+                                    // console.log("TYPE:", typeof appDelegate.modelData)
+                                    // console.log("EXEC:", appDelegate.modelData.execString)
+                                    // console.log("ID:", appDelegate.modelData.id)
                                     Apps.launch(appDelegate.modelData)
-                                    Quickshell.execDetached(["kitty"])
                                     Globals.visiblility.launcher = false
                                 }
                             }
