@@ -9,6 +9,13 @@ import qs.modules.components
 import qs.modules.functions
 import qs.services
 
+/* 
+
+This AppItem has been depricated.
+And yet not used. (5/4/26)
+
+*/
+
 StyledRect {
     id: root
 
