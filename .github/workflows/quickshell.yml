@@ -1,8 +1,12 @@
-name: Quickshell Runtime Check
+name: Shell Runtime Check
 
 on:
   push:
+    paths:
+      - "quickshell/**"
   pull_request:
+    paths:
+      - "quickshell/**"
   workflow_dispatch:
 
 jobs:
@@ -31,9 +35,9 @@ jobs:
             makepkg -si --noconfirm
           "
 
-      - name: Install quickshell-git
+      - name: Install Major
         run: |
-          sudo -u builder yay -S --noconfirm quickshell-git
+          sudo -u builder yay -S --noconfirm quickshell-git nucleus-shell
 
       - name: Install runtime deps
         run: |
@@ -42,15 +46,27 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Run quickshell
+      - name: Run quickshell (Wayland fixed)
         run: |
-          weston --backend=headless-backend.so --idle-time=0 &
+          # Setup runtime dir (FIXES YOUR ERROR)
+          export XDG_RUNTIME_DIR=/tmp/runtime-dir
+          mkdir -p $XDG_RUNTIME_DIR
+          chmod 700 $XDG_RUNTIME_DIR
+
+          # Start weston
+          weston --backend=headless-backend.so --socket=wayland-1 --idle-time=0 &
           sleep 2
 
+          # Tell Qt to use Wayland
+          export WAYLAND_DISPLAY=wayland-1
+          export QT_QPA_PLATFORM=wayland
+
+          # Run quickshell
           timeout 60s qs -p quickshell/nucleus-shell/shell.qml > log.txt 2>&1 || true
 
           cat log.txt
 
+          # Fail only on real errors
           if grep -i "error" log.txt; then
             echo "Errors found"
             exit 1
