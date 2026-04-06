@@ -1,0 +1,57 @@
+name: Quickshell Runtime Check
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  run-quickshell:
+    runs-on: ubuntu-latest
+
+    container:
+      image: archlinux:latest
+
+    steps:
+      - name: Install base deps
+        run: |
+          pacman -Sy --noconfirm git base-devel sudo
+
+      - name: Create build user
+        run: |
+          useradd -m builder
+          echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+      - name: Install yay (AUR helper)
+        run: |
+          sudo -u builder bash -c "
+            cd ~ &&
+            git clone https://aur.archlinux.org/yay.git &&
+            cd yay &&
+            makepkg -si --noconfirm
+          "
+
+      - name: Install quickshell-git
+        run: |
+          sudo -u builder yay -S --noconfirm quickshell-git
+
+      - name: Install runtime deps
+        run: |
+          pacman -S --noconfirm weston xorg-xwayland
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Run quickshell
+        run: |
+          weston --backend=headless-backend.so --idle-time=0 &
+          sleep 2
+
+          timeout 60s qs -p quickshell/nucleus-shell/shell.qml > log.txt 2>&1 || true
+
+          cat log.txt
+
+          if grep -i "error" log.txt; then
+            echo "Errors found"
+            exit 1
+          fi
