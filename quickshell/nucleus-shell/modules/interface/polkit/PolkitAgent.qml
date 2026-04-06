@@ -9,7 +9,6 @@ import qs.config
 import qs.services
 import qs.modules.components
 
-
 Scope {
     id: root
     property bool active: false

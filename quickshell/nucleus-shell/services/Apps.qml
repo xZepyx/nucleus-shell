@@ -21,10 +21,28 @@ Singleton {
         }).map(r => r.obj.entry);
     }
 
+    function cleanExec(exec) {
+        return exec
+            .replace(/%[fFuUdDnNickvm]/g, "") // remove all field codes
+            .replace(/\s+/g, " ")             // normalize spaces
+            .trim()
+    }
+
     function launch(entry: DesktopEntry): void {
-        if (entry.execString.startsWith("sh -c"))
-            Quickshell.execDetached(["sh", "-c", `app2unit -- ${entry.execString}`]);
-        else
-            Quickshell.execDetached(["sh", "-c", `app2unit -- '${entry.id}.desktop' || app2unit -- ${entry.execString}`]);
+        let exec = entry.execString
+
+        if (!exec) return
+
+        // Case 1: already a shell command
+        if (exec.startsWith("sh -c")) {
+            Quickshell.execDetached(["sh", "-lc", exec.slice(5).trim()])
+            return
+        }
+
+        // Clean field codes
+        exec = cleanExec(exec)
+
+        // Case 2: normal command
+        Quickshell.execDetached(["sh", "-lc", exec])
     }
 }
