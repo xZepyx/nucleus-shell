@@ -57,7 +57,7 @@ Scope {
                 { "icon": "toolbar", "label": "Bar", "page": 4 },
                 { "icon": "dock_to_bottom", "label": "Dock", "page": 5 },
                 { "icon": "wallpaper", "label": "Wallpapers", "page": 6 },
-//                { "icon": "apps", "label": "Launcher", "page": 7 },
+                { "icon": "apps", "label": "Launcher", "page": 7 },
                 { "icon": "notifications", "label": "Notifications", "page": 8 },
                 { "icon": "extension", "label": "Plugins", "page": 9 },
                 { "icon": "store", "label": "Store", "page": 10 },

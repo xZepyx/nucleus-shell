@@ -14,7 +14,6 @@ import qs.modules.components
 PanelWindow {
     id: launcher
 
-
     WlrLayershell.namespace:     "nucleus:launcher"
     WlrLayershell.layer:         WlrLayer.Overlay
     WlrLayershell.exclusionMode: ExclusionMode.Ignore
@@ -25,10 +24,84 @@ PanelWindow {
 
     anchors { top: true; bottom: true; left: true; right: true }
 
-
-    property string searchText:   ""
+    property string searchText:    ""
     property int    categoryIndex: 0
-    property bool   isSearching:  searchText.length > 0
+    property bool   isSearching:   searchText.length > 0
+    property string layout:        Config.runtime.launcher.layout === "list" ? "list" : "grid"
+
+    // ── Web search engine ─────────────────────────────────────────
+    readonly property var _searchEngines: ({
+        "google":     { label: "Google",     icon: "language", url: "https://www.google.com/search?q=" },
+        "brave":      { label: "Brave",      icon: "language", url: "https://search.brave.com/search?q=" },
+        "duckduckgo": { label: "DuckDuckGo", icon: "language", url: "https://duckduckgo.com/?q=" },
+        "bing":       { label: "Bing",       icon: "language", url: "https://www.bing.com/search?q=" },
+    })
+
+    readonly property string _engineKey: {
+        const k = (Config.runtime.launcher.webSearchEngine ?? "google").toLowerCase()
+        return _searchEngines[k] ? k : "google"
+    }
+
+    // ── Calculator ────────────────────────────────────────────────
+    function _evalCalc(expr) {
+        if (!expr || expr.trim() === "") return null
+        // Only attempt eval on strings that look mathematical
+        if (!/^[\d\s+\-*/^().%,]+$/.test(expr.trim())) return null
+        try {
+            // eslint-disable-next-line no-new-func
+            const result = Function('"use strict"; return (' + expr.trim() + ')')()
+            if (typeof result === "number" && isFinite(result)) return result
+        } catch (e) {}
+        return null
+    }
+
+    // ── Unified search action ─────────────────────────────────────
+    // Returns null when no special action, or an object:
+    //   { type: "calc",   result: number, expr: string }
+    //   { type: "web",    query: string,  engineLabel: string, url: string }
+    readonly property var searchAction: {
+        const q = searchText.trim()
+        if (q === "") return null
+
+        // Calculator — only when no apps match exactly or query looks like math
+        const calcResult = launcher._evalCalc(q)
+        if (calcResult !== null) {
+            return { type: "calc", result: calcResult, expr: q }
+        }
+
+        // Web search — show when user prefixes with "?" or no apps found at all
+        const forceWeb = q.startsWith("?")
+        const cleanQ   = forceWeb ? q.slice(1).trim() : q
+        if (forceWeb || (isSearching && launcher.displayApps.length === 0 && cleanQ.length > 0)) {
+            const engine = launcher._searchEngines[launcher._engineKey]
+            return {
+                type:        "web",
+                query:       cleanQ,
+                engineLabel: engine.label,
+                url:         engine.url + encodeURIComponent(cleanQ)
+            }
+        }
+
+        return null
+    }
+
+    function _runSearchAction() {
+        const action = launcher.searchAction
+        if (!action) return false
+        if (action.type === "calc") {
+            // Copy result to clipboard
+            Quickshell.execDetached(["sh", "-c",
+                "echo -n '" + action.result + "' | wl-copy"])
+            Globals.visiblility.launcher = false
+            return true
+        }
+        if (action.type === "web") {
+            Quickshell.execDetached(["xdg-open", action.url])
+            Globals.visiblility.launcher = false
+            return true
+        }
+        return false
+    }
 
     readonly property var allApps: Apps.list
 
@@ -58,7 +131,6 @@ PanelWindow {
         { label: "Graphics",  icon: "palette",         key: "graphics" },
     ]
 
-    // Reset on close
     onVisibleChanged: {
         if (!visible) {
             searchText    = ""
@@ -69,7 +141,6 @@ PanelWindow {
             Qt.callLater(() => searchField.forceActiveFocus())
         }
     }
-
 
     Rectangle {
         anchors.fill: parent
@@ -87,7 +158,6 @@ PanelWindow {
             onClicked: Globals.visiblility.launcher = false
         }
     }
-
 
     Item {
         id: sheet
@@ -109,39 +179,17 @@ PanelWindow {
         scale:   0.88 + 0.12 * revealProgress
         transformOrigin: Item.Center
 
-
         Rectangle {
             id: card
             anchors.fill: parent
-            radius: Appearance.rounding.verylarge
+            radius: Metrics.radius("verylarge")
             color:  Appearance.m3colors.m3background
-
-            // Primary tint gradient
-            /* Rectangle {
-                anchors.fill: parent
-                radius: parent.radius
-                gradient: Gradient {
-                    orientation: Gradient.Vertical
-                    GradientStop {
-                        position: 0.0
-                        color: Qt.rgba(
-                            Appearance.colors.colPrimary.r,
-                            Appearance.colors.colPrimary.g,
-                            Appearance.colors.colPrimary.b,
-                            0.055)
-                    }
-                    GradientStop { position: 0.6; color: "transparent" }
-                }
-            } */
-
         }
-
 
         ColumnLayout {
             anchors.fill: parent
             anchors.margins: Appearance.margin.large
             spacing: Appearance.margin.small
-
 
             RowLayout {
                 Layout.fillWidth: true
@@ -149,7 +197,7 @@ PanelWindow {
 
                 Rectangle {
                     width: 40; height: 40
-                    radius: Appearance.rounding.normal
+                    radius: Metrics.radius("normal")
                     color: Appearance.colors.colPrimary
 
                     MaterialSymbol {
@@ -170,12 +218,11 @@ PanelWindow {
 
                 Item { Layout.fillWidth: true }
 
-                // Result count badge (search only)
                 Rectangle {
                     visible: launcher.isSearching
                     height: 26
                     width:  resultLabel.implicitWidth + 20
-                    radius: Appearance.rounding.full
+                    radius: Metrics.radius("full")
                     color: Qt.rgba(
                         Appearance.colors.colPrimary.r,
                         Appearance.colors.colPrimary.g,
@@ -191,10 +238,36 @@ PanelWindow {
                     Behavior on opacity { NumberAnimation { duration: 150 } }
                 }
 
-                // Close button
                 Rectangle {
                     width: 34; height: 34
-                    radius: Appearance.rounding.full
+                    radius: Metrics.radius("full")
+                    color: layoutToggleMa.containsMouse
+                        ? Appearance.colors.colLayer2Hover : "transparent"
+                    Behavior on color { ColorAnimation { duration: 120 } }
+
+                    MaterialSymbol {
+                        anchors.centerIn: parent
+                        icon: launcher.layout === "grid" ? "view_list" : "view_cozy"
+                        iconSize: Metrics.iconSize(20)
+                        color: Appearance.colors.colOnLayer1
+                        opacity: 0.7
+                    }
+                    MouseArea {
+                        id: layoutToggleMa
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: {
+                            const next = launcher.layout === "grid" ? "list" : "grid"
+                            launcher.layout = next
+                            Config.updateKey("launcher.layout", next)
+                        }
+                    }
+                }
+
+                Rectangle {
+                    width: 34; height: 34
+                    radius: Metrics.radius("full")
                     color: closeMa.containsMouse
                         ? Appearance.colors.colLayer2Hover : "transparent"
                     Behavior on color { ColorAnimation { duration: 120 } }
@@ -216,11 +289,10 @@ PanelWindow {
                 }
             }
 
-
             Rectangle {
                 Layout.fillWidth: true
                 height: 50
-                radius: Appearance.rounding.verylarge
+                radius: Metrics.radius("verylarge")
                 color:  Appearance.colors.colLayer2
                 border.color: searchField.activeFocus
                     ? Appearance.colors.colPrimary
@@ -262,18 +334,23 @@ PanelWindow {
                             Globals.visiblility.launcher = false
                         }
                         Keys.onReturnPressed: {
+                            if (launcher._runSearchAction()) return
                             if (launcher.displayApps.length > 0) {
                                 Apps.launch(launcher.displayApps[0])
                                 Globals.visiblility.launcher = false
                             }
                         }
-                        Keys.onDownPressed: appGrid.forceActiveFocus()
+                        Keys.onDownPressed: {
+                            if (launcher.layout === "grid")
+                                appGrid.forceActiveFocus()
+                            else
+                                appList.forceActiveFocus()
+                        }
                     }
 
-                    // Clear button
                     Rectangle {
                         width: 28; height: 28
-                        radius: Appearance.rounding.full
+                        radius: Metrics.radius("full")
                         color:   clearMa.containsMouse
                             ? Appearance.colors.colLayer2Hover : "transparent"
                         visible: launcher.isSearching
@@ -297,7 +374,6 @@ PanelWindow {
                     }
                 }
             }
-
 
             Item {
                 Layout.fillWidth: true
@@ -325,7 +401,7 @@ PanelWindow {
                                 height: 34
                                 anchors.verticalCenter: parent.verticalCenter
                                 implicitWidth: chipRow.implicitWidth + 22
-                                radius: Appearance.rounding.full
+                                radius: Metrics.radius("full")
 
                                 readonly property bool selected: launcher.categoryIndex === index
 
@@ -375,16 +451,14 @@ PanelWindow {
                 }
             }
 
-
             Item {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                // Empty state
                 Column {
                     anchors.centerIn: parent
                     spacing: Appearance.margin.small
-                    visible: launcher.displayApps.length === 0
+                    visible: launcher.displayApps.length === 0 && !launcher.searchAction
                     opacity: visible ? 1 : 0
                     Behavior on opacity { NumberAnimation { duration: 200 } }
 
@@ -405,22 +479,295 @@ PanelWindow {
                     }
                 }
 
+                // ── Search / Calc action card ─────────────────────
+                Item {
+                    anchors.fill: parent
+                    visible: launcher.searchAction !== null
+                    opacity: visible ? 1 : 0
+                    Behavior on opacity { NumberAnimation { duration: 180 } }
+
+                    Rectangle {
+                        id: actionCard
+                        anchors.top:              parent.top
+                        anchors.left:             parent.left
+                        anchors.right:            parent.right
+                        anchors.topMargin:        Appearance.margin.small
+                        height: 72
+                        radius: Metrics.radius("large")
+                        color:  actionCardMa.containsMouse
+                            ? Appearance.colors.colLayer2Hover
+                            : Appearance.colors.colLayer2
+                        Behavior on color { ColorAnimation { duration: 120 } }
+
+                        scale: actionCardMa.pressed ? 0.985 : 1.0
+                        Behavior on scale {
+                            NumberAnimation {
+                                duration: actionCardMa.pressed ? 80 : 200
+                                easing.type: Easing.BezierSpline
+                                easing.bezierCurve: Appearance.animation.curves.expressiveFastSpatial
+                            }
+                        }
+
+                        RowLayout {
+                            anchors {
+                                fill:        parent
+                                leftMargin:  Appearance.margin.normal
+                                rightMargin: Appearance.margin.normal
+                            }
+                            spacing: Appearance.margin.normal
+
+                            // Leading icon pill
+                            Rectangle {
+                                width: 44; height: 44
+                                radius: Metrics.radius("normal")
+                                color: launcher.searchAction?.type === "calc"
+                                    ? Qt.rgba(Appearance.colors.colPrimary.r,
+                                              Appearance.colors.colPrimary.g,
+                                              Appearance.colors.colPrimary.b, 0.15)
+                                    : Qt.rgba(Appearance.m3colors.m3tertiary.r,
+                                              Appearance.m3colors.m3tertiary.g,
+                                              Appearance.m3colors.m3tertiary.b, 0.15)
+                                Layout.alignment: Qt.AlignVCenter
+
+                                MaterialSymbol {
+                                    anchors.centerIn: parent
+                                    icon: launcher.searchAction?.type === "calc"
+                                        ? "calculate"
+                                        : "travel_explore"
+                                    iconSize: Metrics.iconSize(24)
+                                    color: launcher.searchAction?.type === "calc"
+                                        ? Appearance.colors.colPrimary
+                                        : Appearance.m3colors.m3tertiary
+                                }
+                            }
+
+                            // Labels
+                            ColumnLayout {
+                                Layout.fillWidth: true
+                                Layout.alignment: Qt.AlignVCenter
+                                spacing: Appearance.margin.tinier
+
+                                StyledText {
+                                    text: {
+                                        const a = launcher.searchAction
+                                        if (!a) return ""
+                                        if (a.type === "calc")
+                                            return a.expr + " = " + a.result
+                                        return a.query
+                                    }
+                                    font.pixelSize: Metrics.fontSize("normal")
+                                    font.weight:    Font.Medium
+                                    color: Appearance.colors.colOnLayer2
+                                    elide: Text.ElideRight
+                                    Layout.fillWidth: true
+                                }
+
+                                StyledText {
+                                    text: {
+                                        const a = launcher.searchAction
+                                        if (!a) return ""
+                                        if (a.type === "calc")
+                                            return "Press Enter to copy result"
+                                        return "Search with " + a.engineLabel
+                                    }
+                                    font.pixelSize: Metrics.fontSize("smaller")
+                                    color: Appearance.colors.colSubtext
+                                    Layout.fillWidth: true
+                                    elide: Text.ElideRight
+                                }
+                            }
+
+                            // Engine switcher chips (web only)
+                            Row {
+                                spacing: Appearance.margin.tiny
+                                Layout.alignment: Qt.AlignVCenter
+                                visible: launcher.searchAction?.type === "web"
+
+                                Repeater {
+                                    model: ["google", "brave", "duckduckgo", "bing"]
+
+                                    delegate: Rectangle {
+                                        required property string modelData
+                                        required property int    index
+
+                                        readonly property bool active:
+                                            launcher._engineKey === modelData
+
+                                        height: 28
+                                        width:  engineLabel.implicitWidth + 16
+                                        radius: Metrics.radius("full")
+                                        color: active
+                                            ? Appearance.m3colors.m3tertiaryContainer
+                                            : engineMa.containsMouse
+                                                ? Appearance.colors.colLayer1Active
+                                                : Appearance.colors.colLayer1
+                                        Behavior on color { ColorAnimation { duration: 120 } }
+
+                                        StyledText {
+                                            id: engineLabel
+                                            anchors.centerIn: parent
+                                            text: launcher._searchEngines[modelData].label
+                                            font.pixelSize: Metrics.fontSize("smaller")
+                                            font.weight: parent.active ? Font.Medium : Font.Normal
+                                            color: parent.active
+                                                ? Appearance.m3colors.m3onTertiaryContainer
+                                                : Appearance.colors.colOnLayer1
+                                            Behavior on color { ColorAnimation { duration: 120 } }
+                                        }
+
+                                        MouseArea {
+                                            id: engineMa
+                                            anchors.fill: parent
+                                            hoverEnabled: true
+                                            cursorShape:  Qt.PointingHandCursor
+                                            onClicked: {
+                                                Config.updateKey(
+                                                    "launcher.webSearchEngine",
+                                                    modelData)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            MaterialSymbol {
+                                icon: launcher.searchAction?.type === "calc"
+                                    ? "content_copy"
+                                    : "open_in_new"
+                                iconSize: Metrics.iconSize(18)
+                                color:    Appearance.colors.colSubtext
+                                opacity:  actionCardMa.containsMouse ? 1 : 0.5
+                                Layout.alignment: Qt.AlignVCenter
+                                Behavior on opacity { NumberAnimation { duration: 150 } }
+                            }
+                        }
+
+                        MouseArea {
+                            id: actionCardMa
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            cursorShape:  Qt.PointingHandCursor
+                            onClicked:    launcher._runSearchAction()
+                        }
+                    }
+
+                    // App results below the action card (web search with results)
+                    GridView {
+                        anchors.top:    actionCard.bottom
+                        anchors.left:   parent.left
+                        anchors.right:  parent.right
+                        anchors.bottom: parent.bottom
+                        anchors.topMargin: Appearance.margin.small
+                        clip: true
+                        visible: launcher.layout === "grid"
+                                 && launcher.displayApps.length > 0
+                                 && launcher.searchAction !== null
+
+                        readonly property int cols: Math.max(3, Math.floor(width / 128))
+                        cellWidth:  Math.floor(width / cols)
+                        cellHeight: 118
+                        model: visible ? launcher.displayApps : []
+
+                        ScrollBar.vertical: ScrollBar {
+                            policy: ScrollBar.AsNeeded
+                            contentItem: Rectangle {
+                                radius:  Metrics.radius("full")
+                                color:   Appearance.colors.colOutline
+                                opacity: 0.45
+                            }
+                        }
+
+                        delegate: Item {
+                            required property int index
+                            required property var modelData
+                            width:  parent.cellWidth
+                            height: parent.cellHeight
+
+                            Rectangle {
+                                anchors { fill: parent; margins: 5 }
+                                radius: Metrics.radius("large")
+                                color: overflowMa.containsMouse
+                                    ? Appearance.colors.colLayer2Hover : "transparent"
+                                Behavior on color { ColorAnimation { duration: 130 } }
+
+                                Column {
+                                    anchors.centerIn: parent
+                                    spacing: Appearance.margin.verysmall
+                                    width: parent.width - 12
+
+                                    Item {
+                                        width: 48; height: 48
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                        Rectangle {
+                                            anchors.fill: parent
+                                            radius: Metrics.radius("normal")
+                                            color: Qt.rgba(Appearance.colors.colPrimary.r,
+                                                           Appearance.colors.colPrimary.g,
+                                                           Appearance.colors.colPrimary.b, 0.13)
+                                            visible: !overflowIcon.visible
+                                        }
+                                        StyledText {
+                                            anchors.centerIn: parent
+                                            text: modelData.name.charAt(0).toUpperCase()
+                                            font.family:    Appearance.font.family.title
+                                            font.pixelSize: Metrics.fontSize("big")
+                                            font.weight:    Font.Bold
+                                            color:   Appearance.colors.colPrimary
+                                            visible: !overflowIcon.visible
+                                        }
+                                        Image {
+                                            id: overflowIcon
+                                            anchors.fill: parent
+                                            source: AppRegistry.iconForDesktopIcon(modelData.icon) || ""
+                                            fillMode: Image.PreserveAspectFit
+                                            visible:  status === Image.Ready
+                                            smooth: true; mipmap: true; asynchronous: true
+                                        }
+                                    }
+                                    StyledText {
+                                        width: parent.width
+                                        text:  modelData.name
+                                        font.pixelSize: Metrics.fontSize("smaller")
+                                        color: Appearance.colors.colOnLayer1
+                                        horizontalAlignment: Text.AlignHCenter
+                                        elide:    Text.ElideRight
+                                        wrapMode: Text.WordWrap
+                                        maximumLineCount: 2
+                                    }
+                                }
+                                MouseArea {
+                                    id: overflowMa
+                                    anchors.fill: parent
+                                    hoverEnabled: true
+                                    cursorShape:  Qt.PointingHandCursor
+                                    onClicked: {
+                                        Apps.launch(modelData)
+                                        Globals.visiblility.launcher = false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
                 GridView {
                     id: appGrid
                     anchors.fill: parent
                     clip: true
                     focus: true
+                    visible: launcher.layout === "grid" && launcher.searchAction === null
+                    enabled: visible
 
                     readonly property int cols: Math.max(3, Math.floor(width / 128))
                     cellWidth:  Math.floor(width / cols)
                     cellHeight: 118
 
-                    model: launcher.displayApps
+                    model: visible ? launcher.displayApps : []
 
                     ScrollBar.vertical: ScrollBar {
                         policy: ScrollBar.AsNeeded
                         contentItem: Rectangle {
-                            radius:  Appearance.rounding.full
+                            radius:  Metrics.radius("full")
                             color:   Appearance.colors.colOutline
                             opacity: 0.45
                         }
@@ -435,7 +782,6 @@ PanelWindow {
                     }
                     Keys.onEscapePressed: searchField.forceActiveFocus()
 
-                    // Stagger-in on model change
                     add: Transition {
                         NumberAnimation {
                             property: "opacity"; from: 0; to: 1
@@ -463,14 +809,13 @@ PanelWindow {
                         width:  appGrid.cellWidth
                         height: appGrid.cellHeight
 
-                        // Staggered entrance
                         property real entranceP: 0
                         NumberAnimation on entranceP {
                             from: 0; to: 1
                             duration: 340
                             easing.type: Easing.BezierSpline
                             easing.bezierCurve: Appearance.animation.curves.emphasizedDecel
-                            running: launcher.visible
+                            running: launcher.visible && launcher.layout === "grid"
                         }
 
                         opacity: entranceP
@@ -479,7 +824,7 @@ PanelWindow {
                         Rectangle {
                             id: appCard
                             anchors { fill: parent; margins: 5 }
-                            radius: Appearance.rounding.large
+                            radius: Metrics.radius("large")
                             color: {
                                 if (appGrid.currentIndex === appDelegate.index)
                                     return Appearance.colors.colSecondaryContainer
@@ -505,15 +850,13 @@ PanelWindow {
                                 spacing: Appearance.margin.verysmall
                                 width: parent.width - 12
 
-                                // Icon
                                 Item {
                                     width: 48; height: 48
                                     anchors.horizontalCenter: parent.horizontalCenter
 
-                                    // Fallback background
                                     Rectangle {
                                         anchors.fill: parent
-                                        radius: Appearance.rounding.normal
+                                        radius: Metrics.radius("normal")
                                         color: Qt.rgba(
                                             Appearance.colors.colPrimary.r,
                                             Appearance.colors.colPrimary.g,
@@ -542,7 +885,6 @@ PanelWindow {
                                     }
                                 }
 
-                                // Name
                                 StyledText {
                                     width: parent.width
                                     text: appDelegate.modelData.name
@@ -567,9 +909,9 @@ PanelWindow {
                                 cursorShape:  Qt.PointingHandCursor
                                 onEntered: appGrid.currentIndex = appDelegate.index
                                 onClicked: {
-                                    // console.log("TYPE:", typeof appDelegate.modelData)
-                                    // console.log("EXEC:", appDelegate.modelData.execString)
-                                    // console.log("ID:", appDelegate.modelData.id)
+                                    console.log("TYPE:", typeof appDelegate.modelData)
+                                    console.log("EXEC:", appDelegate.modelData.execString)
+                                    console.log("ID:", appDelegate.modelData.id)
                                     Apps.launch(appDelegate.modelData)
                                     Globals.visiblility.launcher = false
                                 }
@@ -577,8 +919,191 @@ PanelWindow {
                         }
                     }
                 }
-            }
 
+                ListView {
+                    id: appList
+                    anchors.fill: parent
+                    clip: true
+                    focus: true
+                    visible: launcher.layout === "list" && launcher.searchAction === null
+                    enabled: visible
+                    spacing: Appearance.margin.tinier
+                    boundsBehavior: Flickable.StopAtBounds
+
+                    model: visible ? launcher.displayApps : []
+
+                    ScrollBar.vertical: ScrollBar {
+                        policy: ScrollBar.AsNeeded
+                        contentItem: Rectangle {
+                            radius:  Metrics.radius("full")
+                            color:   Appearance.colors.colOutline
+                            opacity: 0.45
+                        }
+                    }
+
+                    Keys.onReturnPressed: {
+                        const idx = currentIndex
+                        if (idx >= 0 && idx < launcher.displayApps.length) {
+                            Apps.launch(launcher.displayApps[idx])
+                            Globals.visiblility.launcher = false
+                        }
+                    }
+                    Keys.onEscapePressed: searchField.forceActiveFocus()
+
+                    add: Transition {
+                        NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 180 }
+                        NumberAnimation { property: "scale"; from: 0.96; to: 1; duration: 220; easing.type: Easing.OutCubic }
+                    }
+                    displaced: Transition {
+                        NumberAnimation { properties: "x,y"; duration: 200; easing.type: Easing.OutCubic }
+                    }
+
+                    delegate: Item {
+                        id: listDelegate
+                        required property int index
+                        required property var modelData
+
+                        width: appList.width
+                        height: 64
+
+                        property real entranceP: 0
+                        NumberAnimation on entranceP {
+                            from: 0; to: 1
+                            duration: 280
+                            easing.type: Easing.BezierSpline
+                            easing.bezierCurve: Appearance.animation.curves.emphasizedDecel
+                            running: launcher.visible && launcher.layout === "list"
+                        }
+                        opacity: entranceP
+
+                        Rectangle {
+                            id: listCard
+                            anchors { fill: parent; leftMargin: 2; rightMargin: 2; topMargin: 1; bottomMargin: 1 }
+                            radius: Metrics.radius("large")
+                            color: {
+                                if (appList.currentIndex === listDelegate.index)
+                                    return Appearance.colors.colSecondaryContainer
+                                if (listHoverMa.containsMouse)
+                                    return Appearance.colors.colLayer2Hover
+                                return "transparent"
+                            }
+                            Behavior on color { ColorAnimation { duration: 120 } }
+
+                            scale: listHoverMa.pressed ? 0.98 : 1.0
+                            Behavior on scale {
+                                NumberAnimation {
+                                    duration: listHoverMa.pressed ? 80 : 220
+                                    easing.type: Easing.BezierSpline
+                                    easing.bezierCurve: Appearance.animation.curves.expressiveFastSpatial
+                                }
+                            }
+
+                            RowLayout {
+                                anchors {
+                                    fill: parent
+                                    leftMargin:  Appearance.margin.normal
+                                    rightMargin: Appearance.margin.normal
+                                }
+                                spacing: Appearance.margin.normal
+
+                                Item {
+                                    width: 40; height: 40
+                                    Layout.alignment: Qt.AlignVCenter
+
+                                    Rectangle {
+                                        anchors.fill: parent
+                                        radius: Metrics.radius("normal")
+                                        color: Qt.rgba(
+                                            Appearance.colors.colPrimary.r,
+                                            Appearance.colors.colPrimary.g,
+                                            Appearance.colors.colPrimary.b, 0.13)
+                                        visible: !listIcon.visible
+                                    }
+                                    StyledText {
+                                        anchors.centerIn: parent
+                                        text: listDelegate.modelData.name.charAt(0).toUpperCase()
+                                        font.family:    Appearance.font.family.title
+                                        font.pixelSize: Metrics.fontSize("large")
+                                        font.weight:    Font.Bold
+                                        color:   Appearance.colors.colPrimary
+                                        visible: !listIcon.visible
+                                    }
+                                    Image {
+                                        id: listIcon
+                                        anchors.fill: parent
+                                        source: AppRegistry.iconForDesktopIcon(
+                                            listDelegate.modelData.icon) || ""
+                                        fillMode:    Image.PreserveAspectFit
+                                        visible:     status === Image.Ready
+                                        smooth:      true
+                                        mipmap:      true
+                                        asynchronous: true
+                                    }
+                                }
+
+                                ColumnLayout {
+                                    Layout.fillWidth: true
+                                    Layout.alignment: Qt.AlignVCenter
+                                    spacing: Appearance.margin.tinier
+
+                                    StyledText {
+                                        Layout.fillWidth: true
+                                        text: listDelegate.modelData.name
+                                        font.pixelSize: Metrics.fontSize("small")
+                                        font.weight: appList.currentIndex === listDelegate.index
+                                            ? Font.Medium : Font.Normal
+                                        color: appList.currentIndex === listDelegate.index
+                                            ? Appearance.colors.colOnSecondaryContainer
+                                            : Appearance.colors.colOnLayer1
+                                        elide: Text.ElideRight
+                                        Behavior on color { ColorAnimation { duration: 120 } }
+                                    }
+
+                                    StyledText {
+                                        Layout.fillWidth: true
+                                        text: listDelegate.modelData.comment ?? ""
+                                        visible: (listDelegate.modelData.comment ?? "").length > 0
+                                        font.pixelSize: Metrics.fontSize("smaller")
+                                        color: appList.currentIndex === listDelegate.index
+                                            ? Qt.rgba(
+                                                Appearance.colors.colOnSecondaryContainer.r,
+                                                Appearance.colors.colOnSecondaryContainer.g,
+                                                Appearance.colors.colOnSecondaryContainer.b, 0.75)
+                                            : Appearance.colors.colSubtext
+                                        elide: Text.ElideRight
+                                        Behavior on color { ColorAnimation { duration: 120 } }
+                                    }
+                                }
+
+                                MaterialSymbol {
+                                    icon: "chevron_right"
+                                    iconSize: Metrics.iconSize(18)
+                                    color: appList.currentIndex === listDelegate.index
+                                        ? Appearance.colors.colOnSecondaryContainer
+                                        : Appearance.colors.colSubtext
+                                    opacity: listHoverMa.containsMouse
+                                          || appList.currentIndex === listDelegate.index ? 1 : 0
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Behavior on opacity { NumberAnimation { duration: 150 } }
+                                    Behavior on color   { ColorAnimation  { duration: 120 } }
+                                }
+                            }
+
+                            MouseArea {
+                                id: listHoverMa
+                                anchors.fill: parent
+                                hoverEnabled: true
+                                cursorShape:  Qt.PointingHandCursor
+                                onEntered: appList.currentIndex = listDelegate.index
+                                onClicked: {
+                                    Apps.launch(listDelegate.modelData)
+                                    Globals.visiblility.launcher = false
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
             RowLayout {
                 Layout.fillWidth: true
@@ -593,12 +1118,11 @@ PanelWindow {
 
                 Item { Layout.fillWidth: true }
 
-                // Keyboard hint pills
                 Repeater {
                     model: [
                         { icon: "keyboard_return", label: "Launch" },
                         { icon: "keyboard_tab",    label: "Navigate" },
-                        { icon: "backspace", label: "Close" },
+                        { icon: "backspace",       label: "Close" },
                     ]
 
                     RowLayout {
@@ -631,7 +1155,6 @@ PanelWindow {
             }
         }
     }
-
 
     IpcHandler {
         target: "launcher"
