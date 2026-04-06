@@ -26,87 +26,48 @@ jobs:
           useradd -m builder
           echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
-      # Cache EVERYTHING important (huge speedup)
-      - name: Cache AUR + packages
-        uses: actions/cache@v4
-        with:
-          path: |
-            /home/builder/.cache/yay
-            /home/builder/.cache/pacman/pkg
-          key: arch-${{ runner.os }}-quickshell-v2
-          restore-keys: |
-            arch-${{ runner.os }}-
-
-      - name: Install yay
+      - name: Install yay (AUR helper)
         run: |
           sudo -u builder bash -c "
             cd ~ &&
-            if [ ! -d yay ]; then
-              git clone https://aur.archlinux.org/yay.git
-            fi &&
+            git clone https://aur.archlinux.org/yay.git &&
             cd yay &&
             makepkg -si --noconfirm
           "
 
-      - name: Install quickshell (cached)
+      - name: Install Major
         run: |
-          sudo -u builder yay -S --noconfirm --needed quickshell-git nucleus-shell
+          sudo -u builder yay -S --noconfirm quickshell-git nucleus-shell
 
-      - name: Install runtime deps (reduce warnings)
+      - name: Install runtime deps
         run: |
-          pacman -S --noconfirm \
-            weston \
-            xorg-xwayland \
-            qt6-5compat \
-            pipewire \
-            wireplumber \
-            dbus \
-            networkmanager \
-            upower \
-            mesa \
-            vulkan-icd-loader
+          pacman -S --noconfirm weston xorg-xwayland
 
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Run quickshell
+      - name: Run quickshell (Wayland fixed)
         run: |
-          # Runtime setup
+          # Setup runtime dir (FIXES YOUR ERROR)
           export XDG_RUNTIME_DIR=/tmp/runtime-dir
           mkdir -p $XDG_RUNTIME_DIR
           chmod 700 $XDG_RUNTIME_DIR
 
-          # Start dbus (fix many warnings)
-          dbus-daemon --system --fork || true
-          dbus-daemon --session --fork || true
-
-          # Start pipewire (best effort)
-          pipewire & disown || true
-          wireplumber & disown || true
-
           # Start weston
           weston --backend=headless-backend.so --socket=wayland-1 --idle-time=0 &
-          sleep 3
+          sleep 2
 
+          # Tell Qt to use Wayland
           export WAYLAND_DISPLAY=wayland-1
           export QT_QPA_PLATFORM=wayland
 
-          # Run shell
+          # Run quickshell
           timeout 60s qs -p quickshell/nucleus-shell/shell.qml > log.txt 2>&1 || true
 
           cat log.txt
 
-          echo "Runtime Check Logs:"
-
-          # FAIL on real errors
-          if grep -iE "FATAL|CRITICAL|Segmentation fault|core dumped|crashed" log.txt; then
-            echo "[!] Critical errors detected"
+          # Fail only on real errors
+          if grep -i "error" log.txt; then
+            echo "Errors found"
             exit 1
-          fi
-
-          # WARN summary (does NOT fail)
-          if grep -i "warn" log.txt; then
-            echo " [x] Warnings detected (should be reviewed)"
-          else
-            echo "[|] No warnings detected"
           fi
