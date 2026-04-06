@@ -4,7 +4,7 @@ set -Eeuo pipefail
 # Paths / repo
 CONFIG="$HOME/.config/nucleus-shell/config/configuration.json"
 QS_DIR="$HOME/.config/quickshell/nucleus-shell"
-REPO="xZepyx/nucleus-shell"
+REPO="nucleus-hq/nucleus-shell"
 API="https://api.github.com/repos/$REPO/releases"
 
 # Spinner

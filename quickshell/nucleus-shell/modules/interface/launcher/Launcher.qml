@@ -1155,11 +1155,5 @@ PanelWindow {
             }
         }
     }
-
-    IpcHandler {
-        target: "launcher"
-        function toggle() {
-            Globals.visiblility.launcher = !Globals.visiblility.launcher
-        }
-    }
+    
 }

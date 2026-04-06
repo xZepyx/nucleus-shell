@@ -36,12 +36,12 @@ ShellRoot {
     LazyLoader {
         id: powerMenuLoader
         source: Contracts.powerMenu.source
-        active: Contracts.powerMenu.active && Globals.visibility.powermenu
+        active: Contracts.powerMenu.active && Globals.visiblility.powermenu
     }
     LazyLoader {
         id: launcherLoader
         source: Contracts.launcher.source
-        active: Contracts.launcher.active
+        active: Contracts.launcher.active && Globals.visiblility.launcher
     }
     LazyLoader {
         id: notificationsLoader
@@ -75,11 +75,11 @@ ShellRoot {
     }
 
     // Services
-    Settings      { }
-    Ipc           { }
-    Intelligence  { }
-    UpdateNotifier{ }
-    PluginHost    { }
-    ScreenCapture { }
-    PolkitAgent   { }
+    Settings       { }
+    Ipc            { }
+    Intelligence   { }
+    UpdateNotifier { }
+    PluginHost     { }
+    ScreenCapture  { }
+    PolkitAgent    { }
 }
