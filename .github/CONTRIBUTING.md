@@ -68,6 +68,25 @@ refactor(renderer): simplify pipeline logic
 
 ---
 
+# Team/Project Member Workflow
+This section is related to how team/project members work in the repository
+
+> [!NOTE]
+> All the **team/project** members are listed in the readme
+
+* All team/project members can commit directly to main.
+* They can also maintain all issues, but not suggested to review or merge PRs unless asked by the PR's OP.
+
+---
+
+# Maintainers
+This section is related about how maintainers work in the repository
+
+* All maintainers can directly push to main.
+* They can also merge PRs and maintain issues.
+
+---
+
 # Collaboration Workflow
 
 > [!CAUTION]
